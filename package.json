@@ -7,7 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^1.6.5",
+    "bcrypt": "^5.1.1",
     "core-js": "^3.8.3",
+    "crypto-js": "^4.2.0",
+    "dependencies": "^0.0.1",
+    "js-cookie": "^3.0.5",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
   },
