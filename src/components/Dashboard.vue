@@ -5,12 +5,12 @@
 			<div class="box">
 				<div class="box-image">
 					<img src="../assets/user.png" alt="" class="box-image">
-					<p>DanismanAdi DanismanSoyadi</p>
+					<p>{{ advisorFirstname }} {{ advisorLastname }}</p>
 					<p>Prof.</p>
 				</div>
 				<div class="box-info">
 					<p class="box-header">Danışman Bilgileri</p>
-					<p class="box-text">Bölümü</p>
+					<p class="box-text">Bölümü: {{ advisorDepartment }}</p>
 					<p class="box-text">Telefon</p>
 					<p class="box-text">Web</p>
 				</div>
@@ -40,7 +40,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </template>
    
@@ -51,24 +50,33 @@ export default {
 	data() {
 		return {
 			talepler: [],
+			advisorFirstname: '',
+			advisorLastname: '',
+			advisorDepartment: ''
 		};
 	},
-	async mounted() {
-		try {
-			const response = await fetch('http://localhost:8080/StudentRequests', { credentials: 'include' });
+	methods: {
+		async fetchData(url) {
+			try {
+				const response = await fetch(url, { credentials: 'include' });
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				return await response.json();
+			} catch (error) {
+				console.error(error);
 			}
-
-			const data = await response.json();
-			console.log(data);
-			this.talepler = data;
-		} catch (error) {
-			console.log("lmao");
-			console.error(error);
 		}
 	},
+	async mounted() {
+		this.talepler = await this.fetchData('http://localhost:8080/StudentRequests');
+		const advisorData = await this.fetchData('http://localhost:8080/advisorInfo');
+		console.log(advisorData);
+		this.advisorFirstname = advisorData.firstname;
+		this.advisorLastname = advisorData.lastname;
+		this.advisorDepartment = advisorData.department;
+	}
 };
 </script>
    
