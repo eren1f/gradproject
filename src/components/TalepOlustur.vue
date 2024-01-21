@@ -7,17 +7,11 @@
       <form @submit.prevent="submitForm">
         <label>
           Talep Türünü Seçiniz:
-          <select v-model="selectedTalep" class="selectField" required @change="handleRequestChange">
-            <option value="" disabled selected>Seçiniz</option>
-            <option value="kontenjan-arttirma">Kontenjan Arttırma</option>
-            <option value="ders-yuku-arttirma">Ders Yükü Arttırma</option>
-            <option value="ders-yuku-azaltma">Ders Yükü Azaltma</option>
-            <option value="sosyal-secimlik-ders-alma">Sosyal Seçimlik Ders Alma</option>
-            <option value="baska-bolumden-secimlik-ders-alma">Baska Bölümden Seçimlik Ders Alma</option>
-            <option value="baska-bolumden-ortak-ders-alma">Baska Bölümden Ortak Ders Alma</option>
-            <option value="esdeğer-ders-saydirma-talebi">Eşdeğer Ders Saydırma Talebi</option>
-            <option value="oncelikli-alinmasi-gereken-dersin-ertelenmesi">Öncelikli Alınması Gereken Dersin Ertelenmesi</option>
-            <option value="diger">Diğer</option>
+          <select v-model="selectedTalep">
+            <!-- <option value="" disabled selected>Seçiniz</option> -->
+            <option v-for="type in requestTypes" :key="type.id" :value="type.id">
+              {{ type.requestName }}
+            </option>
           </select>
         </label>
 
@@ -64,6 +58,8 @@ export default {
 
   data() {
     return {
+      requestTypes: [],
+
       talep: '',
       selectedTalep: '',
       selectedDepartment: '',
@@ -77,6 +73,20 @@ export default {
       courseOptions: [],
     };
   },
+  async mounted() {
+    try {
+      const response = await fetch('http://localhost:8080/requestTypes', { credentials: 'include' });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      this.requestTypes = await response.json();
+      console.log(this.requestTypes);
+    } catch (error) {
+      console.error(error);
+    }
+  },
   methods: {
     handleRequestChange() {
       // Birinci düzey seçeneğe göre ikinci düzey seçenekleri ayarla
@@ -85,21 +95,21 @@ export default {
       switch (selectedTalep) {
         case 'kontenjan-arttirma':
           this.departmentOptions = ["BILGISAYAR MUH."];
-          this.courseOptions = ["BİL101	BİLGİSAYAR YAZILIMI", "BİL103	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", 
-          "BİL105	PROGRAMLAMA LABORATUVARI I", "BİL110	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", "ENG199	ADVANCED ENGLISH I", 
-          "FİZ103	MEKANİK LABORATUVARI", "FİZ105	GENEL FİZİK I", "MAT151	MATEMATİKSEL ANALİZ I", "TÜRK101"];
+          this.courseOptions = ["BİL101	BİLGİSAYAR YAZILIMI", "BİL103	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ",
+            "BİL105	PROGRAMLAMA LABORATUVARI I", "BİL110	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", "ENG199	ADVANCED ENGLISH I",
+            "FİZ103	MEKANİK LABORATUVARI", "FİZ105	GENEL FİZİK I", "MAT151	MATEMATİKSEL ANALİZ I", "TÜRK101"];
           break;
         case 'ders-yuku-arttirma':
           this.departmentOptions = ["BILGISAYAR MUH."];
-          this.courseOptions = ["BİL101	BİLGİSAYAR YAZILIMI", "BİL103	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", 
-          "BİL105	PROGRAMLAMA LABORATUVARI I", "BİL110	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", "ENG199	ADVANCED ENGLISH I", 
-          "FİZ103	MEKANİK LABORATUVARI", "FİZ105	GENEL FİZİK I", "MAT151	MATEMATİKSEL ANALİZ I", "TÜRK101"];
+          this.courseOptions = ["BİL101	BİLGİSAYAR YAZILIMI", "BİL103	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ",
+            "BİL105	PROGRAMLAMA LABORATUVARI I", "BİL110	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", "ENG199	ADVANCED ENGLISH I",
+            "FİZ103	MEKANİK LABORATUVARI", "FİZ105	GENEL FİZİK I", "MAT151	MATEMATİKSEL ANALİZ I", "TÜRK101"];
           break;
         case 'ders-yuku-azaltma':
           this.departmentOptions = ["BILGISAYAR MUH."];
-          this.courseOptions = ["BİL101	BİLGİSAYAR YAZILIMI", "BİL103	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", 
-          "BİL105	PROGRAMLAMA LABORATUVARI I", "BİL110	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", "ENG199	ADVANCED ENGLISH I", 
-          "FİZ103	MEKANİK LABORATUVARI", "FİZ105	GENEL FİZİK I", "MAT151	MATEMATİKSEL ANALİZ I", "TÜRK101"];
+          this.courseOptions = ["BİL101	BİLGİSAYAR YAZILIMI", "BİL103	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ",
+            "BİL105	PROGRAMLAMA LABORATUVARI I", "BİL110	BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ", "ENG199	ADVANCED ENGLISH I",
+            "FİZ103	MEKANİK LABORATUVARI", "FİZ105	GENEL FİZİK I", "MAT151	MATEMATİKSEL ANALİZ I", "TÜRK101"];
           break;
         case 'sosyal-secimlik-ders-alma':
           this.departmentOptions = ["BILGISAYAR MUH."];
@@ -162,7 +172,7 @@ export default {
     submitForm() {
       console.log('Form submitted with talep:', this.talep);
     },
-   
+
   },
 };
 </script>
@@ -206,6 +216,7 @@ export default {
   width: 50%;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15);
 }
+
 .talepButton:hover {
   cursor: pointer;
   background-color: #412787;
