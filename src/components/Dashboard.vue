@@ -6,7 +6,7 @@
 				<div class="box-image">
 					<img src="../assets/user.png" alt="" class="box-image">
 					<p>{{ advisorFirstname }} {{ advisorLastname }}</p>
-					<p>Prof.</p>
+					<!-- <p>Prof.</p> -->
 				</div>
 				<div class="box-info">
 					<p class="box-header">Danışman Bilgileri</p>
