@@ -15,7 +15,7 @@
 					<img src="../assets/user-password.png">
 				</div>
 				<input type="password" v-model="password" placeholder="Şifreniz" required>
-				<div v-if="passwordError" class="error">{{ passwordError }}</div>
+				<!-- <div v-if="passwordError" class="error">{{ passwordError }}</div> -->
 			</div>
 			<div class="submit">
 				<button type="submit" @click="handleFormSubmission">Giriş Yap</button>
@@ -60,27 +60,27 @@ export default {
 			};
 
 			try {
-				const response = await fetch('http://localhost:8080/login', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					credentials: 'include',
-					body: JSON.stringify(userCredentials),
-				});
+                const response = await fetch('http://localhost:8080/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(userCredentials),
+                });
 
-				if (!response.ok) {
+                if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
 
-				const data = await response;
-				console.log(data);
-				let token = Cookies.get('token');
-				console.log(token);
+                const data = await response;
+                console.log(data);
+                let token = Cookies.get('token');
+                console.log(token);
 
-				if (response.status === 200) {
-					this.router.push('/anasayfa');
-				}
+                if (response.status === 200) {
+                    this.router.push('/anasayfa');
+                }
 			} catch (error) {
 				if (error.message.includes('401')) {
 					alert('Invalid credentials');

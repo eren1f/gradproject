@@ -11,8 +11,8 @@
 		<div class="user-container">
 			<img src="../assets/user.png" alt="user" />
 			<div class="user-info">
-				<p class="user-name">Isim Soyisim</p>
-				<p class="user-id">11223344</p>
+				<div class="user-name">{{ firstname }} {{ lastname }}</div>
+				<div class="user-id">{{ id }}</div>
 			</div>
 		</div>
 	</div>
@@ -20,6 +20,13 @@
 
 <script>
 export default {
+	data() {
+		return {
+			firstname: '',
+			lastname: '',
+			id: ''
+    	}
+	},
 	methods: {
 		scrollToSection(sectionId) {
 			const sectionElement = document.getElementById(sectionId);
@@ -49,6 +56,22 @@ export default {
 			});
 		},
 		// Add other methods for smooth scrolling to other sections if needed
+	},
+	async mounted() {
+		try {
+			const response = await fetch('http://localhost:8080/studentInfo', { credentials: 'include' });
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			const data = await response.json();
+			this.firstname = data.firstname;
+			this.lastname = data.lastname;
+			this.id = data.id;
+		} catch (error) {
+			console.error(error);
+		}
 	}
 };
 </script>
