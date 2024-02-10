@@ -1,12 +1,10 @@
-export class LoginResponse {
+export class LogoutResponse {
     status: string;
     message: string;
-    role: string;
 
-    constructor(status?: string, message?: string, role?: string) {
+    constructor(status?: string, message?: string) {
         this.status = status || '';
         this.message = message || '';
-        this.role = role || '';
     }
 
     public getStatus(): string {
@@ -23,13 +21,5 @@ export class LoginResponse {
 
     public setMessage(message: string) {
         this.message = message;
-    }
-
-    public getRole(): string {
-        return this.role;
-    }
-
-    public setRole(role: string) {
-        this.role = role;
     }
 }
