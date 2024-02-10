@@ -5,13 +5,14 @@ import { useRouter } from 'vue-router';
 
 export class Auth {
     async loginRequest(data: Login): Promise<LoginResponse> {
+        const router = useRouter();
         const url = "http://localhost:8080/login";
         const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify({"email": data.email, "password": data.password}),
             credentials: 'include',
         });
 
@@ -26,7 +27,8 @@ export class Auth {
         if (res.status === "success") {
             if (res.role === "admin") {
                 return res.message;
-            } else if (res.role === "student") {
+            } else if (res.role === "Student") {
+                router.push('/studentHomePage');
                 return res.message;
             } else {
                 return res.message;

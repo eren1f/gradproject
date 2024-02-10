@@ -15,31 +15,24 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, defineComponent, onMounted } from 'vue';
-	import { StudentRequestHandler } from '../../Scripts/StudentRequestHandler';
-	import { DashboardAdvisorInfo } from '../../Models/DashboardAdvisorInfo';
+    import { ref, onMounted } from 'vue';
+    import { StudentRequestHandler } from '../../Scripts/StudentRequestHandler';
+    import { DashboardAdvisorInfo } from '../../Models/DashboardAdvisorInfo';
 
-	export default defineComponent({
-		name: 'StudentDashboardListingAdvisorInfo',
-		setup() {
-			const advisorFirstname = ref('');
-			const advisorLastname = ref('');
-			const advisorDepartment = ref('');
-			const advisorPhoneNumber = ref('');
-			const advisorWeb = ref('');
+    const advisorFirstname = ref('');
+    const advisorLastname = ref('');
+    const advisorDepartment = ref('');
+    const advisorPhoneNumber = ref('');
+    const advisorWeb = ref('');
 
-			onMounted(async () => {
-				const studentReqHandler = new StudentRequestHandler();
-				const advisorInfo: DashboardAdvisorInfo = await studentReqHandler.getDashboardAdvisorInfoRequest();
+    onMounted(async () => {
+        const studentReqHandler = new StudentRequestHandler();
+        const advisorInfo: DashboardAdvisorInfo = await studentReqHandler.getDashboardAdvisorInfoRequest();
 
-				advisorFirstname.value = advisorInfo.getFirstname();
-				advisorLastname.value = advisorInfo.getLastname();
-				advisorDepartment.value = advisorInfo.getDepartment();
-				advisorPhoneNumber.value = advisorInfo.getPhonenumber();
-				advisorWeb.value = advisorInfo.getWeb();
-			});
-
-			return { advisorFirstname, advisorLastname, advisorDepartment, advisorPhoneNumber, advisorWeb };
-		},
-	});
+        advisorFirstname.value = advisorInfo.getFirstname();
+        advisorLastname.value = advisorInfo.getLastname();
+        advisorDepartment.value = advisorInfo.getDepartment();
+        advisorPhoneNumber.value = advisorInfo.getPhonenumber();
+        advisorWeb.value = advisorInfo.getWeb();
+    });
 </script>
