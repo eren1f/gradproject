@@ -4,8 +4,8 @@
 </template>
 
 <script lang="ts">
-	import LoginComponent from '@/components/LoginComponent.vue';
-	import LoginInfoComponent from '@/components/LoginInfoComponent.vue';
+	import LoginComponent from '@/components/login/LoginComponent.vue';
+	import LoginInfoComponent from '@/components/login/LoginInfoComponent.vue';
 	import { defineComponent } from 'vue';
 
 	export default defineComponent({
