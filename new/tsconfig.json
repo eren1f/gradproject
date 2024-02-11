@@ -10,7 +10,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "emitDeclarationOnly": false,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "types": [
       "node",
       "vue",
@@ -25,7 +25,7 @@
       "esnext",
       "dom",
       "dom.iterable",
-      "scripthost"
+      "scripthost",
     ]
   },
   "include": [

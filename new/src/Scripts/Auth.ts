@@ -1,10 +1,9 @@
 import { Login } from "@/Models/Login";
 import { LoginResponse } from "@/Models/LoginResponse";
 import type { LogoutResponse } from "@/Models/LogoutResponse";
-import type { Router } from "vue-router";
 
 export class Auth {
-    async loginRequest(data: Login, router: Router): Promise<string> {
+    async loginRequest(data: Login): Promise<string> {
         const url = "http://localhost:8080/login";
         const response = await fetch(url, {
             method: 'POST',
@@ -22,7 +21,7 @@ export class Auth {
         const res = await response.json();
 
         if (res.status === "success") {
-            if (res.role === "admin") {
+            if (res.role === "Admin") {
                 return "Admin";
             } else if (res.role === "Student") {
                 return "Student";
