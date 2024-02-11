@@ -38,11 +38,11 @@
 
             const submitForm = async () => {
                 const handler = new Auth();
-                const role = await handler.loginRequest(new Login(username.value, password.value), router);
+                const role = await handler.loginRequest(new Login(username.value, password.value));
 
-				if (role === 'Admin') router.push('/AdminHomePage');
-				else if (role === 'Student') router.push('/StudentHomePage');
-				else if (role === 'Staff') router.push('/StaffHomePage');
+				if (role === 'Admin') router.push('/adminHomePage');
+				else if (role === 'Student') router.push('/studentHomePage');
+				else if (role === 'Staff') router.push('/staffHomePage');
 				else console.error("Role not found", role);
             }
 

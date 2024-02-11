@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginPage from "../views/LoginPage.vue";
 import StudentHomeView from "../views/StudentViews/StudentHomeView.vue";
-import path from "path";
+import AdminHomeView from "../views/AdminViews/AdminHomeView.vue";
 
 const routes = [
 	{
@@ -13,6 +13,11 @@ const routes = [
 		path: "/studentHomePage",
 		name: "StudentHomePage",
 		component: StudentHomeView,
+	},
+	{
+		path: "/adminHomePage",
+		name: "AdminHomePage",
+		component: AdminHomeView,
 	}
 ];
 
