@@ -15,8 +15,6 @@
 </template>
 
 <script lang="ts">
-    // TODO
-    // DONT FORGET TO PASS THE REQUEST NAME TO THE PARENT COMPONENT
     import { defineComponent, ref } from 'vue';
 
     export default defineComponent({
