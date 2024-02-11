@@ -14,7 +14,7 @@
                 <tbody>
                     <tr v-for="talep in talepler" :key="talep.getStudentId()">
                         <td>{{ talep.getInformation() }}</td>
-                        <td>{{ talep.getWhen() }}</td>
+                        <td>{{ talep.getWhenCreatedFormatted() }}</td>
                         <td>{{ talep.getStatus() }}</td>
                     </tr>
                 </tbody>
@@ -23,16 +23,26 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
     import { ref, onMounted, defineComponent } from 'vue';
     import { StudentRequestHandler } from '../../Scripts/StudentRequestHandler';
     import { StudentRequests } from '../../Models/StudentRequests';
+    import { useRouter } from 'vue-router';
 
-    const talepler = ref<StudentRequests[]>([]);
+    export default defineComponent({
+		name: 'StudentDashboardListingRequests',
+		setup() {
+			const router = useRouter();
+            const talepler = ref<StudentRequests[]>([]);
 
-    onMounted(async () => {
-        const studentReqHandler = new StudentRequestHandler();
-        const data = await studentReqHandler.getStudentRequests();
-        talepler.value.push(...data);
-    });
+
+            onMounted(async () => {
+                const studentReqHandler = new StudentRequestHandler();
+                const data = await studentReqHandler.getStudentRequests();
+                talepler.value.push(...data);
+            });
+
+            return { talepler }
+		},
+	});
 </script>

@@ -1,14 +1,13 @@
-<!-- <template>
+<template>
     <div id="talepOluşturma" class="talepOluşturma">
         <div>
             <h1>Talep Oluşturma</h1>
             <form @submit.prevent="submitForm">
                 <label>
                     Talep Türünü Seçiniz:
-                    <select v-model="selectedTalep">
-                        <option value="" disabled selected>Seçiniz</option>
-                        <option v-for="type in requestTypes" :key="type.getId()" :value="type.getId()">
-                            {{ type.getRequestName() }}
+                    <select v-model="selectedRequest">
+                        <option v-for="requestType in requestTypes" :key="requestType.getId()" :value="requestType.getId()">
+                            {{ requestType.getRequestName() }}
                         </option>
                     </select>
                 </label>
@@ -19,33 +18,33 @@
 </template>
 
 <script lang="ts">
-    import { computed, defineComponent, onMounted, ref, watch } from 'vue';
-    import { RequestHandler } from '../../Scripts/RequestHandler';
-    import { RequestTypes } from '../../Models/RequestTypes';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { RequestHandler } from '../../Scripts/RequestHandler';
+import { RequestTypes } from '../../Models/RequestTypes';
 
-    export default defineComponent({
-        name: 'MakeRequest',
-        setup() {
-            const requestTypes = ref<RequestTypes[]>([]);
-            const selectedTalep = ref('');
-            const selectedRequest = ref<RequestTypes>();
+export default defineComponent({
+    name: 'MakeRequest',
+    setup() {
+        const requestTypes = ref<RequestTypes[]>([]);
+        const selectedRequest = ref(null);
 
-            watch(selectedTalep, (newVal) => {
-                // selectedRequest.value = requestTypes.value.find(type => type.getId() === Number(newVal));
-            });
+        const submitForm = () => {
+            console.log('Form submitted');
+            console.log('Selected request type:', selectedRequest.value);
+        };
 
-            const submitForm = () => {
-                console.log('Form submitted');
-            };
+        watch(selectedRequest, (newValue) => {
+            console.log('Selected request type id:', newValue);
+        });
 
-            onMounted(async () => {
-                const reqTypes = new RequestHandler();
-                requestTypes.value = await reqTypes.getRequestTypes();
-            });
+        onMounted(async () => {
+            const reqTypes = new RequestHandler();
+            requestTypes.value = await reqTypes.getRequestTypes();
+        });
 
-            return { requestTypes, selectedTalep, selectedRequest, submitForm };
-        },
-    });
+        return { requestTypes, selectedRequest, submitForm };
+    },
+});
 </script>
 
 
@@ -55,4 +54,4 @@
                     // </div>
                     // <div v-if="responseObjects.length > 0 && allInputsFilled">
                     //     <textarea></textarea>
-                    // </div> --> -->
+                    // </div> -->

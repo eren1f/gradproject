@@ -1,11 +1,10 @@
 import { Login } from "@/Models/Login";
 import { LoginResponse } from "@/Models/LoginResponse";
 import type { LogoutResponse } from "@/Models/LogoutResponse";
-import { useRouter } from 'vue-router';
+import type { Router } from "vue-router";
 
 export class Auth {
-    async loginRequest(data: Login): Promise<LoginResponse> {
-        const router = useRouter();
+    async loginRequest(data: Login, router: Router): Promise<string> {
         const url = "http://localhost:8080/login";
         const response = await fetch(url, {
             method: 'POST',
@@ -22,24 +21,21 @@ export class Auth {
 
         const res = await response.json();
 
-        // TODO
-        //redirect users according to their role
         if (res.status === "success") {
             if (res.role === "admin") {
-                return res.message;
+                return "Admin";
             } else if (res.role === "Student") {
-                router.push('/studentHomePage');
-                return res.message;
+                return "Student";
             } else {
-                return res.message;
+                return "Staff";
             }
         } else {
-            return res.message;
+            console.error(res.message);
+            return "error";
         }
     }
 
-    async logoutTokenDeleter(): Promise<void> {
-        const router = useRouter();
+    async logoutTokenDeleter(router: any): Promise<void> {
         const url = "http://localhost:8080/logout";
         const response = await fetch(url, {
             method: 'POST',

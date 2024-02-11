@@ -2,54 +2,65 @@ export class StudentRequests {
     private studentId: number;
     private currentIndex: number;
     private information: String;
-    private status: String;
-    private when: Date;
+    private status: string;
+    private whenCreated: Date;
 
-    constructor(studentId: number, currentIndex: number, information: String, status: String, when: Date) {
+    constructor(studentId: number, currentIndex: number, information: String, status: string, whenCreated: Date) {
         this.studentId = studentId;
         this.currentIndex = currentIndex;
         this.information = information;
         this.status = status;
-        this.when = when;
+        this.whenCreated = whenCreated;
     }
 
-    public getStudentId(): number {
+    getStudentId(): number {
         return this.studentId;
     }
 
-    public getCurrentIndex(): number {
+    getCurrentIndex(): number {
         return this.currentIndex;
     }
 
-    public getInformation(): String {
+    getInformation(): String {
         return this.information;
     }
 
-    public getStatus(): String {
+    getStatus(): string {
         return this.status;
     }
 
-    public setStudentId(studentId: number): void {
-        this.studentId = studentId;
+    getWhenCreated(): Date {
+        return this.whenCreated;
     }
 
-    public setCurrentIndex(currentIndex: number): void {
-        this.currentIndex = currentIndex;
+    getWhenCreatedFormatted(): string {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+        return this.whenCreated.toLocaleString(undefined, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     }
 
-    public setInformation(information: String): void {
-        this.information = information;
-    }
-
-    public setStatus(status: String): void {
+    setStatus(status: string): void {
         this.status = status;
     }
 
-    public getWhen(): Date {
-        return this.when;
+    setWhenCreated(whenCreated: Date): void {
+        this.whenCreated = whenCreated;
     }
 
-    public setWhen(when: Date): void {
-        this.when = when;
+    setInformation(information: String): void {
+        this.information = information;
+    }
+
+    setCurrentIndex(currentIndex: number): void {
+        this.currentIndex = currentIndex;
+    }
+
+    setStudentId(studentId: number): void {
+        this.studentId = studentId;
     }
 }
