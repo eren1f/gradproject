@@ -1,5 +1,5 @@
-import type { DashboardAdvisorInfo } from "@/Models/DashboardAdvisorInfo";
-import type { StudentRequests } from "@/Models/StudentRequests";
+import { DashboardAdvisorInfo } from "@/Models/DashboardAdvisorInfo";
+import { StudentRequests } from "@/Models/StudentRequests";
 import type { StudentSideBarInfo } from "@/Models/StudentSideBarInfo";
 import type { Request } from "@/Models/Request";
 
@@ -36,10 +36,16 @@ export class StudentRequestHandler {
                 credentials: 'include',
             });
 
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const res: DashboardAdvisorInfo = await response.json();
+            const resData = await response.json();
+            const res = new DashboardAdvisorInfo('', '', '', '', '');
+            res.setFirstname(resData.firstname);
+            res.setLastname(resData.lastname);
+            res.setDepartment(resData.department);
+            res.setWeb(resData.web);
+            res.setPhonenumber(resData.phoneNumber);
             return res;
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);
@@ -60,7 +66,14 @@ export class StudentRequestHandler {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const res: StudentRequests[] = await response.json();
+            const resData = await response.json();
+            const res = resData.map((request: any) => new StudentRequests(
+                request.studentId,
+                request.currentIndex,
+                request.information,
+                request.status,
+                new Date(request.when)
+            ));
             return res;
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);

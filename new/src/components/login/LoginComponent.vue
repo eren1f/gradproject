@@ -27,17 +27,23 @@
 	import { ref, defineComponent } from 'vue';
 	import { Auth } from '@/Scripts/Auth';
 	import { Login } from '@/Models/Login';
-
+	import { useRouter } from 'vue-router';
 
 	export default defineComponent({
 		name: 'LoginComponent',
 		setup() {
+			const router = useRouter();
 			const username = ref('');
             const password = ref('');
 
-            const submitForm = () => {
+            const submitForm = async () => {
                 const handler = new Auth();
-                handler.loginRequest(new Login(username.value, password.value));
+                const role = await handler.loginRequest(new Login(username.value, password.value), router);
+
+				if (role === 'Admin') router.push('/AdminHomePage');
+				else if (role === 'Student') router.push('/StudentHomePage');
+				else if (role === 'Staff') router.push('/StaffHomePage');
+				else console.error("Role not found", role);
             }
 
             return { username, password, submitForm }

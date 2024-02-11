@@ -19,9 +19,8 @@ import { useRouter } from 'vue-router';
 export default defineComponent({
     name: 'NavigationLinks',
     setup() {
-        const router = useRouter();
-
         const scrollToSection = (sectionId: string) => {
+            const router = useRouter();
             const sectionElement = document.getElementById(sectionId);
 
             if (sectionId === 'anaSayfa' && router.currentRoute.value.name === 'AnaSayfa') {
@@ -33,8 +32,9 @@ export default defineComponent({
         };
 
         const logout = () => {
+            const router = useRouter();
             const auth = new Auth();
-            auth.logoutTokenDeleter();
+            auth.logoutTokenDeleter(router);
         };
 
         return { scrollToSection, logout };
