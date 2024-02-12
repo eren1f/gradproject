@@ -24,7 +24,7 @@ const staffList = ref<StaffForAdminListing[]>([]);
 
 onMounted(async () => {
     //TODO
-    // Fetch all the staff from the database
+    // Fetch staff list from the server
     console.log('AdminDashboardListingStaff component is mounted');
 })
 
