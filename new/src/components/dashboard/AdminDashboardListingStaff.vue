@@ -19,6 +19,7 @@
 import {ref,onMounted} from 'vue';
 import {StaffForAdminListing} from '@/Models/StaffForAdminListing';
 
+const allStaffList = ref<StaffForAdminListing[]>([]);
 const staffList = ref<StaffForAdminListing[]>([]);
 
 
