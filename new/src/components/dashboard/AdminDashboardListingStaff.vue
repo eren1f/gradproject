@@ -3,7 +3,11 @@
     <div class="staff-listing">
         <div class="staff-listing-header">Uygun Aktörler</div>
         <div class="staff-listing-content">
-            <div class="headers">İsim Yetkisi Bölümü</div>
+            <div class="headers">
+                <div>İsmi</div>
+                <div>Rolü</div>
+                <div>Departmanı</div>
+            </div>
             <div class="staff-list" v-for=" staff in staffList">
                 <div class="staff-listing-content-row-item">{{ staff.getFullName() }}</div>
                 <div class="staff-listing-content-row-item">{{ staff.getRole() }}</div>
@@ -34,7 +38,8 @@ onMounted(async () => {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-    });
+    })
+
 
     const data = await response.json();
 
@@ -42,9 +47,23 @@ onMounted(async () => {
         const staff = new StaffForAdminListing(data[i].id, data[i].fullName, data[i].email, data[i].role, data[i].department);
         allStaffList.value.push(staff);
     }
+    staffList.value = allStaffList.value;
 })
 
-
-
-
 </script>
+
+<style scoped>
+
+
+.staff-list {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headers{
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+</style>
