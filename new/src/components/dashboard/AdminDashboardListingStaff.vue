@@ -26,7 +26,22 @@ const staffList = ref<StaffForAdminListing[]>([]);
 onMounted(async () => {
     //TODO
     // Fetch staff list from the server
-    console.log('AdminDashboardListingStaff component is mounted');
+
+    const url = "http://localhost:8080/getStaffInfoForAdmin";
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    });
+
+    const data = await response.json();
+
+    for (let i = 0; i < data.length; i++) {
+        const staff = new StaffForAdminListing(data[i].id, data[i].fullName, data[i].email, data[i].role, data[i].department);
+        allStaffList.value.push(staff);
+    }
 })
 
 
