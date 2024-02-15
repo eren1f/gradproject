@@ -15,10 +15,10 @@
     import ListingRequestTypesAdmin from '@/components/request/ListingRequestTypesAdmin.vue';
     import { defineComponent } from 'vue';
 
-    defineComponent({
-        name: 'AdminHomeView',
-        components: {
-            CreateNewRequestTypes
-        }
-    });
+defineComponent({
+	name: 'AdminHomeView',
+	components: {
+		CreateNewRequestTypes
+	}
+});
 </script>
