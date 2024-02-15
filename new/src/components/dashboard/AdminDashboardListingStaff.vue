@@ -1,19 +1,40 @@
 <template>
 
-    <div class="staff-listing">
-        <div class="staff-listing-header">Uygun Aktörler</div>
-        <div class="staff-listing-content">
-            <div class="headers">
-                <div>İsmi</div>
-                <div>Rolü</div>
-                <div>Departmanı</div>
-            </div>
-            <div class="staff-list" v-for=" staff in staffList">
-                <div class="staff-listing-content-row-item">{{ staff.getFullName() }}</div>
-                <div class="staff-listing-content-row-item">{{ staff.getRole() }}</div>
-                <div class="staff-listing-content-row-item">{{ staff.getDepartment() }}</div>
-            </div>
-        </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>İsmi</th>
+                    <th>Rolü</th>
+                    <th>Departmanı</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="staff in staffList">
+                    <td>{{ staff.getFullName() }}</td>
+                    <td>{{ staff.getRole() }}</td>
+                    <td>{{ staff.getDepartment() }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="w-4/5 mx-auto">
+        <table class="w-full table-auto">
+            <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                <tr>
+                    <th class="py-3 px-6 text-left">İsmi</th>
+                    <th class="py-3 px-6 text-left">Rolü</th>
+                    <th class="py-3 px-6 text-left">Departmanı</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm font-light">
+                <tr class="border-b border-gray-200 hover:bg-gray-100" v-for="staff in staffList">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ staff.getFullName() }}</td>
+                    <td class="py-3 px-6 text-left">{{ staff.getRole() }}</td>
+                    <td class="py-3 px-6 text-left">{{ staff.getDepartment() }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
 </template>
