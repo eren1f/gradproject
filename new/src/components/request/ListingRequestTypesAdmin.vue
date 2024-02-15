@@ -8,7 +8,11 @@
         </svg>
       </button>
     </div>
-
+    <div>
+      <div v-for="request in requestTypes" :key="request.getId()">
+        <div >{{ request.getRequestName() }}</div>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -25,4 +29,21 @@ const departments = ref<ListDepartments[]>([]);
 const requestTypes = ref<RequestTypes[]>([]);
 const selectedDepartment = ref<String>("Departman Seçiniz");
 
+onMounted(async ()=>{
+    const url = "http://localhost:8080/getAllRequestTypes";
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+    })
+    
+    const data = await response.json();
+    for (let i = 0; i < data.length; i++) {
+        const requestType = new RequestTypes(data[i].requestName, data[i].id);
+        requestTypes.value.push(requestType);
+        console.log(requestTypes.value[i].getId());
+    }
+})
 </script>
