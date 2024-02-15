@@ -1,5 +1,6 @@
 <template>
     <div class="w-4/5 mx-auto">
+        <h3 class="text-3xl font-bold">Uygun Aktörler</h3>
         <table class="w-full table-auto">
             <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                 <tr>
