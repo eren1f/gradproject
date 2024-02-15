@@ -1,23 +1,4 @@
 <template>
-
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>İsmi</th>
-                    <th>Rolü</th>
-                    <th>Departmanı</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="staff in staffList">
-                    <td>{{ staff.getFullName() }}</td>
-                    <td>{{ staff.getRole() }}</td>
-                    <td>{{ staff.getDepartment() }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
     <div class="w-4/5 mx-auto">
         <table class="w-full table-auto">
             <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">

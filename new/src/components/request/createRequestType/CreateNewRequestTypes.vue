@@ -1,13 +1,16 @@
 <template>
     <div>
-        <h1>Create New Requests</h1>
+        <button>Create New Requests</button>
 
-        <RequestCredentials />
-        <RequestName />
-        <CreateNewRequirement />
-        <AddNewActor />
+        <div v-if=createRequestType>
+            <RequestCredentials />
+            <RequestName />
+            <CreateNewRequirement />
+            <AddNewActor />
+            <button>Add this request type</button>
+        </div>
 
-        <button>Add this request type</button>
+
     </div>
 </template>
 
@@ -18,13 +21,19 @@
     import CreateNewRequirement from './CreateNewRequirement.vue';
     import AddNewActor from './AddNewActor.vue';
 
+    const createRequestType = ref<boolean>(false);
+
     export default defineComponent({
-        name: 'CreateNewRequestTypes',
         components: {
             RequestCredentials,
             RequestName,
             CreateNewRequirement,
             AddNewActor,
         },
+        setup() {
+            return { createRequestType }
+        }
     });
+
+
 </script>
