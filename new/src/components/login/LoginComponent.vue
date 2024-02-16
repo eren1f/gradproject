@@ -42,7 +42,7 @@
 
 				if (role === 'Admin') router.push('/adminHomePage');
 				else if (role === 'Student') router.push('/studentHomePage');
-				else if (role === 'Staff') router.push('/staffHomePage');
+				else if (role === 'Staff') router.push('/teachingStaffHomePage');
 				else console.error("Role not found", role);
             }
 

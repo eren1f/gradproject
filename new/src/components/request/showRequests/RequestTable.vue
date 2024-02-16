@@ -1,97 +1,3 @@
-<script lang="ts">
-import { computed, ref } from 'vue';
-import SearchForm from "@/components/forms/SearchForm.vue"
-import { RequestDetails } from '@/Models/RequestDetails';
-import { ListRequests } from '@/Models/ListRequests';
-
-export default {
-    components: {
-        SearchForm
-    },
-    setup() {
-
-        const requests = ref([]);
-        const requestList = new ListRequests(1, 'type', 'status');
-        const searchFilter = ref('');
-
-        const handleSearch = (search: string) => {
-            searchFilter.value = search;
-        };
-        const selectedRequest = ref<RequestDetails | null>(null); // Initially no item is selected
-        const handleClick = (request: RequestDetails) => {
-            selectedRequest.value = request;
-        };
-        return {searchFilter, handleSearch, selectedRequest, handleClick };
-    },
-    data() {
-        return {
-            requests: [
-                new RequestDetails(
-                    1, // requestId
-                    'Type', // requestType
-                    123, // studentId
-                    'Student Name', // studentName
-                    '2022-01-01', // dateCreated
-                    'Faculty Name', // faculty
-                    'Course Name', // course
-                    1, // classId
-                    'Information', // information
-                    'Status' // status
-                ),
-                new RequestDetails(
-                    2, // requestId
-                    'Type', // requestType
-                    123, // studentId
-                    'Student Name', // studentName
-                    '2022-01-01', // dateCreated
-                    'Faculty Name', // faculty
-                    'Course Name', // course
-                    1, // classId
-                    'Information', // information
-                    'Status' // status
-                ),
-                new RequestDetails(
-                    3, // requestId
-                    'Type', // requestType
-                    123, // studentId
-                    'Student Name', // studentName
-                    '2022-01-01', // dateCreated
-                    'Faculty Name', // faculty
-                    'Course Name', // course
-                    1, // classId
-                    'Information', // information
-                    'Status' // status
-                ),
-                new RequestDetails(
-                    4, // requestId
-                    'Type', // requestType
-                    123, // studentId
-                    'Student Name', // studentName
-                    '2022-01-01', // dateCreated
-                    'Faculty Name', // faculty
-                    'Course Name', // course
-                    1, // classId
-                    'Information', // information
-                    'Status' // status
-                ),
-                new RequestDetails(
-                    5, // requestId
-                    'Type', // requestType
-                    123, // studentId
-                    'Student Name', // studentName
-                    '2022-01-01', // dateCreated
-                    'Faculty Name', // faculty
-                    'Course Name', // course
-                    1, // classId
-                    'Information', // information
-                    'Status' // status
-                ),
-            ]
-        }
-    }
-};
-</script>
-
 <template>
 <div class="data-container">
     <h1>Talepler</h1>
@@ -123,3 +29,37 @@ export default {
     <RequestDetails :request="selectedRequest" />
 </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
+import SearchForm from "../../forms/SearchForm.vue"
+import { RequestDetails } from '../../../Models/RequestDetails';
+import { ListRequests } from '../../../Models/ListRequests';
+
+export default defineComponent({
+    name: 'RequestTable',
+    components: {
+        SearchForm
+    },
+    setup() {
+        const requests = ref([
+            new RequestDetails(1, 'Type', 123, 'Student Name', '2022-01-01', 'Faculty Name', 'Course Name', 1, 'Information', 'Status'),
+            new RequestDetails(2, 'Type', 123, 'Student Name', '2022-01-01', 'Faculty Name', 'Course Name', 1, 'Information', 'Status'),
+            new RequestDetails(3, 'Type', 123, 'Student Name', '2022-01-01', 'Faculty Name', 'Course Name', 1, 'Information', 'Status'),
+            new RequestDetails(4, 'Type', 123, 'Student Name', '2022-01-01', 'Faculty Name', 'Course Name', 1, 'Information', 'Status'),
+            new RequestDetails(5, 'Type', 123, 'Student Name', '2022-01-01', 'Faculty Name', 'Course Name', 1, 'Information', 'Status'),
+        ]);
+        const requestList = new ListRequests(1, 'type', 'status');
+        const searchFilter = ref('');
+
+        const handleSearch = (search: string) => {
+            searchFilter.value = search;
+        };
+        const selectedRequest = ref<RequestDetails | null>(null); // Initially no item is selected
+        const handleClick = (request: RequestDetails) => {
+            selectedRequest.value = request;
+        };
+        return {requests, searchFilter, handleSearch, selectedRequest, handleClick };
+    }
+});
+</script>
