@@ -1,13 +1,17 @@
 <template>
-    <div class="info-container">
-		<p>Kullanıcı adınız, kurumsal e-posta hesabınızın <b>@kurumsal.edu.tr</b> veya <b>@mail.kurumsal.edu.tr</b> etki
-			alan
-			adını içermelidir.</p>
-		<div class="line"></div>
-		<p>Şifreniz, kurumsal e-posta hesabınızın şifresi ile aynıdır.</p>
-		<div class="line"></div>
-		<p>Yardım kılavuzu için <a href="https://www.baskent.edu.tr/yardim" target="_blank">tıklayınız</a>.</p>
-	</div>
+    <div class="flex justify-center">
+        <div class="m-5 bg-gray-100 text-center box-border p-4 border-4 rounded-xl">
+            <p class="mb-4">
+                Kullanıcı adınız, kurumsal e-posta hesabınızın <b class="font-bold">@kurumsal.edu.tr</b> veya <b class="font-bold">@mail.kurumsal.edu.tr</b> etki alan adını içermelidir.
+            </p>
+            <hr class="mb-4">
+            <p class="mb-4">
+                Şifreniz, kurumsal e-posta hesabınızın şifresi ile aynıdır.
+            </p>
+            <hr class="mb-4">
+            <p>Yardım kılavuzu için <a href="https://www.baskent.edu.tr/yardim" target="_blank" class="text-blue-500 underline">tıklayınız</a>.</p>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
