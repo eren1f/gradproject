@@ -68,7 +68,7 @@ import { defineComponent, ref, computed } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 const searchQuery = ref('')
 const itemsPerPage = 10;
-const currentPage = ref(1);
+
 const filteredStaffs = computed(() => {
   return staffs.value.filter(staff => {
     return staff.getFullName().toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -88,11 +88,6 @@ const totalPages = computed(() => {
     return filteredStaffs.value.slice(startIndex, endIndex);
   });
 
-  const nextPage = () => {
-    if (currentPage.value < totalPages.value) {
-      currentPage.value++;
-    }
-  };
 
   const prevPage = () => {
     if (currentPage.value > 1) {
@@ -107,8 +102,17 @@ const totalPages = computed(() => {
   export default {
       data() {
         return {
+          currentPage: ref(1),
+          totalPages: ref(1),
           staffs
         };
-      }
+      },
+      methods: {
+        nextPage (){
+          if (this.currentPage < this.totalPages) {
+            this.currentPage++;
+          }
+        },
+        }
   };
 </script>
