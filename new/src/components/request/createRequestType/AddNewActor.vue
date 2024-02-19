@@ -1,16 +1,20 @@
 <template>
     <div>
         <button>Add new actor</button>
+        <Actor />
     </div>
 </template>
 
 <script lang="ts">
-    // TODO
-    // DONT FORGET TO PASS THE ACTOR TO THE PARENT COMPONENT
+import { defineComponent, ref } from 'vue';
+import Actor from './Actor.vue';
 
-    import { defineComponent } from 'vue';
-
-    export default defineComponent({
-        name: 'AddNewActor',
-    });
+export default defineComponent({
+    name: 'AddNewActor',
+    components: {
+        Actor,
+    },
+    setup() {
+    },
+});
 </script>
