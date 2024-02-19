@@ -6,7 +6,7 @@ export class RequestDetails {
     private dateCreated: string;
     private faculty: string;
     private course: string;
-    private class: string;
+    private classId: number;
     private information: string;
     private status: string;
 
