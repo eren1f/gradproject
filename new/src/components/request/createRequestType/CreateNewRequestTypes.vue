@@ -1,13 +1,19 @@
 <template>
     <div>
-        <button @click="toggleCreateRequestType">Create New Requests</button>
-
-        <div v-if="createRequestType">
+        <div>
             <RequestCredentials />
             <RequestName />
-            <CreateNewRequirement />
-            <AddNewActor />
-            <button>Add this request type</button>
+            <div class="flex">
+                <div class="w-1/2 flex justify-center">
+                    <CreateNewRequirement />
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <AddNewActor />
+                </div>
+            </div>
+            <div class="flex items-center justify-center">
+                <button>Add this request type</button>
+            </div>
         </div>
     </div>
 </template>
@@ -27,13 +33,6 @@
             AddNewActor,
         },
         setup() {
-            const createRequestType = ref<boolean>(false);
-
-            const toggleCreateRequestType = () => {
-                createRequestType.value = !createRequestType.value;
-            };
-
-            return { createRequestType, toggleCreateRequestType }
         }
     });
 </script>

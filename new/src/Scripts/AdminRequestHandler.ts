@@ -92,7 +92,7 @@ export class AdminRequestHandler {
         }
     }
     async getDepartmentsByFacultyId(facultyId: number): Promise<ListDepartments[]> {
-        const url = `http://localhost:8080/getDepartmentsByFacultyId/${facultyId}`;
+        const url = `http://localhost:8080/getAllDepartmentsByFacultyId/${facultyId}`;
         try {
             const response = await fetch(url, {
                 method: 'GET',

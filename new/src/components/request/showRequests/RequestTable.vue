@@ -2,7 +2,7 @@
 <div class="data-container">
     <h1>Talepler</h1>
     <div class="upper-table">
-        <SearchForm @search="handleSearch"/>
+        <!-- <SearchForm @search="handleSearch"/> -->
     </div>
     <table>
         <thead>

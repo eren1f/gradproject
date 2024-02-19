@@ -13,7 +13,7 @@ export default defineComponent({
     setup(_, context: SetupContext) {
         const search = (e: Event) => {
             if (e.target instanceof HTMLInputElement) {
-                context.emit('search', e.target.value); 
+                context.emit('search', e.target.value);
             }
         };
 
