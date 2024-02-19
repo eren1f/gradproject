@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="faculty-wrapper-div">
         <label for="faculty">Faculty Name</label>
         <select name="faculty" id="faculty" v-model="selectedFaculty">
             <option v-for="faculty in faculties" :key="faculty.getFacultyId()" :value="faculty">{{ faculty.getFacultyName() }}</option>
         </select>
     </div>
-    <div>
+    <div class="department-wrapper-div">
         <label for="department">Department Name</label>
         <select name="department" id="department" v-model="selectedDepartment">
             <option v-for="department in departments" :key="department.getDepartmentId()" :value="department">{{ department.getDepartmentName() }}</option>
