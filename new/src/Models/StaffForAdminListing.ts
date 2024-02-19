@@ -33,5 +33,24 @@ export class StaffForAdminListing {
         return this.role;
     }
 
+    public setId(id: number): void {
+        this.id = id;
+    }
+
+    public setFullName(fullName: string): void {
+        this.fullName = fullName;
+    }
+    
+    public setEmail(email: string): void {
+        this.email = email;
+    }
+
+    public setDepartment(department: string): void {
+        this.department = department;
+    }
+
+    public setRole(role: string): void {
+        this.role = role;
+    }
     
 }

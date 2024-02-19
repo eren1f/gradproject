@@ -2,10 +2,33 @@
   <div class="flex flex-col">
     <!-- Add Staff Button -->
     <div class="mb-4 flex justify-between">
-      <input type="text" placeholder="Search..." class="p-2 border rounded">
-      <button @click="addStaff" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Add Staff
+      <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
+      <button @click="showAddStaffModal = true" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+        Aktör Ekle
       </button>
+    </div>
+    <!-- Add Staff Modal -->
+    <div v-if="showAddStaffModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+      <div class="bg-white p-8 rounded-lg">
+        <h2 class="text-xl font-bold mb-4">Aktör Ekle</h2>
+        <!-- Add Staff Form -->
+        <div class="flex flex-col space-y-4">
+          <input v-model="name" type="text" placeholder="İsim" class="p-2 border rounded">
+          <input v-model="surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
+          <input v-model="email" type="email" placeholder="E-Mail" class="p-2 border rounded">
+          <input v-model="password" type="text" placeholder="Şifre" class="p-2 border rounded">
+          <input v-model="role" type="text" placeholder="Rol" class="p-2 border rounded">
+          <input v-model="departmentId" type="text" placeholder="Departman" class="p-2 border rounded">
+        </div>
+        <div class="flex justify-end mt-4">
+          <button @click="showAddStaffModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
+            İptal
+          </button>
+          <button @click="saveStaff" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded">
+            Kaydet
+          </button>
+        </div>
+        </div>
     </div>
 
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -52,88 +75,91 @@
       <!-- Pagination -->
       <div class="my-4">
       <button @click="prevPage" :disabled="currentPage === 1" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-l">
-        Previous
+        <
       </button>
       <span class="px-4 py-2 bg-gray-200 text-gray-700">{{ currentPage }}</span>
       <button @click="nextPage" :disabled="currentPage === totalPages" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-r">
-        Next
+        >
       </button>
     </div>
   </div>
-
-
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, pushScopeId } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 const searchQuery = ref('')
-const itemsPerPage = 10;
+const itemsPerPage = 3;
 const currentPage = ref(1);
+const allStaffs = ref<StaffForAdminListing[]>([]);
+const staffs = ref<StaffForAdminListing[]>([]);
 
 const filteredStaffs = computed(() => {
-  return staffs.value.filter(staff => {
-    return staff.getFullName().toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-           staff.getDepartment().toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-           staff.getEmail().toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-           staff.getRole().toLowerCase().includes(searchQuery.value.toLowerCase())
-  })
+  const query = searchQuery.value.trim().toLowerCase();
+  if(!query) return staffs.value;
+
+  return staffs.value.filter(staff =>
+    staff.getFullName().toLowerCase().includes(query) ||
+    staff.getDepartment().toLowerCase().includes(query) ||
+    staff.getEmail().toLowerCase().includes(query) ||
+    staff.getRole().toLowerCase().includes(query)
+  )
 })
 
 const totalPages = computed(() => {
     return Math.ceil(filteredStaffs.value.length / itemsPerPage);
+  })
+
+const paginatedStaffs = computed(() => {
+  const startIndex = (currentPage.value - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return filteredStaffs.value.slice(startIndex, endIndex);
+})
+
+const saveStaff = (name:string, surname:string, email:string, password:string, role:string, departmentId:number) => {
+
+  const newStaff = new TeachingStaff(name, surname, email, password, role, departmentId);
+
+  const response = fetch(apiRoute + "addStaff", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(newStaff),
   });
 
-  const paginatedStaffs = computed(() => {
-    const startIndex = (currentPage.value - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredStaffs.value.slice(startIndex, endIndex);
-  });
+}
 
-
-  const prevPage = () => {
-    if (currentPage.value > 1) {
-      currentPage.value--;
-    }
-  };
-
-  const allStaffs = ref<StaffForAdminListing[]>([]);
-
-  const staffs = ref([
-      new StaffForAdminListing(1, 'Name', 'Email', 'Department', 'Role'),
-  ]);
-
-  const saveStaff = (name:string, surname:string, email:string, password:string, role:string, departmentId:number) => {
-
-    const newStaff = new TeachingStaff(name, surname, email, password, role, departmentId);
-
-    const response = fetch(apiRoute + "addStaff", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(newStaff),
-    });
-
-  }
 
   export default {
       data() {
         return {
           currentPage,
           totalPages,
-          staffs
+          staffs,
+          searchQuery,
+          paginatedStaffs,
+          showAddStaffModal: false,
         };
       },
       methods: {
+        prevPage (){
+          if (this.currentPage > 1) {
+            this.currentPage--;
+          }
+        },
         nextPage (){
           if (this.currentPage < this.totalPages) {
             this.currentPage++;
           }
         },
-        saveStaff,
+        saveStaff(event){
+          const name = "";
+          saveStaff(this.name, this.surname, this.email, this.password, this.role, this.departmentId);
+          this.showAddStaffModal = false;
+        },
       },
       setup(){
         onMounted(async () => {
