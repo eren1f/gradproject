@@ -64,10 +64,13 @@
 
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed, onMounted } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
+import { TeachingStaff } from '@/Models/TeachingStaff';
+import { apiRoute } from '../../Api_Routes/apiRoute';
 const searchQuery = ref('')
 const itemsPerPage = 10;
+const currentPage = ref(1);
 
 const filteredStaffs = computed(() => {
   return staffs.value.filter(staff => {
@@ -95,15 +98,32 @@ const totalPages = computed(() => {
     }
   };
 
+  const allStaffs = ref<StaffForAdminListing[]>([]);
+
   const staffs = ref([
       new StaffForAdminListing(1, 'Name', 'Email', 'Department', 'Role'),
   ]);
 
+  const saveStaff = (name:string, surname:string, email:string, password:string, role:string, departmentId:number) => {
+
+    const newStaff = new TeachingStaff(name, surname, email, password, role, departmentId);
+
+    const response = fetch(apiRoute + "addStaff", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(newStaff),
+    });
+
+  }
+
   export default {
       data() {
         return {
-          currentPage: ref(1),
-          totalPages: ref(1),
+          currentPage,
+          totalPages,
           staffs
         };
       },
@@ -113,6 +133,28 @@ const totalPages = computed(() => {
             this.currentPage++;
           }
         },
-        }
+        saveStaff,
+      },
+      setup(){
+        onMounted(async () => {
+          const url = apiRoute + "getStaffInfoForAdmin";
+          const response = await fetch(url, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+          })
+          const data = await response.json();
+
+          allStaffs.value = [];
+
+          for (let i = 0; i < data.length; i++) {
+              const staff = new StaffForAdminListing(data[i].id, data[i].fullName, data[i].email, data[i].role, data[i].department);
+              allStaffs.value.push(staff);
+          }
+          staffs.value = allStaffs.value; 
+        });
+      }
   };
 </script>
