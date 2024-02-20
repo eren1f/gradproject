@@ -1,5 +1,5 @@
 <template>
-    <div class="faculty-wrapper-div mt-5">
+    <div class="faculty-wrapper-div mt-5 w-1/2 flex">
         <label for="faculty" class="text-white mr-3">Faculty Name</label>
         <div class="relative inline-block">
             <select name="faculty" id="faculty" v-model="selectedFaculty" class="flex appearance-none w-40 bg-white border border-gray-300 text-black py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:ring">

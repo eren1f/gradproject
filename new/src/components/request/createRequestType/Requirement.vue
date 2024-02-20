@@ -13,7 +13,7 @@
             <button @click="handleMoveDown" class="text-white bg-blue-500 hover:bg-blue-700 ml-10 px-4 py-2 rounded-md w-32 h-10">Move down &darr;</button>
         </div>
         <div>
-            <button @click="handleDeleteButton" class="text-white bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md">Delete requirement</button>
+            <button @click="handleDeleteButton" class="text-white bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md mb-2">Delete requirement</button>
         </div>
     </div>
 </template>
