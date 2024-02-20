@@ -18,7 +18,7 @@
 			<CreateNewRequestTypes />
 		</div>
 		<div v-if="activeTab === 'TalepDuzenle'">
-			<h1>Talep Türü Düzenle</h1>
+			<EditRequestType />
 		</div>
 		<div v-if="activeTab === 'StaffListing'" class="p-5">
 			<StaffListing />
@@ -30,6 +30,7 @@
 import { ref } from 'vue'
 import StaffListing from '@/components/tables/StaffListing.vue'
 import CreateNewRequestTypes from '@/components/request/createRequestType/CreateNewRequestTypes.vue'
+import EditRequestType from '../request/editRequestType/EditRequestType.vue';
 
 const activeTab = ref('TalepOlustur')
 
