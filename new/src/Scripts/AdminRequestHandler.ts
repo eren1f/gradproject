@@ -141,6 +141,60 @@ export class AdminRequestHandler {
             return null;
         }
     }
+
+    async addNewRequestActor(requestActor: RequestActor): Promise<RequestActor|null> {
+        const url = apiRoute + "CreateNewRequestActor";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(requestActor),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const res: RequestActor =(data.requestTypeId, data.staffId, data.index);
+            return res;
+        }catch (error) {
+            return null;
+        }
+    }
+
+    async addNewRequestRequirement(requestRequirement: RequestRequirement): Promise<RequestRequirement|null> {
+    
+        const url = apiRoute + "addNewRequirement";
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(requestRequirement),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const res: RequestRequirement = (data.requestTypeId, data.index, data.name, data.type, data.description);
+            return res;
+        }catch (error) {
+            return null;
+        }
+    
+    }
+
+
+
 /*     async getRequestTypesByDepartmenId(departmentId: number): Promise<RequestTypes[]> {
         const url = apiRoute + "getAllRequestTypesByDepartmentId/" + departmentId;
 
