@@ -139,4 +139,30 @@ export class AdminRequestHandler {
             return null;
         }
     }
+/*     async getRequestTypesByDepartmenId(departmentId: number): Promise<RequestTypes[]> {
+        const url = apiRoute + "getAllRequestTypesByDepartmentId/" + departmentId;
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            for (let i = 0; i < data.length; i++) {
+                data[i] = new RequestTypes(data[i].requestName, data[i].id, data[i].departmentId, data[i].info);
+            }
+            return data;
+
+        }catch (error) {
+            return new Array<RequestTypes>();
+        }
+    } */
 }
