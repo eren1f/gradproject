@@ -3,6 +3,8 @@ import { ListDepartments } from "../Models/ListDepartments";
 import { ListFaculties } from "../Models/ListFaculties";
 import { ListRequestTypes } from "@/Models/ListRequestTypes";
 import { apiRoute } from "../Api_Routes/apiRoute" ;
+import type { RequestActor } from "@/Models/RequestActor";
+import type { RequestRequirement } from "@/Models/RequestRequirements";
 
 export class AdminRequestHandler {
     async getRequestTypes(): Promise<ListRequestTypes[]> {
@@ -165,4 +167,107 @@ export class AdminRequestHandler {
             return new Array<RequestTypes>();
         }
     } */
+    async deleteRequestType(requestId: number): Promise<boolean> {
+        const url = apiRoute + "deleteRequestType/" + requestId;
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return true;
+        }catch (error) {
+            return false;
+        }
+    }
+
+    async deleteRequestActor(requestTypeId:number, staffId:number, index: number){
+        const url = apiRoute + "DeleteRequestActor/" + requestTypeId + "/" + staffId;
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return true;
+        }catch (error) {
+            return false;
+        }
+    }
+
+    async deleteRequestRequirement(requestTypeId:number, index:number){
+        const url = apiRoute + "deleteRequestRequirement/" + requestTypeId + "/" + index;
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return true;
+        }catch (error) {
+            return false;
+        }
+    }
+
+    async updateRequestRequirement( oldRequirement: RequestRequirement, newRequirement: RequestRequirement): Promise <RequestRequirement | null>{
+        const url = apiRoute + "updateRequestRequirement/" + oldRequirement.requestTypeId + "/" + oldRequirement.index ;
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(newRequirement),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
+    }
+
+    async updateRequestActor (oldActor: RequestActor, newActor: RequestActor): Promise <RequestActor | null>{
+        const url = apiRoute + "updateRequestActor/" + oldActor.requestTypeId + "/" + oldActor.staffId;
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(newActor),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
+    }
+    
+    
 }
