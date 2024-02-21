@@ -1,6 +1,8 @@
+import { RequestTypes } from "@/Models/RequestTypes";
 import { ListDepartments } from "../Models/ListDepartments";
 import { ListFaculties } from "../Models/ListFaculties";
 import { ListRequestTypes } from "@/Models/ListRequestTypes";
+import { apiRoute } from "../Api_Routes/apiRoute" ;
 
 export class AdminRequestHandler {
     async getRequestTypes(): Promise<ListRequestTypes[]> {
@@ -111,6 +113,30 @@ export class AdminRequestHandler {
             return res;
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);
+        }
+    }
+    async addNewRequestType(request: RequestTypes): Promise<RequestTypes|null> {
+        const url = apiRoute + "createNewRequestType";
+        try { 
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(request),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const res: RequestTypes = new RequestTypes(data.requestName, data.id, data.departmentId, data.info);
+            return res;
+        }catch (error) {
+
+            return null;
         }
     }
 }
