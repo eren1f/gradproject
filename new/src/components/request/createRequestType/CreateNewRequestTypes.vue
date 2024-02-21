@@ -2,7 +2,7 @@
     <div>
         <div>
             <div>
-            <RequestCredentials />
+            <RequestCredentials :departmentId="departmentId"  @dataChanged="handleDataChange"/>
             <RequestName />
             </div>
             <div class="flex">
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="flex items-center justify-center">
-                <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 rounded" @click="addNewRequestType('deneme',1)">Add this request type</button>
+                <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 rounded" @click="addNewRequestType('R',departmentId)">Add this request type</button>
             </div>
         </div>
     </div>
@@ -48,6 +48,7 @@ const addNewRequestType = ( requestName: string, departmentId:number) => {
 }
 
 export default defineComponent({
+    name: 'CreateNewRequestTypes',
     components: {
         RequestCredentials,
         RequestName,
@@ -55,7 +56,15 @@ export default defineComponent({
         AddNewActor,
     },
     methods: {
-        addNewRequestType
+        addNewRequestType,
+        handleDataChange(data: any){
+            this.departmentId = data;
+        }
+    },
+    data(){
+        return {
+        departmentId: 0
+        }
     },
     setup() {
 

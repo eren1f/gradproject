@@ -38,7 +38,16 @@
 
     export default defineComponent({
         name: 'RequestCredentials',
-        setup() {
+        props: ['selectedFaculty', 'selectedDepartment'],
+        watch:{
+            selectedFaculty(newVal){
+                this.$emit('update:selectedFaculty', newVal);
+            },
+            selectedDepartment(newVal){
+                this.$emit('update:selectedDepartment', newVal);
+            }
+        },
+        setup(props) {
             const faculties = ref([] as ListFaculties[]);
             const departments = ref([] as ListDepartments[]);
             const selectedFaculty = ref(null as ListFaculties | null);
@@ -57,6 +66,12 @@
                     departments.value = await adminRequestHandler.getDepartments();
                 }
             });
+
+            watch(selectedDepartment, async (newDepartment)=>{
+                if(newDepartment){
+                    props.selectedDepartment.value =( newDepartment.getDepartmentId());
+                }
+            })
 
             return { faculties, departments, selectedFaculty, selectedDepartment }
         }
