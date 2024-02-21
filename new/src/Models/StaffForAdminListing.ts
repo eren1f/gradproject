@@ -4,7 +4,8 @@ export class StaffForAdminListing {
     private email: string;
     private department: string;
     private role:string;
-
+    [key: string]: any;
+    
     constructor(id: number, fullName: string, email: string, department: string, role: string) {
         this.id = id;
         this.fullName = fullName;
