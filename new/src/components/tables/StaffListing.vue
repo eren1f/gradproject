@@ -91,13 +91,65 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <tr tr v-for="staff in paginatedStaffs" :key="staff.getId()">
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getId() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getFullName() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getDepartment() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getEmail() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getRole() }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <button @click="showEditStaffModal = true" class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.id" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getId() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.fullName" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getFullName() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.department" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getDepartment() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.email" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render department name -->
+                    {{ staff.getEmail() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.role" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getRole() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="!showEditStaffModal">Edit</button>
+                  <template v-if="showEditStaffModal">
+                    <div class="flex flex-col space-x-2">
+                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Save</button>
+                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Cancel</button>
+                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Delete</button>
+                    </div>
+                  </template>
                 </td>
               </tr>
             </tbody>
@@ -218,6 +270,9 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         },
         toggleDepartmentDropdown() {
           this.isDepartmentOpen = !this.isDepartmentOpen; // Toggle the dropdown state
+        },
+        toggleEdit() {
+          this.showEditStaffModal = !this.showEditStaffModal; // Toggle the edit modal
         },
         prevPage (){
           if (this.currentPage > 1) {
