@@ -5,7 +5,7 @@
     <div class="mb-4 flex justify-between">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
       <button @click="showAddStaffModal = true" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
-        Aktör Ekle
+        Öğretim Elemanı Ekle
       </button>
     </div>
     <!-- Add Staff Modal -->
@@ -48,7 +48,7 @@
                 <!-- Faculty Dropdown menu -->
             <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
               <div v-for="department in departments" :depKey="department.getDepartmentId()" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
-                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.getDepartmentName(); isDepartmentOpen = false">{{ department.getDepartmentName() }}</a>
+                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.getDepartmentName(); selectedDepartmentId=department.getDepartmentId(); isDepartmentOpen = false">{{ department.getDepartmentName() }}</a>
               </div>
             </div>
             </div>
@@ -227,7 +227,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
     credentials: 'include',
     body: JSON.stringify(newStaff),
   });
-
+  console.log(JSON.stringify(newStaff));
 }
 
   export default {
@@ -255,6 +255,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           isDepartmentOpen: false,
           selectedDepartmentOption: '',
           depKey: 0,
+          selectedDepartmentId: ref(0),
           addStaff: {
             Name: '',
             surname: '',
@@ -287,7 +288,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
 
         saveStaff(event: any){
           event.preventDefault();
-          saveStaff(this.addStaff.Name, this.addStaff.surname, this.addStaff.email, this.addStaff.password, this.selectedRoleOption, this.depKey);
+          saveStaff(this.addStaff.Name, this.addStaff.surname, this.addStaff.email, this.addStaff.password, this.selectedRoleOption, this.selectedDepartmentId);
           this.showAddStaffModal = false;
         },
 
@@ -337,7 +338,8 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           allDepartments.value = [];
 
           for (let i = 0; i < data2.length; i++) {
-              const department = new ListDepartments(data2[i].id, data2[i].name);
+              const department = new ListDepartments(data2[i].id, data2[i].departmentName);
+              console.log(department);
               allDepartments.value.push(department);
           }
 

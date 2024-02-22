@@ -11,7 +11,7 @@
 			</li>
 			<li class="me-2">
 				<a href="#" @click="showAktorListele" :class="{ 'selected-tab': activeTab === 'StaffListing' }"
-					class="inline-block px-4 py-3 rounded-lg">Aktör Listele</a>
+					class="inline-block px-4 py-3 rounded-lg">Öğretim Elemanlarını Listele</a>
 			</li>
 		</ul>
 		<div v-if="activeTab === 'TalepOlustur'">
