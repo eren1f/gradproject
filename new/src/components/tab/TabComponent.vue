@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 		<div v-if="activeTab === 'TalepOlustur'">
-			<CreateNewRequestTypes />
+			<CreateNewRequestTypes :selected-staffs="selectedStaffs" />
 		</div>
 		<div v-if="activeTab === 'TalepDuzenle'">
 			<EditRequestType />
@@ -24,15 +24,24 @@
 			<StaffListing />
 		</div>
 	</div>
+	<div v-if="activeTab === 'TalepOlustur'">
+		<StaffListingForCreatingNewRequestTypes @update:selectedStaffs="updateSelectedStaffs" />
+	</div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import StaffListing from '@/components/tables/StaffListing.vue'
+import StaffListingForCreatingNewRequestTypes from '@/components/tables/StaffListingForCreatingNewRequestType.vue'
 import CreateNewRequestTypes from '@/components/request/createRequestType/CreateNewRequestTypes.vue'
 import EditRequestType from '../request/editRequestType/EditRequestType.vue';
 
-const activeTab = ref('TalepOlustur')
+const activeTab = ref('TalepOlustur');
+const selectedStaffs = ref([]);
+
+const updateSelectedStaffs = (newVal: any) => {
+	selectedStaffs.value = newVal;
+};
 
 const showTalepOlustur = () => {
 	activeTab.value = 'TalepOlustur'

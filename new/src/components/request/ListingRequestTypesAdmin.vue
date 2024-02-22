@@ -41,7 +41,7 @@ onMounted(async ()=>{
     
     const data = await response.json();
     for (let i = 0; i < data.length; i++) {
-        const requestType = new RequestTypes(data[i].requestName, data[i].id);
+        const requestType = new RequestTypes(data[i], data[i].id);
         requestTypes.value.push(requestType);
         console.log(requestTypes.value[i].getId());
     }

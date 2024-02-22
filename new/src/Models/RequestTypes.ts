@@ -1,12 +1,10 @@
 export class RequestTypes {
     private requestName: string;
-    private id: number ;
     private departmentId: number;
     private info: string;
 
-    constructor(requestName: string, id: number=0, departmentId: number, info: string = '') {
+    constructor(requestName: string, departmentId: number, info: string = '') {
         this.requestName = requestName;
-        this.id = id;
         this.departmentId = departmentId;
         this.info = info;
     }
@@ -15,16 +13,8 @@ export class RequestTypes {
         return this.requestName;
     }
 
-    public getId(): number  {
-        return this.id;
-    }
-
     public setRequestName(requestName: string): void {
         this.requestName = requestName;
-    }
-
-    public setId(id: number): void {
-        this.id = id;
     }
 
     public getDepartmentId(): number {

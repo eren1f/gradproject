@@ -117,9 +117,9 @@ export class AdminRequestHandler {
             throw new Error(`HTTP error! status: ${error}`);
         }
     }
-    async addNewRequestType(request: RequestTypes): Promise<RequestTypes|null> {
+    async addNewRequestType(request: RequestTypes): Promise<number> {
         const url = apiRoute + "createNewRequestType";
-        try { 
+        try {
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -133,14 +133,51 @@ export class AdminRequestHandler {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const data = await response.json();
-            const res: RequestTypes = new RequestTypes(data.requestName, data.id, data.departmentId, data.info);
-            return res;
-        }catch (error) {
-
-            return null;
+            return await response.json();
+        } catch (error) {
+            return 0;
         }
     }
+    async addNewRequestTypesRequirements(requirements: any) {
+        const url = apiRoute + "addAllRequirements";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(requirements),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            return 0;
+        }
+    }
+
+    async addNewRequestTypesActors(actors: any) {
+        const url = apiRoute + "addAllRequestActors";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(actors),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            return 0;
+        }
+    }
+
 
     async addNewRequestActor(requestActor: RequestActor): Promise<RequestActor|null> {
         const url = apiRoute + "CreateNewRequestActor";
@@ -151,13 +188,17 @@ export class AdminRequestHandler {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
+
+                body: JSON.stringify(actors),
                 body: JSON.stringify(requestActor),
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
+        } catch (error) {
+            return 0;
+        }
             const data = await response.json();
             const res: RequestActor =(data.requestTypeId, data.staffId, data.index);
             return res;
