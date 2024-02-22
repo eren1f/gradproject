@@ -5,7 +5,7 @@
     <div class="mb-4 flex justify-between">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
       <button @click="showAddStaffModal = true" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
-        Aktör Ekle
+        Öğretim Elemanı Ekle
       </button>
     </div>
     <!-- Add Staff Modal -->
@@ -15,39 +15,42 @@
           <!-- Add Staff Form -->
           <div class="flex flex-row space-x-4">
             <div class="flex flex-col space-y-4">
-              <input v-model="name" type="text" placeholder="İsim" class="p-2 border rounded">
-              <input v-model="surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
-              <input v-model="email" type="email" placeholder="E-Mail" class="p-2 border rounded">
-              <input v-model="password" type="text" placeholder="Şifre" class="p-2 border rounded">
+              <input v-model="addStaff.Name" type="text" placeholder="İsim" class="p-2 border rounded">
+              <input v-model="addStaff.surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
+              <input v-model="addStaff.email" type="email" placeholder="E-Mail" class="p-2 border rounded">
+              <input v-model="addStaff.password" type="text" placeholder="Şifre" class="p-2 border rounded">
             </div>
             <div class="flex flex-col space-y-4">
-              <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                  <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-                      <div class="flex items-center ps-3">
-                          <input id="list-radio-license" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Ogrenci </label>
-                      </div>
-                  </li>
-                  <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-                      <div class="flex items-center ps-3">
-                          <input id="list-radio-id" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Danisman</label>
-                      </div>
-                  </li>
-                  <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-                      <div class="flex items-center ps-3">
-                          <input id="list-radio-military" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Bolum</label>
-                      </div>
-                  </li>
-                  <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
-                      <div class="flex items-center ps-3">
-                          <input id="list-radio-passport" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                          <label for="list-radio-passport" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Dekanlik</label>
-                      </div>
-                  </li>
-              </ul>
-              <input v-model="departmentId" type="text" placeholder="Departman" class="p-2 border rounded">
+              <button @click="toggleRoleDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+              Rol -> {{ selectedRoleOption }}
+              <svg v-if="isRoleOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+              </svg>
+              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
+              </svg>
+            </button>
+             <!-- Role Dropdown menu -->
+              <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
+                <div v-for="option in roleDropdownOptions" :key="option.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option.value; isRoleOpen = false">{{ option.label }}</a>
+                </div>
+              </div>
+              <button @click="toggleDepartmentDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+              Departman -> {{ selectedDepartmentOption }}
+              <svg v-if="isDepartmentOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+              </svg>
+              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
+              </svg>
+            </button>
+                <!-- Faculty Dropdown menu -->
+            <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
+              <div v-for="department in departments" :depKey="department.getDepartmentId()" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.getDepartmentName(); selectedDepartmentId=department.getDepartmentId(); isDepartmentOpen = false">{{ department.getDepartmentName() }}</a>
+              </div>
+            </div>
             </div>
           </div>
           <div class="flex justify-end mt-4">
@@ -88,13 +91,65 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <tr tr v-for="staff in paginatedStaffs" :key="staff.getId()">
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getId() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getFullName() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getDepartment() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getEmail() }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getRole() }}</td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <button @click="showEditStaffModal = true" class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.id" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getId() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.fullName" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getFullName() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.department" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getDepartment() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.email" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render department name -->
+                    {{ staff.getEmail() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <template v-if="showEditStaffModal">
+                    <!-- Render input boxes for editing -->
+                    <input v-model="staff.role" type="text" class="p-1 border rounded">
+                  </template>
+                  <template v-else>
+                    <!-- Render staff name -->
+                    {{ staff.getRole() }}
+                  </template>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="!showEditStaffModal">Edit</button>
+                  <template v-if="showEditStaffModal">
+                    <div class="flex flex-col space-x-2">
+                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Save</button>
+                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Cancel</button>
+                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Delete</button>
+                    </div>
+                  </template>
                 </td>
               </tr>
             </tbody>
@@ -127,6 +182,7 @@
 <script lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
+import { ListDepartments } from '@/Models/ListDepartments';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 const searchQuery = ref('');
@@ -134,17 +190,17 @@ const itemsPerPage = 10; // default
 const currentPage = ref(1);
 const allStaffs = ref<StaffForAdminListing[]>([]);
 const staffs = ref<StaffForAdminListing[]>([]);
+const allDepartments = ref<ListDepartments[]>([]);
+const departments = ref<ListDepartments[]>([]);
 const totalEntries = ref(0);
 const editedStaff = null;
 const filteredStaffs = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   if(!query) return staffs.value;
-
+  // Search by name or surname (fixed)
   return staffs.value.filter(staff =>
     staff.getFullName().toLowerCase().includes(query) ||
-    staff.getDepartment().toLowerCase().includes(query) ||
-    staff.getEmail().toLowerCase().includes(query) ||
-    staff.getRole().toLowerCase().includes(query)
+    staff.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
   )
 })
 
@@ -171,7 +227,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
     credentials: 'include',
     body: JSON.stringify(newStaff),
   });
-
+  console.log(JSON.stringify(newStaff));
 }
 
   export default {
@@ -182,25 +238,42 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           totalPages,
           totalEntries,
           staffs,
+          departments,
           editedStaff,
           searchQuery,
           paginatedStaffs,
           showEditStaffModal: false,
           showAddStaffModal: false,
-          isDropdownOpen: false,
-          selectedOption: '',
-          dropdownOptions: [
-            { label: 'Ogrenci', value: 'student', description: 'Tum ogrenciler icin bunu seciniz.' },
-            { label: 'Danisman', value: 'advisor', description: 'Danisman ya da ogretim elemani icin bunu seciniz.' },
-            { label: 'Bolum', value: 'department', description: 'Bolum baskanligi ya da sekreterligi icin bunu seciniz.' },
-            { label: 'Dekan', value: 'dean', description: 'Fakulte/Dekanlik icin bunu seciniz.' },
-            { label: 'Yonetici', value: 'admin', description: 'Sistem yoneticisi icin bunu seciniz.' }
-          ]
+          
+          isRoleOpen: false,
+          selectedRoleOption: '',
+          roleDropdownOptions: [
+            { label: 'Danisman', value: 'Danisman' },
+            { label: 'Bolum', value: 'Bolum' },
+            { label: 'Dekanlik', value: 'Dekanlik' },
+          ],
+          isDepartmentOpen: false,
+          selectedDepartmentOption: '',
+          depKey: 0,
+          selectedDepartmentId: ref(0),
+          addStaff: {
+            Name: '',
+            surname: '',
+            email: '',
+            password: '',
+          },
+
         };
       },
       methods: {
-        toggleDropdown() {
-          this.isDropdownOpen = !this.isDropdownOpen;
+        toggleRoleDropdown() {
+          this.isRoleOpen = !this.isRoleOpen; // Toggle the dropdown state
+        },
+        toggleDepartmentDropdown() {
+          this.isDepartmentOpen = !this.isDepartmentOpen; // Toggle the dropdown state
+        },
+        toggleEdit() {
+          this.showEditStaffModal = !this.showEditStaffModal; // Toggle the edit modal
         },
         prevPage (){
           if (this.currentPage > 1) {
@@ -212,8 +285,13 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             this.currentPage++;
           }
         },
-        saveStaff(event){
+
+        saveStaff(event: any){
+          event.preventDefault();
+          saveStaff(this.addStaff.Name, this.addStaff.surname, this.addStaff.email, this.addStaff.password, this.selectedRoleOption, this.selectedDepartmentId);
+          this.showAddStaffModal = false;
         },
+
         setCurrentPage(page: number){
           this.currentPage = page;
         },
@@ -246,6 +324,28 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
               allStaffs.value.push(staff);
           }
           staffs.value = allStaffs.value; 
+
+          const url2 = apiRoute + "getAllDepartments";
+          const response2 = await fetch(url2, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+          })
+          const data2 = await response2.json();
+
+          allDepartments.value = [];
+
+          for (let i = 0; i < data2.length; i++) {
+              const department = new ListDepartments(data2[i].id, data2[i].departmentName);
+              console.log(department);
+              allDepartments.value.push(department);
+          }
+
+          departments.value = allDepartments.value;
+
+          
         });
       }
   };
