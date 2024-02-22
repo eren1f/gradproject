@@ -189,22 +189,20 @@ export class AdminRequestHandler {
                 },
                 credentials: 'include',
 
-                body: JSON.stringify(actors),
                 body: JSON.stringify(requestActor),
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-        } catch (error) {
-            return 0;
-        }
+        
             const data = await response.json();
             const res: RequestActor =(data.requestTypeId, data.staffId, data.index);
             return res;
         }catch (error) {
             return null;
         }
+        
     }
 
     async addNewRequestRequirement(requestRequirement: RequestRequirement): Promise<RequestRequirement|null> {
