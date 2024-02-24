@@ -70,15 +70,17 @@
                 const requirementsData = Array.from(allRequirements).map((requirementDiv) => {
                     const nameInput = requirementDiv.querySelector('input[type="text"]') as HTMLInputElement;
                     const checkboxInput = requirementDiv.querySelector('input[type="checkbox"]') as HTMLInputElement;
-                    if(nameInput.value === '') {
-                        alert('Please fill in all the requirements');
-                        return;
-                    }
                     return {
                         name: nameInput ? nameInput.value : '',
                         isMultiSelect: checkboxInput ? checkboxInput.checked : false
                     };
                 });
+
+                const isAnyNameEmpty = requirementsData.some(requirement => requirement.name === '');
+                if (isAnyNameEmpty) {
+                    alert('Please fill in all the requirements');
+                    return;
+                }
 
                 const AdminRequestHandlerInstance = new AdminRequestHandler();
                 const newReqType = new RequestTypes(requestName.value, departmentId);

@@ -301,7 +301,7 @@ export class AdminRequestHandler {
     }
 
     async deleteRequestRequirement(requestTypeId:number, index:number){
-        const url = apiRoute + "deleteRequestRequirement/" + requestTypeId + "/" + index;
+        const url = apiRoute + "deleteRequirement/" + requestTypeId + "/" + index;
         try {
             const response = await fetch(url, {
                 method: 'DELETE',
@@ -360,6 +360,33 @@ export class AdminRequestHandler {
         }catch (error) {
             return null;
         }
+    }
+
+    async getRequestRequirementsByRequestTypeId(requestTypeId: number): Promise<RequestRequirement[]> {
+        const url= apiRoute + "getRequestRequirements/" + requestTypeId;
+        let requirements: RequestRequirement[] = [];
+        try{
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            for(let i= 0; i<data.length; i++){
+                requirements.push(data[i]);
+            }
+            return requirements;
+        }catch(error){
+            return new Array<RequestRequirement>();
+        }
+    
     }
     
     
