@@ -34,24 +34,18 @@ export class Auth {
         }
     }
 
-    async logoutTokenDeleter(router: any): Promise<void> {
-        const url = "http://localhost:8080/logout";
+    async logoutTokenDeleter() {
+        const url = "http://localhost:8080/letmeout";
         const response = await fetch(url, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
             credentials: 'include',
         });
-        const res: LogoutResponse = await response.json();
-
         if(!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        if(res.getStatus() === "success") {
-            router.push('/');
-        } else {
-            throw new Error(`HTTP error! status: ${res.getMessage()}`);
-        }
+        return 0;
     }
 }
