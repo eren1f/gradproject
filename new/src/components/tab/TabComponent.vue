@@ -24,7 +24,7 @@
 			<StaffListing />
 		</div>
 	</div>
-	<div v-if="activeTab === 'TalepOlustur'">
+	<div class="box-border p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md m-10" v-if="activeTab === 'TalepOlustur'">
 		<StaffListingForCreatingNewRequestTypes @update:selectedStaffs="updateSelectedStaffs" />
 	</div>
 </template>
