@@ -12,35 +12,35 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     ID
                                     <div id="idFilter">
-                                        <input type="text" placeholder="filter">
+                                        <input type="text" placeholder="filter" v-model="idFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Name
                                     <div id="nameFilter">
-                                        <input type="text" placeholder="filter">
+                                        <input type="text" placeholder="filter" v-model="nameFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Department
                                     <div id="departmentFilter">
-                                        <input type="text" placeholder="filter">
+                                        <input type="text" placeholder="filter" v-model="departmentFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     E-Mail
                                     <div id="emailFilter">
-                                        <input type="text" placeholder="filter">
+                                        <input type="text" placeholder="filter" v-model="emailFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Role
                                     <div id="roleFilter">
-                                        <input type="text" placeholder="filter">
+                                        <input type="text" placeholder="filter" v-model="roleFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
@@ -115,6 +115,12 @@ export default defineComponent({
         const showAddStaffModal = ref(false);
         const isDropdownOpen = ref(false);
         const selectedOption = ref('');
+
+        const idFilter = ref('');
+        const nameFilter = ref('');
+        const departmentFilter = ref('');
+        const emailFilter = ref('');
+        const roleFilter = ref('');
 
         const addNewActorToList = (staff: any) => {
             const staffForAdminListing: StaffForAdminListing = staff;
@@ -195,15 +201,20 @@ export default defineComponent({
         };
 
         const filteredStaffs = computed(() => {
-            const query = searchQuery.value.trim().toLowerCase();
-            if (!query) return staffs.value;
+            return staffs.value.filter(staff => {
+                const idMatch = idFilter.value.trim().length === 0 ||
+                                staff.getId().toString().toLowerCase().includes(idFilter.value.trim().toLowerCase());
+                const nameMatch = nameFilter.value.trim().length === 0 ||
+                                    staff.getFullName().toLowerCase().includes(nameFilter.value.trim().toLowerCase());
+                const departmentMatch = departmentFilter.value.trim().length === 0 ||
+                                        staff.getDepartment().toLowerCase().includes(departmentFilter.value.trim().toLowerCase());
+                const emailMatch = emailFilter.value.trim().length === 0 ||
+                                    staff.getEmail().toLowerCase().includes(emailFilter.value.trim().toLowerCase());
+                const roleMatch = roleFilter.value.trim().length === 0 ||
+                                    staff.getRole().toLowerCase().includes(roleFilter.value.trim().toLowerCase());
 
-            return staffs.value.filter(staff =>
-                staff.getFullName().toLowerCase().includes(query) ||
-                staff.getDepartment().toLowerCase().includes(query) ||
-                staff.getEmail().toLowerCase().includes(query) ||
-                staff.getRole().toLowerCase().includes(query)
-            )
+                return idMatch && nameMatch && departmentMatch && emailMatch && roleMatch;
+            });
         });
 
         const totalPages = computed(() => {
@@ -254,6 +265,11 @@ export default defineComponent({
         });
 
         return {
+            idFilter,
+            nameFilter,
+            departmentFilter,
+            emailFilter,
+            roleFilter,
             addNewActorToList,
             searchQuery,
             itemsPerPage,
