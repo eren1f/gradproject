@@ -281,7 +281,7 @@ export class AdminRequestHandler {
     }
 
     async deleteRequestActor(requestTypeId:number, staffId:number, index: number){
-        const url = apiRoute + "DeleteRequestActor/" + requestTypeId + "/" + staffId;
+        const url = apiRoute + "DeleteRequestActor/" + requestTypeId + "/" + staffId+ "/" + index;
         try {
             const response = await fetch(url, {
                 method: 'DELETE',
@@ -362,6 +362,28 @@ export class AdminRequestHandler {
         }
     }
 
+    async updateRequestType(request: RequestTypes): Promise<RequestTypes | null> {
+        const url = apiRoute + "updateRequestType";
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(request),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        } catch (error) {
+            return Promise.resolve(null);
+        }
+    
+    }
+
     async getRequestRequirementsByRequestTypeId(requestTypeId: number): Promise<RequestRequirement[]> {
         const url= apiRoute + "getRequestRequirements/" + requestTypeId;
         let requirements: RequestRequirement[] = [];
@@ -386,6 +408,33 @@ export class AdminRequestHandler {
         }catch(error){
             return new Array<RequestRequirement>();
         }
+    
+    }
+    async getRequestActorsByRequestTypeId(requestTypeId: number): Promise<RequestActor[]> {
+        const url= apiRoute + "GetRequestActors/" + requestTypeId;
+        let actors: RequestActor[] = [];
+        try{
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            for(let i= 0; i<data.length; i++){
+                actors.push(data[i]);
+            }
+            return actors;
+        }catch(error){
+            return new Array<RequestActor>();
+        }
+
     
     }
     

@@ -24,22 +24,32 @@
               <div v-for="requirement in requestRequirements">
                 <div class="flex">
                   <label for="Gereksinim" class="mr-2 block text-sm font-medium text-white">Gereksinim: {{ requirement.name }}</label>
-                  <input type="text" :placeholder="requirement.name" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-                  <label for="İndex" class="mr-2 block text-sm font-medium text-white">İndex:</label>
-                  <input type="number" :placeholder="requirement.index.toString()" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                  <input type="text" :placeholder="requirement.name" v-model="newRequirementName" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                  <label for="İndex" class="mr-2 block text-sm font-medium text-white">Gereksinim Sırası: </label>
+                  <input type="number" :placeholder="requirement.index.toString()" v-model="newRequirementIndex" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                 </div>
                 <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteRequirement(requirement.requestTypeId,requirement.index)">Gereksinimi Sil</button>
-                <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700">Kaydet</button>
+                <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700" @click="updateRequirement(requirement, {requestTypeId: requirement.requestTypeId ,name: newRequirementName,index: newRequirementIndex})">Kaydet</button>
               </div>
               <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="">Yeni Gereksinim Ekle</button>
             </div>
             <div class="mb-4 ">
               <h2 class="text-2xl font-bold mb-5 text-white" >Talep Aktörleri</h2>
+              <div v-for="actor in requestActors">
+                <div class="flex">
+                  <p class="mr-2 block text-sm font-medium text-white">Aktör Id: {{ actor.staffId }}, Aktör Rolü:,  </p>
+                  <label for="İndex" class="mr-2 block text-sm font-medium text-white">Actor Sırası:</label>
+                  <input type="number" :placeholder="actor.index.toString()" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                </div>
+                <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteActor(actor.requestTypeId,actor.staffId,actor.index)">Aktörü Talepten Sil</button>
+                <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700">Kaydet</button>
+              </div>
               <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="">Yeni Aktör Ekle</button>
             </div>
           </div>
         </div>
-        <div class="flex justify-end p-8">
+        <div class="flex justify-between p-8">
+          <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteRequestType(requestOnEdit!.getId())">Talep Türünü Sil</button>
           <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">İptal</button>
         </div>
       </div>
@@ -110,7 +120,9 @@ export default defineComponent({
       requestOnEdit:(null as ListRequestTypes | null),
       requestRequirements: (null as RequestRequirement[] | null),
       requestActors: (null as RequestActor[] | null),
-      handler : new AdminRequestHandler()
+      handler : new AdminRequestHandler(),
+      newRequirementName: ref(""),
+      newRequirementIndex: ref(1),
     }
   },
   methods: {
@@ -118,13 +130,31 @@ export default defineComponent({
       this.requestOnEdit = new ListRequestTypes(id,name);
       this.edit = true;
       this.requestRequirements = await this.handler.getRequestRequirementsByRequestTypeId(id);
+      this.requestActors = await this.handler.getRequestActorsByRequestTypeId(id);
     },
     cancel(){
       this.edit = false;
     },
     deleteRequirement(id: number,index: number){
       this.handler.deleteRequestRequirement(id,index);
+    },
+    deleteActor(requestId:number, staffId: number, index: number){
+      this.handler.deleteRequestActor(requestId, staffId, index);
+    },
+    deleteRequestType(id: number){
+      console.log(id);
+      this.handler.deleteRequestType(id);
+    },
+    updateRequirement(old: RequestRequirement, newReq: RequestRequirement){
+      console.log(newReq);
+      this.handler.updateRequestRequirement(old,newReq);
+    },
+    updateActor(old: RequestActor, newActor: RequestActor){
+      this.handler.updateRequestActor(old,newActor);
+    },
+    updateRequestName(id: number, name: string){
     }
+
   },
   setup() {
 
@@ -143,7 +173,7 @@ export default defineComponent({
       }
     }
 
-    return { selectedDepartment , handleDepartmentChange, requestTypes,handler} 
+    return { selectedDepartment , handleDepartmentChange, requestTypes,handler}; 
   }
 });
 </script>
