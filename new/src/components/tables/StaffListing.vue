@@ -296,14 +296,30 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           this.currentPage = page;
         },
         sortByColumn(columnName: string) {
-            staffs.value.sort((a, b) => {
-              const aValue = a[columnName]?.toLowerCase();
-              const bValue = b[columnName]?.toLowerCase();
-              if (aValue < bValue) return -1;
-              if (aValue > bValue) return 1;
-              return 0;
-            });
-          },
+          staffs.value.sort((a, b) => {
+              if (columnName === 'name') {
+                 
+                const fullNameA = a.getFullName ? a.getFullName().toLowerCase() : '';
+                const fullNameB = b.getFullName ? b.getFullName().toLowerCase() : '';                  
+                  if (fullNameA < fullNameB) return -1;
+                  if (fullNameA > fullNameB) return 1;
+                  return 0;
+              } else if (columnName === 'id') {
+                  
+                  const idA = parseInt(a[columnName]);
+                  const idB = parseInt(b[columnName]);
+                  return idA - idB;
+              } else {
+                  
+                  const aValue = a[columnName]?.toLowerCase();
+                  const bValue = b[columnName]?.toLowerCase();
+                  if (aValue < bValue) return -1;
+                  if (aValue > bValue) return 1;
+                  return 0;
+              }
+          });
+        },
+
       },
       setup(){
         onMounted(async () => {
