@@ -159,7 +159,7 @@
               </tr>
                <!-- Expandable row for each staff -->
                <tr v-if="expandedRows.includes(index)">
-                <td colspan="6" class="px-6 py-4 whitespace-nowrap">
+                <td colspan="2" class="px-6 py-4 whitespace-nowrap">
                 <div class="overflow-y-scroll h-24 pr-4 ">
                   <template v-if="showEditStaffModal">
                     <input v-model="staff.id" type="text" class="p-1 border rounded">
@@ -167,7 +167,7 @@
                   <template v-else>
                     <div>
                       {{ staff.getId() }}
-                      <p>dummy text</p>
+                      <h1 class="font-bold">TALEP ILE ILGILI EK DETAYLAR</h1>
                       <p>dummy text</p>
                       <p>dummy text</p>
                       <p>dummy text</p>
@@ -175,12 +175,22 @@
                     </div>
                   </template>
                 </div>
-                <div class="ml-4">
-                  <input type="text" class="p-1 border border-black rounded  ">
+              </td>
+              <td colspan="3" class="px-6 py-4 whitespace-nowrap">
+                <div>
+                  <textarea class="border rounded border-gray-950 w-full h-24 resize-none m-1" readonly>Yaralim.
+                  </textarea>
+                </div>
+                <textarea placeholder="Talep Aciklamasi Giriniz" class="border rounded border-gray-950 w-full h-24 resize-none m-1"></textarea>
+              </td>
+              <td>
+                <div>
+                <button class="px-2 py-2 m-1 border rounded border-gray-900">Onayla</button>
+                </div>
+                <div>
+                  <button class="px-2 py-2 m-1 border rounded border-gray-900">Reddet</button>
                 </div>
               </td>
-
-
               </tr>
               </template>
             </tbody>
