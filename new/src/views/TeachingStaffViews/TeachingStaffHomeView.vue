@@ -1,5 +1,5 @@
 <template>
-    <ListingRequestsForTeachingStaff />
+    <TabComponentForTeachingStaff />
 </template>
 
 <script lang="ts">
