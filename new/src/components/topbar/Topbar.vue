@@ -13,12 +13,17 @@
             <span class="material-symbols-outlined text-white" style="font-size: 250%;">
             notifications
             </span>
-            <div v-if="showNotifications" class="absolute right-0 w-96 h-30 overflow-y-scroll  dark:bg-gray-800 bg-light-gray-500 rounded-xl shadow-2xl mt-[30%]">
-                <!-- Replace this with your notification content -->
-                <p class="font-bold m-[2%] text-white ">Bildirimler</p>
-                <hr class="my-2">
-                <div v-for="notification in notifications" :key="notification.id">
-                    <p class="m-[2%] text-white break-words">{{ notification.content }}</p>
+            <div v-if="showNotifications" class="absolute right-0 w-96 h-52 dark:bg-gray-800 rounded-xl shadow-2xl mt-[30%]">
+                <!-- Upper part -->
+                <div class="p-[2%]">
+                    <p class="font-bold text-white">Bildirimler</p>
+                    <hr class="mt-2">
+                </div>
+                <!-- Lower part -->
+                <div class="overflow-y-scroll h-32">
+                    <div v-for="notification in notifications" :key="notification.id">
+                        <p class="m-[1%] text-white break-words hover:bg-blue-800">{{ notification.content }}</p>
+                    </div>
                 </div>
             </div>
         </button>
@@ -51,6 +56,10 @@ export default defineComponent({
             // Add your notifications here
             { id: 1, content: 'OgrenciIDden yeni bir talebiniz var.'},
             { id: 2, content: 'Notification 2' },
+            { id: 3, content: 'Notification 3' },
+            { id: 4, content: 'Notification 4' },
+            { id: 5, content: 'Notification 5' },
+            { id: 6, content: 'Notification 6' },
             // ...
         ]);
         const user = ref(
