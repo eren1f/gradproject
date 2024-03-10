@@ -1,14 +1,14 @@
 <template>
     <div class="flex flex-col items-center justify-start">
         <h1 class="text-center text-4xl m-5 p-4">DEKİAYS</h1>
-        <div class="bg-gray-100 box-border p4 border-4 rounded-xl m-5 p-10">
+        <div class="bg-gray-100 box-border p4 border-4 rounded-xl m-5 p-10 w-4xl h-auto">
             <form @submit.prevent="submitForm" class="w-full max-w-sm">
                 <div class="flex items-center border-b border-teal-500 py-2">
-                    <img class="h-8 w-8" src="../assets/user-login.png">
+                    <span class="material-icons">person</span>
                     <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="email" id="username" v-model="username" placeholder="Kullanici adi" required>
                 </div>
                 <div class="flex items-center border-b border-teal-500 py-2 mt-3">
-                    <img class="h-8 w-8" src="../assets/user-password.png">
+                    <span class="material-icons">key</span>
                     <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="password" id="password" v-model="password" placeholder="Sifre" required>
                 </div>
                 <div class="flex justify-center mt-6">

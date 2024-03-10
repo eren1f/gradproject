@@ -14,17 +14,14 @@
 			<StaffTable />
 		</div>
 		<div v-if="activeTab === 'GönderilenTalepler'">
-			<EditRequestType />
+			
 		</div>
-	</div>
-	<div class="box-border p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md m-10" v-if="activeTab === 'BekleyenTalepler'">
-		<StaffListingForCreatingNewRequestTypes @update:selectedStaffs="updateSelectedStaffs" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import StaffTable from '@/components/tables/StaffListing.vue'
+import StaffTable from '@/components/tables/StaffTable.vue'
 
 const activeTab = ref('BekleyenTalepler');
 

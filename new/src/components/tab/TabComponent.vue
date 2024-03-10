@@ -10,7 +10,7 @@
 					class="inline-block px-4 py-3 rounded-lg">Talep Türü Düzenle</a>
 			</li>
 			<li class="me-2">
-				<a href="#" @click="showAktorListele" :class="{ 'selected-tab': activeTab === 'StaffTable' }"
+				<a href="#" @click="showAktorListele" :class="{ 'selected-tab': activeTab === 'StaffListing' }"
 					class="inline-block px-4 py-3 rounded-lg">Öğretim Elemanlarını Listele</a>
 			</li>
 		</ul>
@@ -20,8 +20,8 @@
 		<div v-if="activeTab === 'TalepDuzenle'">
 			<EditRequestType />
 		</div>
-		<div v-if="activeTab === 'StaffTable'" class="p-5">
-			<StaffTable />
+		<div v-if="activeTab === 'StaffListing'" class="p-5">
+			<StaffListing />
 		</div>
 	</div>
 	<div class="box-border p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md m-10" v-if="activeTab === 'TalepOlustur'">
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import StaffTable from '@/components/tables/StaffTable.vue'
+import StaffListing from '@/components/tables/StaffListing.vue'
 import StaffListingForCreatingNewRequestTypes from '@/components/tables/StaffListingForCreatingNewRequestType.vue'
 import CreateNewRequestTypes from '@/components/request/createRequestType/CreateNewRequestTypes.vue'
 import EditRequestType from '../request/editRequestType/EditRequestType.vue';
@@ -52,7 +52,7 @@ const showTalepDuzenle = () => {
 }
 
 const showAktorListele = () => {
-	activeTab.value = 'StaffTable'
+	activeTab.value = 'StaffListing'
 }
 </script>
 

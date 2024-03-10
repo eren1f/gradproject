@@ -1,19 +1,19 @@
 <template>
-    <div class="m-10">
-	<div class="flex items-center bg-white shadow-lg rounded-lg overflow-hidden mt-4">
-		<div class="p-4">
-            <div class="pl-4">
-			<img src="../assets/user.png" alt="" class="w-24 h-24 object-cover rounded-md">
+    <div class="md:m-2 lg:m-5 lg:uppercase">
+        <div class="flex items-center bg-white shadow-lg rounded-lg overflow-hidden mt-4">
+            <div class="p-4">
+                <div class="pl-4">
+                <img src="../assets/user.png" alt="" class="w-24 h-24 object-cover rounded-md">
+                </div>
+                <p class="text-xl font-semibold">{{ advisorFirstname }} {{ advisorLastname }}</p>
             </div>
-			<p class="text-xl font-semibold">{{ advisorFirstname }} {{ advisorLastname }}</p>
-		</div>
-		<div class="p-4">
-			<div class="text-lg font-semibold">Danışman Bilgileri</div>
-			<div class="text-gray-600">Bölümü: {{ advisorDepartment }}</div>
-			<div class="text-gray-600">Telefon: {{ advisorPhoneNumber }}</div>
-			<div class="text-gray-600">Web: {{ advisorWeb }}</div>
-		</div>
-	</div>
+            <div class="p-4">
+                <div class="text-lg font-semibold">Danışman Bilgileri</div>
+                <div class="text-gray-600">Bölümü: {{ advisorDepartment }}</div>
+                <div class="text-gray-600">Telefon: {{ advisorPhoneNumber }}</div>
+                <div class="text-gray-600">Web: {{ advisorWeb }}</div>
+            </div>
+        </div>
     </div>
 </template>
 

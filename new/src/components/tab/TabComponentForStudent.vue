@@ -1,28 +1,30 @@
 <template>
-	<div class="box-border p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md m-10">
-		<ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-			<li class="me-2">
-				<a href="#" @click="showDanismanBilgi" :class="{ 'selected-tab': activeTab === 'DanismanBilgileri' }"
-					class="inline-block px-4 py-3 rounded-lg">Danışman Bilgileri</a>
-			</li>
-			<li class="me-2">
-				<a href="#" @click="showGTalepler" :class="{ 'selected-tab': activeTab === 'GonderilenTalep' }"
-					class="inline-block px-4 py-3 rounded-lg">Gönderilen Talepler</a>
-			</li>
-			<li class="me-2">
-				<a href="#" @click="showYTalep" :class="{ 'selected-tab': activeTab === 'YeniTalep' }"
-					class="inline-block px-4 py-3 rounded-lg">Yeni Talep Oluştur</a>
-			</li>
-		</ul>
-		<div v-if="activeTab === 'DanismanBilgileri'">
-			<StudentDashboardListingAdvisorInfo />
-		</div>
-		<div v-if="activeTab === 'GonderilenTalep'">
-			<StudentTable />
-		</div>
-		<div v-if="activeTab === 'YeniTalep'" class="p-5">
-			<Request />
-		</div>
+	<div class="box-border p-3 m-3 md:p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5">
+			<div class="md:flex flex-row">
+				<ul class="flex flex-col md:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+					<li class="me-2">
+						<a href="#" @click="showDanismanBilgi" :class="{ 'selected-tab': activeTab === 'DanismanBilgileri' }"
+							class="flex flex-col md: inline-block px-4 py-3 rounded-lg">Danışman Bilgileri</a>
+					</li>
+					<li class="me-2">
+						<a href="#" @click="showGTalepler" :class="{ 'selected-tab': activeTab === 'GonderilenTalep' }"
+							class="inline-block px-4 py-3 rounded-lg">Gönderilen Talepler</a>
+					</li>
+					<li class="me-2">
+						<a href="#" @click="showYTalep" :class="{ 'selected-tab': activeTab === 'YeniTalep' }"
+							class="inline-block px-4 py-3 rounded-lg">Yeni Talep Oluştur</a>
+					</li>
+				</ul>
+			</div>
+				<div v-if="activeTab === 'DanismanBilgileri'">
+					<StudentDashboardListingAdvisorInfo />
+				</div>
+				<div v-if="activeTab === 'GonderilenTalep'">
+					<StudentTable />
+				</div>
+				<div v-if="activeTab === 'YeniTalep'" class="p-5">
+					<Request />
+				</div>
 	</div>
 </template>
 
