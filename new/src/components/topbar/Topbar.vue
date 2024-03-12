@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-[5%] bg-gray-800 z-50 flex items-center">
+    <div class="fixed top-0 left-0 w-full h-[7%] bg-gray-800 z-50 flex items-center">
         <span class="material-symbols-outlined ml-[1%] text-white" style="font-size: 280%">account_circle</span>
         <div class="flex flex-col ml-[1%]" style="font-size: 50%">
             <div class="flex flex-row">
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </button>
-        <button class="absolute right-0 mr-[1%] text-red-600" @click="handleClick">
+        <button class="absolute right-0 text-red-600" @click="handleClick">
             <span class="material-symbols-outlined" style="font-size: 250%;">
                 logout
             </span>
