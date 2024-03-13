@@ -55,7 +55,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ staff.getDepartment() }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ staff.getEmail() }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ staff.getRole() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 whitespace-nowrap">     
                                     <button class="text-indigo-600 hover:text-indigo-900"
                                         @click="addNewActorToList(staff)">Add</button>
                                 </td>

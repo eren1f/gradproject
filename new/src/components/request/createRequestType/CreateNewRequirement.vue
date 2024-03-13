@@ -3,9 +3,11 @@
         <button @click="handleCreateNewReqClick" class="bg-green-500 hover:bg-blue-700 text-white mt-5 mb-5 py-2 px-4 rounded">
             Create new requirement
         </button>
+        <div class="overflow-auto max-h-80">
         <Requirement v-for="req in requirements" :key="req.id" :id="req.id" :name="req.name" :multiSelect="req.multiSelect"
             @delete="handleDeleteRequirement(req.id)" @move="handleMoveRequirement(req.id, $event)"
             @change="handleChange(req.id, $event)" />
+        </div>
     </div>
 </template>
 
