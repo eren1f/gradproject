@@ -1,5 +1,5 @@
 <template>
-    <div class="faculty-wrapper-div mt-5 ">
+    <div class="faculty-wrapper-div mt-5 w-1/2 flex ">
         <label for="faculty" class="text-white mr-11">Faculty Name</label>
         <div class="relative inline-block">
             <select name="faculty" id="faculty" v-model="selectedFaculty"
@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div class="department-wrapper-div mt-5 ">
+    <div class="department-wrapper-div mt-5 w-1/2 flex ">
         <label for="department" class="text-white mr-3">Department Name</label>
         <div class="relative inline-block">
             <select name="department" id="department" v-model="selectedDepartment"
