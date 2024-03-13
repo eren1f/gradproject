@@ -9,12 +9,12 @@
                 <div class="w-1/2 flex">
                     <CreateNewRequirement class="text-black" />
                 </div>
-                <div class="overflow-y-auto max-h-[200px]">
-                <AddNewActor />
-                <div id="fillActors-wrapper">
+                    <div class="overflow-y-auto max-h-[145px] " style="position: absolute; top: 34%; left: 50%;">
+                        
+                        <div id="fillActors-wrapper">
                     <!-- Content inside fillActors-wrapper -->
-                </div>
-</div>
+                        </div>
+                    </div>
             </div>
             <div class="flex items-center justify-center">
                 <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 rounded"
