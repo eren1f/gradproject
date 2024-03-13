@@ -14,6 +14,7 @@
         </div>
         <div>
             <button @click="handleDeleteButton" class="text-white bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md mb-2">Delete requirement</button>
+            <hr class="mt-2 mb-2 border-gray-500">
         </div>
     </div>
 </template>

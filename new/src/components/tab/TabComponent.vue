@@ -1,5 +1,5 @@
 <template>
-	<div class="box-border p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md m-10">
+	<div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5">
 		<ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
 			<li class="me-2">
 				<a href="#" @click="showTalepOlustur" :class="{ 'selected-tab': activeTab === 'TalepOlustur' }"
@@ -24,7 +24,7 @@
 			<StaffListing />
 		</div>
 	</div>
-	<div class="box-border p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md m-10" v-if="activeTab === 'TalepOlustur'">
+	<div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" v-if="activeTab === 'TalepOlustur'">
 		<StaffListingForCreatingNewRequestTypes @update:selectedStaffs="updateSelectedStaffs" />
 	</div>
 </template>
