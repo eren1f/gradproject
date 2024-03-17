@@ -72,7 +72,7 @@ export class StudentRequestHandler {
                 request.currentIndex,
                 request.information,
                 request.status,
-                new Date(request.when)
+                new Date(request.when),
             ));
             return res;
         } catch (error) {
@@ -95,9 +95,10 @@ export class StudentRequestHandler {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+            // Show popup message
+            alert("Talep gonderildi!");
+            //TODO: Redirect to landing page          
 
-            // TODO
-            // redirect to main page
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);
         }

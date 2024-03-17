@@ -9,15 +9,15 @@ export class StudentSideBarInfo {
         this.id = id;
     }
 
-    getFirstName() {
+    getFirstName(): string {
         return this.firstName;
     }
 
-    getLastName() {
+    getLastName(): string{
         return this.lastname;
     }
 
-    getId() {
+    public getId(): number {
         return this.id;
     }
 

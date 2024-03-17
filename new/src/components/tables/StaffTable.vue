@@ -224,7 +224,7 @@ const staffInfo = computed(() => {
       },
       setup(){
         onMounted(async () => {
-          const url = apiRoute + 'listWaitingRequestsForStaff/'+'13';
+          const url = apiRoute + 'listWaitingRequestsForStaff';
           const response = await fetch(url, {
               method: 'GET',
               headers: {

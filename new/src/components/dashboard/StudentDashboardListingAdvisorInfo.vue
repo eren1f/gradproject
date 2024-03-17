@@ -1,5 +1,5 @@
 <template>
-    <div class="md:m-2 lg:m-5 lg:uppercase">
+    <div class=" md:px-1 ">
         <div class="flex items-center bg-white shadow-lg rounded-lg overflow-hidden mt-4">
             <div class="p-4">
                 <div class="pl-4">

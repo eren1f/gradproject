@@ -1,14 +1,19 @@
 export class RequestTypes {
+    private requestTypeId: number;
     private requestName: string;
     private departmentId: number;
     private info: string;
 
-    constructor(requestName: string, departmentId: number, info: string = '') {
+    constructor(requestTypeId: number, requestName: string, departmentId: number, info: string = '') {
+        this.requestTypeId = requestTypeId;
         this.requestName = requestName;
         this.departmentId = departmentId;
         this.info = info;
     }
 
+    public getRequestTypeId(): number {
+        return this.requestTypeId;
+    }
     public getRequestName(): string {
         return this.requestName;
     }
