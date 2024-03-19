@@ -25,7 +25,7 @@
                     Bölüm
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
-                    E-Posta
+                    Tarih
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
                     Talep Türü
@@ -51,7 +51,7 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff email -->
-                    {{ request.studentMail }}
+                    {{ request.getWhenCreated() }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
@@ -59,7 +59,7 @@
                   </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <!-- Toggle button to show/hide additional information -->
-                  <button @click="toggleDetails(index)" class="text-indigo-600 hover:text-indigo-900">Toggle Details</button>
+                  <button @click="toggleDetails(request)" class="text-indigo-600 hover:text-indigo-900">Toggle Details</button>
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
