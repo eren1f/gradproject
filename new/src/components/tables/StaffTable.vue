@@ -5,6 +5,9 @@
     <div class="mb-2 mt-2 flex justify-between">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
     </div>
+    <div> 
+      <AdvisorPopup /> 
+    </div>
     <!-- Table Content -->
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -123,15 +126,17 @@
 </template>
 <script lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { TeachingStaffRequestHandler } from '../../Scripts/TeachingStaffRequestHandler';
 //import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
 import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
+import { AdvisorPopup } from '../components/popup/AdvisorPopup.vue'
+
 const searchQuery = ref('');
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
-const allStudents = ref<StaffForAdminListing[]>([]);
 const students = ref<StudentForTeachingStaffListing[]>([]);
 const departments = ref<ListDepartments[]>([]);
 const totalEntries = ref(0);
@@ -157,7 +162,7 @@ const paginatedStudents = computed(() => {
   return filteredStudents.value.slice(startIndex, endIndex);
 })
 const staffInfo = computed(() => {
-  staffId = TeachingStaff.getStaffId();
+  staffId = TeachingStaff.getId();
   return staffId;
 })
   export default {

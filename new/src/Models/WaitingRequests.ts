@@ -5,7 +5,6 @@ export class WaitingRequests {
     private currentIndex: number;
     private information: string;
     private whenCreated: Date;
-    private studentComment: string;
     private currentActorId: number;
 
     constructor(studentId: number, requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, whenCreated: Date, studentComment: string, currentActorId: number) {
@@ -15,7 +14,6 @@ export class WaitingRequests {
         this.currentIndex = currentIndex;
         this.information = information;
         this.whenCreated = whenCreated;
-        this.studentComment = studentComment;
         this.currentActorId = currentActorId;
     }
 
