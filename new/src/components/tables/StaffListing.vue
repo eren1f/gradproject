@@ -285,13 +285,11 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             this.currentPage++;
           }
         },
-
         saveStaff(event: any){
           event.preventDefault();
           saveStaff(this.addStaff.Name, this.addStaff.surname, this.addStaff.email, this.addStaff.password, this.selectedRoleOption, this.selectedDepartmentId);
           this.showAddStaffModal = false;
         },
-
         setCurrentPage(page: number){
           this.currentPage = page;
         },
