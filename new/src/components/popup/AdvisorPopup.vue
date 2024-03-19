@@ -10,7 +10,7 @@
         <div class="border-b border-gray-300 mb-2"></div> <!-- Line separator -->
         <div class="overflow-y-scroll h-24 pr-4">
           <template v-if="showEditStaffModal">
-            <input v-model="student.id" type="text" class="p-1 border rounded">
+            <input v-model="id" type="text" class="p-1 border rounded">
           </template>
           <template v-else>
             <div>
@@ -50,9 +50,9 @@ export default {
     return {
       popupVisible: false,
       showEditStaffModal: false,
-      student: {
-        id: ""
-      }
+      
+      id: ""
+      
     };
   },
   methods: {
@@ -64,5 +64,5 @@ export default {
 </script>
 
 <style scoped>
-  /* Add any necessary styles here */
+
 </style>

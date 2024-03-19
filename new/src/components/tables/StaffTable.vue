@@ -133,7 +133,7 @@ import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
-import { AdvisorPopup } from '../components/popup/AdvisorPopup.vue';
+
 
 const searchQuery = ref('');
 const allRequests = ref<WaitingRequests[]>([]);
