@@ -19,12 +19,14 @@ export class TeachingStaffRequestHandler {
             const data = await response.json();
             return data.map((item: any) => new WaitingRequests(
                 item.studentId,
-                item.requestTypeIds,
+                item.studentName,
+                item.studentMail,
+                item.studentDepartment,
+                item.requestTypeId,
                 item.requestTypeName,
                 item.currentIndex,
                 item.information,
                 new Date(item.whenCreated),
-                item.studentComment,
                 item.currentActorId
             ));
         } catch (error) {

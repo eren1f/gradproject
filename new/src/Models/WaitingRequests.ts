@@ -6,8 +6,12 @@ export class WaitingRequests {
     private information: string;
     private whenCreated: Date;
     private currentActorId: number;
+    public studentName:string;
+    public studentMail:string;
+    public studentDepartment:number;
 
-    constructor(studentId: number, requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, whenCreated: Date, studentComment: string, currentActorId: number) {
+    constructor(studentId: number,studentName:string, studentMail:string, studentDepartment:number,
+         requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, whenCreated: Date, currentActorId: number) {
         this.studentId = studentId;
         this.requestTypeIds = requestTypeIds;
         this.requestTypeName = requestTypeName;
@@ -15,6 +19,9 @@ export class WaitingRequests {
         this.information = information;
         this.whenCreated = whenCreated;
         this.currentActorId = currentActorId;
+        this.studentName=studentName;
+        this.studentMail=studentMail;
+        this.studentDepartment=studentDepartment;
     }
 
     public getStudentId(): number {
@@ -52,9 +59,6 @@ export class WaitingRequests {
         });
     }
 
-    public getStudentComment(): string {
-        return this.studentComment;
-    }
 
     public getCurrentActorId(): number {
         return this.currentActorId;
@@ -84,9 +88,6 @@ export class WaitingRequests {
         this.whenCreated = whenCreated;
     }
 
-    public setStudentComment(studentComment: string): void {
-        this.studentComment = studentComment;
-    }
 
     public setCurrentActorId(currentActorId: number): void {
         this.currentActorId = currentActorId;

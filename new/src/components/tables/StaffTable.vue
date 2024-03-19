@@ -35,27 +35,27 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <template v-for="(student, index) in paginatedStudents" :key="student.getId()">
+              <template v-for="(request) in allRequests"  :key ="request.getWhenCreated()">
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render student id -->
-                    {{ student.getId() }}
+                    {{ request.getStudentId() }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
-                    {{ student.getFullName() }}
+                    {{ request.studentName }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff department -->
-                    {{ student.getDepartment() }}
+                    {{ request.studentDepartment }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff email -->
-                    {{ student.getEmail() }}
+                    {{ request.studentMail }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
-                    {{ student.getRequestTypeName() }}
+                    {{ request.getRequestTypeName() }}
                   </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <!-- Toggle button to show/hide additional information -->
@@ -132,13 +132,15 @@ import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaff
 import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
-import { AdvisorPopup } from '../components/popup/AdvisorPopup.vue'
+import { WaitingRequests } from '@/Models/WaitingRequests';
+import { AdvisorPopup } from '../components/popup/AdvisorPopup.vue';
 
 const searchQuery = ref('');
+const allRequests = ref<WaitingRequests[]>([]);
+const totalRequests = ref(0);
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
 const students = ref<StudentForTeachingStaffListing[]>([]);
-const departments = ref<ListDepartments[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
 const filteredStudents = computed(() => {
@@ -172,12 +174,9 @@ const staffInfo = computed(() => {
           itemsPerPage,
           totalPages,
           totalEntries,
-          students,
-          departments,
-          searchQuery,
-          paginatedStudents,
-          staffInfo,
+          totalRequests,
           expandedRows: [],
+          allRequests
         };
       },
       methods: {
@@ -229,23 +228,10 @@ const staffInfo = computed(() => {
       },
       setup(){
         onMounted(async () => {
-          const url = apiRoute + 'listWaitingRequestsForStaff';
-          const response = await fetch(url, {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              credentials: 'include',
-          })
-          const data = await response.json();
-
-          allStudents.value = [];
-
-          for (let i = 0; i < data.length; i++) {
-              const student = new StudentForTeachingStaffListing(data[i].id, data[i].fullName, data[i].email, data[i].department, data[i].requestTypeName);
-              allStudents.value.push(student);
-          }
-          students.value = allStudents.value; 
+          const requestHandler = new TeachingStaffRequestHandler();
+          const response = await requestHandler.getWaitingRequestsForTeachingStaff();
+          totalRequests.value = response.length;
+          allRequests.value = response;
         });
       }
   };
