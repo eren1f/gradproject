@@ -1,4 +1,40 @@
 <template>
+      <!-- Request Details Modal -->
+      <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+        <div class="bg-white p-[5%] m-[10%] rounded-lg">
+          <h2 class="text-xl font-bold mb-4">Talep Detayları</h2>
+          <!-- Request Details -->
+          <div class="sm:flex sm:items-start">
+          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <div class="mt-2">
+              <p class="text-sm text-gray-500">
+                <!--TODO DB CONNECTION-->
+                <strong>Öğrenci Numarası:</strong> {{ selectedRequest.getStudentId() }}<br>
+                <strong>Talep Türü:</strong>  selectedRequest.getRequestTypeId() <br>
+                <strong>Oluşturulan Tarih:</strong> {{ selectedRequest.getWhenCreated() }}<br>
+                <strong>Öğrenci Açıklaması:</strong> {{ selectedRequest.getInformation() }}<br>
+                <strong>Buludunduğu Konum:</strong> {{ selectedRequest.getCurrentIndex() }}<br>
+                <strong>Talep Durumu:</strong> {{ selectedRequest.getStatus() }}<br>
+                <div v-if="!hasCommented" @submit.prevent="submitComment">
+                  <strong>Yorum ekleyebilirsiniz</strong><textarea class="border rounded w-full h-16 resize-none"></textarea><br>
+                </div>
+                <div v-else>
+                  <strong>Öğrenci Yorumu:</strong><p>{{ selectedRequest.getStudentComment() }}</p>
+                </div>
+              </p>
+            </div>
+          </div>
+        </div>
+          <div class="flex justify-end mt-4">
+            <button @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-[2%] px-[2%] rounded">
+              Geri Dön
+            </button>
+            <button @click="addComment" class="bg-indigo-700 hover:bg-indigo-400 ml-[1%] py-[2%] px-[2%] rounded">
+              Yorum Ekle
+            </button>
+          </div>
+        </div>
+    </div>
     <!--Staff Listing Table-->
     <div class="flex flex-col">
       <!-- SearchBar-->
@@ -12,20 +48,17 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('studentId')">
-                      Öğrencİ No
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('requestTypeId')">
+                      TALEP TÜRÜ
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('currentIndex')">
-                      Bulunduğu Konum
+                      BULUNDUĞU KONUM
                     </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('information')">
-                      İçerİk
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('time')">
+                      GÖNDERİLEN TARİH
                     </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
-                      GöndeRİLEN TarİH
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('role')">
-                      Durumu
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('status')">
+                      TALEP DURUMU
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     </th>
@@ -35,41 +68,16 @@
                 <template v-for="(request, index) in paginatedRequests" :key="request.studentId">
                   <!-- Table Row -->
                   <tr>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.studentId}}</td>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.currentIndex }}</td>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.information }}</td>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.whenCreated }}</td>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.status }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">request.getRequestTypeId()</td> <!--baglanmamis hala-->
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getCurrentIndex() }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getWhenCreated() }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getStatus() }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <!-- Toggle button to show/hide additional information -->
+                      <!-- Toggle button to show additional information -->
                       <button @click="toggleDetails(index)" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
                     </td>
                   </tr>
-                  <!-- Expandable row for each request -->
-                  <tr v-if="expandedRows.includes(index)">
-                    <td colspan="2" class="px-6 py-4 whitespace-nowrap">
-                      <h1 class="font-bold">TALEP ILE ILGILI EK DETAYLAR</h1>
-                      <hr></hr>
-                      <div class="overflow-y-scroll h-16 pr-4">
-                          <div class="font-normal text-black">
-                            <p>DERS KODU:</p>
-                            <p>DERSİN ŞUBESİ:</p>
-                            <p>daha fazlası...</p>
-                            <p>daha fazlası...</p>
-                            <p>daha fazlası...</p>
-                          </div>
-                      </div>
-                    </td>
-                    <td colspan="3" class="px-6 py-4 whitespace-nowrap">
-                      <div>
-                        <textarea class="border rounded border-gray-950 w-full h-16 resize-none m-1" readonly>Açıklama: {{ request.information }}
-                        </textarea>
-                      </div>
-                    </td>
-                    <td colspan="1">
-                    </td>
-                  </tr>
-            </template>
+                </template>
             </tbody>
             </table>
           </div>
@@ -117,7 +125,7 @@ const requestId = ref(0);
 const filteredRequests = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   if(!query) return requests.value;
-  // Search by name or surname (fixed)
+  // Search by request name
   return requests.value.filter(request =>
     request.getFullName().toLowerCase().includes(query) ||
     request.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
@@ -134,12 +142,6 @@ const paginatedRequests = computed(() => {
   const endIndex = startIndex + itemsPerPage;
   return filteredRequests.value.slice(startIndex, endIndex);
 })
-
-const requestInfo = computed(() => {
-  requestId = Request.getRequestId();
-  return requestId;
-})
-
 export default {
   data() {
         return {
@@ -149,8 +151,9 @@ export default {
           totalEntries,
           searchQuery,
           paginatedRequests,
-          requestInfo,
-          expandedRows: [],
+          showModal: false,
+          selectedRequest: null as unknown as Request,
+          hasCommented: false
         };
       },
       methods: {
@@ -168,36 +171,38 @@ export default {
         setCurrentPage(page: number){
           this.currentPage = page;
         },
-        sortByColumn(columnName: string) {
-          requests.value.sort((a, b) => {
-              if (columnName === 'name') {
+        // sortByColumn(columnName: string) {
+        //   requests.value.sort((a, b) => {
+        //       if (columnName === 'name') {
                  
-                const fullNameA = a.getFullName ? a.getFullName().toLowerCase() : '';
-                const fullNameB = b.getFullName ? b.getFullName().toLowerCase() : '';                  
-                  if (fullNameA < fullNameB) return -1;
-                  if (fullNameA > fullNameB) return 1;
-                  return 0;
-              } else if (columnName === 'id') {
+        //         const fullNameA = a.getFullName ? a.getFullName().toLowerCase() : '';
+        //         const fullNameB = b.getFullName ? b.getFullName().toLowerCase() : '';                  
+        //           if (fullNameA < fullNameB) return -1;
+        //           if (fullNameA > fullNameB) return 1;
+        //           return 0;
+        //       } else if (columnName === 'id') {
                   
-                  const idA = parseInt(a[columnName]);
-                  const idB = parseInt(b[columnName]);
-                  return idA - idB;
-              } else {
+        //           const idA = parseInt(a[columnName]);
+        //           const idB = parseInt(b[columnName]);
+        //           return idA - idB;
+        //       } else {
                   
-                  const aValue = a[columnName]?.toLowerCase();
-                  const bValue = b[columnName]?.toLowerCase();
-                  if (aValue < bValue) return -1;
-                  if (aValue > bValue) return 1;
-                  return 0;
-              }
-          });
+        //           const aValue = a[columnName]?.toLowerCase();
+        //           const bValue = b[columnName]?.toLowerCase();
+        //           if (aValue < bValue) return -1;
+        //           if (aValue > bValue) return 1;
+        //           return 0;
+        //       }
+        //   });
+        // },
+        toggleDetails(index: number){
+          // Fetch the data from the database
+          this.selectedRequest = this.paginatedRequests[index];
+          // Show the modal
+          this.showModal = true;
         },
-        toggleDetails(index){
-          if(this.expandedRows.includes(index)){
-            this.expandedRows = this.expandedRows.filter(i => i !== index );
-          } else {
-            this.expandedRows.push(index)
-          }
+        submitComment(){
+          this.hasCommented = true;
         }
       },
     setup() {
