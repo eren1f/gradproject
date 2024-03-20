@@ -1,21 +1,40 @@
 <template>
     <div>
-        <div>
-            <div>
-                <RequestCredentials :departmentId="departmentId" @update:selectedDepartment="handleSelectedDepartment" @dataChanged="handleDataChange" />
-                <RequestName />
-            </div>
-            <div class="flex">
-                <div class="w-1/2 flex">
+        <div >
+            <div class="w-1/2 flex justify-between space-x-20">
+                
+                <div>
+                    <RequestCredentials :departmentId="departmentId" @update:selectedDepartment="handleSelectedDepartment" @dataChanged="handleDataChange" />
+                    <RequestName />
                     <CreateNewRequirement class="text-black" />
                 </div>
-                    <div class="overflow-y-auto max-h-[145px] " style="position: absolute; top: 34%; left: 50%;">
-                        
+                <div>
+               
+                <div class="mt-5" style="width: 170%;">
+                    <table >
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="w-full py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <span class="table-row" >
+                                        <span class="gap1">Name</span>
+                                        <span class="gap2">Department</span>
+                                        <span style="padding-right: 470px;" >Role</span>
+                                    </span>
+                                    
+                                </th>   
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="overflow-y-auto max-h-[145px] max-w-[1017px]" style="width: 100%;">
                         <div id="fillActors-wrapper">
-                    <!-- Content inside fillActors-wrapper -->
+                            <!-- Content inside fillActors-wrapper -->
                         </div>
                     </div>
+                </div>       
             </div>
+                
+            </div>
+            
             <div class="flex items-center justify-center">
                 <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 rounded"
                     @click="addNewRequestType()">Add this request type</button>
@@ -23,6 +42,7 @@
         </div>
     </div>
 </template>
+
 
 <script lang="ts">
     import { defineComponent, ref, watch } from 'vue';
@@ -83,7 +103,8 @@
                 }
 
                 const AdminRequestHandlerInstance = new AdminRequestHandler();
-                const newReqType = new RequestTypes(requestName.value, departmentId);
+                const newReqType = new RequestTypes(0, requestName.value, departmentId, " ");
+                console.log(departmentId);
                 const res = await AdminRequestHandlerInstance.addNewRequestType(newReqType);
                 if (res === 0) {
                     alert('error occurred when trying to create new request type');
@@ -131,3 +152,17 @@
     });
 </script>
 
+<style>
+    .table-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .gap1 {
+        margin-right: 225px; /* Adjust the first gap size */
+    }
+
+    .gap2 {
+        margin-right: 170px; /* Adjust the second gap size */
+    }
+</style>
