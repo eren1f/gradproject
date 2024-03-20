@@ -5,9 +5,7 @@
     <div class="mb-2 mt-2 flex justify-between">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
     </div>
-    <div> 
-      <AdvisorPopup /> 
-    </div>
+    
     <!-- Table Content -->
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -51,7 +49,7 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff email -->
-                    {{ request.getWhenCreated() }}
+                    {{ formatDate(request.getWhenCreated()) }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
@@ -59,7 +57,9 @@
                   </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <!-- Toggle button to show/hide additional information -->
-                  <button @click="toggleDetails(request)" class="text-indigo-600 hover:text-indigo-900">Toggle Details</button>
+                  <div> 
+                    <AdvisorPopup /> 
+                  </div>
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
@@ -133,6 +133,7 @@ import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
+import AdvisorPopup from '../../components/popup/AdvisorPopup.vue';
 
 
 const searchQuery = ref('');
@@ -167,7 +168,20 @@ const staffInfo = computed(() => {
   staffId = TeachingStaff.getId();
   return staffId;
 })
+
+function formatDate(dateString: Date): string {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
   export default {
+    components: {
+    AdvisorPopup
+  },
       data() {
         return {
           currentPage,
@@ -176,7 +190,8 @@ const staffInfo = computed(() => {
           totalEntries,
           totalRequests,
           expandedRows: [],
-          allRequests
+          allRequests,
+          formatDate
         };
       },
       methods: {
