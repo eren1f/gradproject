@@ -43,8 +43,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
+  props: ['request'],
   data() {
     return {
       popupVisible: false,
@@ -55,6 +56,13 @@ export default {
   methods: {
     togglePopup() {
       this.popupVisible = !this.popupVisible;
+    }
+  },
+  watch: {
+    request(newVal) {
+      if (newVal !== null) {
+        this.popupVisible = true;
+      }
     }
   }
 };

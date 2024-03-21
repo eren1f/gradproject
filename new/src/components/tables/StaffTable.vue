@@ -2,6 +2,7 @@
   <!--Staff Listing Table-->
   <div class="flex flex-col">
     <!-- SearchBar -->
+    <AdvisorPopup :request="selectedRequest"></AdvisorPopup>
     <div class="mb-2 mt-2 flex justify-between">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
     </div>
@@ -57,9 +58,13 @@
                   </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <!-- Toggle button to show/hide additional information -->
-                  <div> 
+<!--                   <div> 
                     <AdvisorPopup /> 
-                  </div>
+                  </div> -->
+                   
+                      <!-- Toggle button to show additional information -->
+                      <button @click="toggleDetails(request)" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
+                    
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
@@ -133,7 +138,8 @@ import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
-import AdvisorPopup from '../../components/popup/AdvisorPopup.vue';
+import AdvisorPopup from '../popup/AdvisorPopup.vue';
+
 
 
 const searchQuery = ref('');
@@ -144,6 +150,7 @@ const currentPage = ref(1);
 const students = ref<StudentForTeachingStaffListing[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
+const selectedRequest = ref<WaitingRequests>();
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   if(!query) return students.value;
@@ -191,7 +198,8 @@ function formatDate(dateString: Date): string {
           totalRequests,
           expandedRows: [],
           allRequests,
-          formatDate
+          formatDate,
+          selectedRequest,
         };
       },
       methods: {
@@ -233,12 +241,15 @@ function formatDate(dateString: Date): string {
               }
           });
         },
-        toggleDetails(index){
-          if(this.expandedRows.includes(index)){
+        toggleDetails(request: WaitingRequests){
+/*           if(this.expandedRows.includes(index)){
             this.expandedRows = this.expandedRows.filter(i => i !== index );
           } else {
             this.expandedRows.push(index)
-          }
+          } */
+          this.selectedRequest = request;
+          console.log(request);
+          
         }
       },
       setup(){

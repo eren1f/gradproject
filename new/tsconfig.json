@@ -11,6 +11,7 @@
     "baseUrl": ".",
     "emitDeclarationOnly": false,
     "verbatimModuleSyntax": false,
+    "allowJs": true,
     "types": [
       "node",
       "vue",
