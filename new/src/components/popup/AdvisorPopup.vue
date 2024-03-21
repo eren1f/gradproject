@@ -36,7 +36,7 @@
         <div class="flex justify-between mt-4">
           <button @click="togglePopup" class="bg-blue-500 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
           <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full mx-2">Reddet</button>
-          <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
+          <button @click="acceptRequest" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
         </div>
       </div>
     </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script lang="ts">
+import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 export default {
   props: ['request'],
   data() {
@@ -56,6 +57,11 @@ export default {
   methods: {
     togglePopup() {
       this.popupVisible = !this.popupVisible;
+    },
+    acceptRequest() {
+      this.popupVisible = false;
+      let requestHandler = new TeachingStaffRequestHandler();
+      requestHandler.acceptRequest(this.request.getId(), this.request.getRequestType(), this.request.getWhenCreated(), this.request.getCurrentIndex());
     }
   },
   watch: {

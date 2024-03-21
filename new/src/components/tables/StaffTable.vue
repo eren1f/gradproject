@@ -256,6 +256,7 @@ function formatDate(dateString: Date): string {
         onMounted(async () => {
           const requestHandler = new TeachingStaffRequestHandler();
           const response = await requestHandler.getWaitingRequestsForTeachingStaff();
+          console.log(response);
           totalRequests.value = response.length;
           allRequests.value = response;
         });
