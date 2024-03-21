@@ -7,6 +7,36 @@
           
           </div>
       </div>
+    <!--temporarily here-->
+      
+  <div>
+    <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-50">
+      <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-1/5 text-black"> <!-- Apply text-black class -->
+        <h2 class="text-lg font-bold mb-2 text-center">Yeni Gereksinim</h2>
+        <div class="requirements-wrapper-div">
+          <div class="flex items-center">
+            <label for="name-of-req" class="text-black">Name</label>
+            <input id="name-of-req" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+          </div>
+
+          <div class="flex items-center mt-3">
+              <label for="multi-select-button" class="text-black">Multi-Select</label>
+              <input id="multi-select-button" type="checkbox" class="border border-black mt-1 ml-2 form-checkbox h-4 w-4 text-indigo-600">
+          </div>
+          <div class="flex justify-between mt-4 space-x-4">
+    <button @click="togglePopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
+    <button @click="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--temporarily here-->
+      
+
 
       <div v-if="requestTypes.length && !edit"class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -72,7 +102,7 @@
                         </div>
                       </div>
                     </div>
-                <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="">Yeni Gereksinim Ekle</button>
+                <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup">Yeni Gereksinim Ekle</button>
               </div>
               <div class="mb-4 ">
                 <h2 class="text-4xl font-bold mb-5 text-white" >Talep Aktörleri</h2>
@@ -112,12 +142,27 @@ import { ListRequestTypes } from '@/Models/ListRequestTypes';
 import  type { RequestRequirement } from '@/Models/RequestRequirements';
 import type { RequestActor } from '@/Models/RequestActor';
 
+
+
 export default defineComponent({
   name: 'EditRequestType',
   components: {
     RequestName,
     RequestCredentials
 },
+
+data() {
+    return {
+      popupVisible: false,
+      showEditStaffModal: false,
+      id: ""
+    };
+  },
+  methods: {
+    togglePopup() {
+      this.popupVisible = !this.popupVisible;
+    }
+  },
 
 
 
@@ -138,6 +183,9 @@ export default defineComponent({
       }
       handler.deleteRequestRequirement(id,index);
    }  
+   
+
+
    
    const deleteActor = (requestId:number, staffId: number, index: number) => {
     const parentDiv = document.querySelector('.actorParent-div');
