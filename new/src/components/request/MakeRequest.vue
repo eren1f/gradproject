@@ -8,22 +8,27 @@
         </select>
     </div>
     <!-- Request Requirements -->
-    <div v-if="showRequirements()" class="flex flex-col items-center md:items-start p-4 text-white">
+    <div v-if="showRequirements()" class="flex flex-col items-center md:items-start md:w-[39%] p-4 md:pl-4 text-white">
         <h2 class="text-lg font-semibold mt-2 mb-2">Talep Gereksinimleri</h2>
-        <div v-for="(requirement, index) in requestRequirements" :key="index" class="flex flex-col md:flex-row items-center md:items-start p-4 text-white">
-            <p class="md:pr-[5%]">{{ requirement.getName() }}</p>
-            <div v-if="requirement.getType() === 'single'" type="text" class="flex flex-col md:flex-row items-center md:items-start">
-                <input type="text" v-model="requirement.description" class="w-[50%] md:w-[36%] mt-4 md:mt-0 md:ml-4 p-2 border rounded bg-gray-600" placeholder="Doldur.">
+        <div v-for="(requirement, index) in requestRequirements" :key="index" class="flex flex-col md:flex-row items-center md:items-start py-2 text-white">
+            <p class="">{{ requirement.getName() }}</p>
+            <div v-if="requirement.getType() === 'single'" class="flex flex-col md:flex items-center md:items-start">
+                <input id="singleReq" type="text" v-model="requirementValues[requirement.getPretext()]" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600" placeholder="Doldur.">
             </div>
-            <div v-if="requirement.getType() === 'multi'" type="text" class="flex flex-col md:flex-row items-center md:items-center" >
-                <input v-model="requirement.description" class="w-[50%] md:w-[36%] mt-4 md:mt-0  md:ml-4 p-2 border rounded bg-gray-600" placeholder="Doldur.">
+            <div v-if="requirement.getType() === 'multi'" class="flex flex-col md:flex items-center md:items-start" >
+                <input id="multiReq" type="text" v-model="requirementValuesMulti[requirement.getPretext()]" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600" placeholder="Doldur.">
             </div>
         </div>
     </div>
     <!-- Student Reason -->
     <div v-if="showRequirements()" class="flex flex-col items-center md:items-start p-4 text-white">
         <h2 class="text-lg font-semibold mb-2">Öğrenci Açıklaması</h2>
-        <textarea class="w-[90%] md:w-[36%] p-2 border rounded bg-gray-600" placeholder="Lütfen bilgilerinizi eksiksiz yazınız."></textarea>
+        <!-- FOR EXAMPLE: KEY=BIL343 VALUE=KODLU DERSIN UPDATE YOUR DB PRETEXT COLUMN-->
+        <textarea class="w-[90%] md:w-[36%] p-2 border rounded bg-gray-600"
+        :value="Object.entries(requirementValues).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
+        Object.entries(requirementValuesMulti).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '')"
+        placeholder="Lütfen bilgilerinizi eksiksiz yazınız.">
+        </textarea>
     </div>
     <!-- Submit Button -->
     <div v-if="showRequirements()" class="flex flex-col items-center md:items-start p-4 text-white">
@@ -45,17 +50,21 @@ export default{
         const selectedRequestType = ref<number>(0);
         const requestRequirements = ref<RequestRequirement[]>([]);
         const userInfo = ref<StudentSideBarInfo[]>([]);
+        const singleReq = ref('');
+        const multiReq = ref('');
+        const requirementValues = ref<Record<string, unknown>>({});
+        const requirementValuesMulti = ref<Record<string, unknown>>({});
         const showRequirements = () => {
             if (selectedRequestType.value == 0 || selectedRequestType.value == null) {
-                console.log("False: " + selectedRequestType.value);
+                console.log("False: " + selectedRequestType.value); //debug
                 return false;
             }
-            console.log("True:  " +  selectedRequestType.value);
+            console.log("True:  " +  selectedRequestType.value); //debug
             //console.log("True: " + requestRequirements.value)
             return true;
         }
         const submitRequest = () => {
-            const request = new Request(userInfo.value[0].getId(), selectedRequestType.value , 'info:', 'addition:', 1, 'studentComment:');
+            const request = new Request(userInfo.value[0].getId(), selectedRequestType.value , 'info', 'addition', 1, 'studentComment');
             const studentRequestHandler = new StudentRequestHandler();
             studentRequestHandler.makeRequest(request);
             console.log("Submit Request");
@@ -63,7 +72,8 @@ export default{
         watch(selectedRequestType, async (newVal, oldVal) => {
             //to clear requestRequirements
             requestRequirements.value = [];
-
+            requirementValues.value = {};
+            requirementValuesMulti.value = {};
             if (newVal !== null) {
                 const url2 = `http://localhost:8080/requestRequirements/${newVal}`;
                 const response2 = await fetch(url2, {
@@ -77,7 +87,7 @@ export default{
                 console.log(data2);
                 console.log('debug')
                 for (let i = 0; i < data2.length; i++) {
-                    const requestRequirement = new RequestRequirement(data2[i].id, data2[i].index, data2[i].name, data2[i].type, data2[i].description);
+                    const requestRequirement = new RequestRequirement(data2[i].id, data2[i].index, data2[i].name, data2[i].type, data2[i].pretext);
                     requestRequirements.value.push(requestRequirement);
                 }
             }
@@ -119,6 +129,10 @@ export default{
             showRequirements,
             submitRequest,
             userInfo,
+            singleReq,
+            multiReq,
+            requirementValues,
+            requirementValuesMulti,
         }
     }
 }

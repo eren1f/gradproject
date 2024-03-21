@@ -3,14 +3,14 @@ export class RequestRequirement {
     private index: number;
     private name: string;
     private type: string;
-    description: string;
+    private pretext: string;
 
-    constructor(requestTypeId: number, index: number, name: string, type: string, description: string) {
+    constructor(requestTypeId: number, index: number, name: string, type: string, pretext: string) {
         this.requestTypeId = requestTypeId;
         this.index = index;
         this.name = name;
         this.type = type;
-        this.description = description;
+        this.pretext = pretext;
     }
 
     public getRequestTypeId(): number {
@@ -25,10 +25,10 @@ export class RequestRequirement {
     public getType(): string {
         return this.type;
     }
-    public getDescription(): string {
-        return this.description;
+    public getPretext(): string {
+        return this.pretext;
     }
-    public setDescription(description: string): void {
-        this.description = description;
+    public setPretext(pretext: string): void {
+        this.pretext = pretext;
     }
 }
