@@ -94,7 +94,7 @@
                 <td class="px-6 py-4 whitespace-nowrap">
                   <template v-if="showEditStaffModal">
                     <!-- Render input boxes for editing -->
-                    <input v-model="staff.id" type="text" class="p-1 border rounded">
+                    <input v-model="staff.id" type="text" class="p-1 border rounded" readonly>
                   </template>
                   <template v-else>
                     <!-- Render staff name -->

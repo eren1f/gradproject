@@ -18,14 +18,14 @@
                                     <span class="table-row" >
                                         <span class="gap1">Name</span>
                                         <span class="gap2">Department</span>
-                                        <span style="padding-right: 470px;" >Role</span>
+                                        <span style="padding-right: 300px;" >Role</span>
                                     </span>
                                     
                                 </th>   
                             </tr>
                         </thead>
                     </table>
-                    <div class="overflow-y-auto max-h-[145px] max-w-[1017px]" style="width: 100%;">
+                    <div class="overflow-y-auto max-h-[145px] max-w-[1017px]" style="width: 59%;">
                         <div id="fillActors-wrapper">
                             <!-- Content inside fillActors-wrapper -->
                         </div>

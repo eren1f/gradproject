@@ -27,13 +27,34 @@
           <div class="flex justify-between mt-4 space-x-4">
     <button @click="togglePopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
     <button @click="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
-</div>
+          </div>
 
         </div>
       </div>
     </div>
   </div>
 
+  <div>
+    <div v-if="ActorPopupVisible" class="fixed inset-0 flex justify-center items-center z-50">
+      <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-1/5 text-black"> <!-- Apply text-black class -->
+        <h2 class="text-lg font-bold mb-2 text-center">Yeni Aktör</h2>
+        <div class="requirements-wrapper-div">
+          <div class="flex items-center">
+            <label for="name-of-req" class="text-black">Buraya eklenilmemiş aktörler listelenebilir oradan seçer</label>
+            
+          </div>
+
+          
+          <div class="flex justify-between mt-4 space-x-4">
+    <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
+    <button @click="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
   <!--temporarily here-->
       
 
@@ -78,21 +99,21 @@
 
       <div v-if="edit" >
         <div class=" p-8 rounded-lg">
-            <h1 class="text-4xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
+            <h1 class="text-2xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
             <div class="mb-4 flex items-center">
-              <label for="Talep İsmi" class="mr-2 block text-l font-medium text-white"> Talep Ismi</label>
+              <label for="Talep İsmi" class="mr-2 block text-m font-medium text-white"> Talep Ismi</label>
               <input type="text" :placeholder="requestOnEdit.getName()" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
             </div>
             <div class="mb-4 flex justify-between">
               <div class="mb-4 ">
-                <h2 class="text-4xl font-bold mb-5 text-white">Talep Gereksinimleri</h2>
+                <h2 class="text-2xl font-bold mb-5 text-white">Talep Gereksinimleri</h2>
                   <div class="overflow-y-auto max-h-[202px]">  
                       <div v-for="requirement in requestRequirements">
                         <div class="parent-div">
                           <div class="flex">
-                            <label for="Gereksinim" class="mr-2 block text-l font-medium text-white">Gereksinim: {{ requirement.name }}</label>
+                            <label for="Gereksinim" class="mr-2 block text-m font-medium text-white">Gereksinim: {{ requirement.name }}</label>
                             <input type="text" :placeholder="requirement.name" v-model="newRequirementName" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-                            <label for="İndex" class="mr-2 block text-l font-medium text-white">Gereksinim Sırası: </label>
+                            <label for="İndex" class="mr-2 block text-m font-medium text-white">Gereksinim Sırası: </label>
                             <input type="number" :placeholder="requirement.index.toString()" v-model="newRequirementIndex" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                           </div>
                             <div class="mt-2 flex"> 
@@ -105,13 +126,13 @@
                 <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup">Yeni Gereksinim Ekle</button>
               </div>
               <div class="mb-4 ">
-                <h2 class="text-4xl font-bold mb-5 text-white" >Talep Aktörleri</h2>
+                <h2 class="text-2xl font-bold mb-5 text-white" >Talep Aktörleri</h2>
                 <div class="overflow-y-auto max-h-[202px]">
                  <div v-for="actor in requestActors"> 
                    <div class="actorParent-div">
                       <div class="flex">
-                        <p class="mr-2 block text-l font-medium text-white">Aktör Id: {{ actor.staffId }}, Aktör Rolü:,  </p>
-                        <label for="İndex" class="mr-2 block text-l font-medium text-white">Actor Sırası:</label>
+                        <p class="mr-2 block text-m font-medium text-white">Aktör Id: {{ actor.staffId }}, Aktör Rolü:,  </p>
+                        <label for="İndex" class="mr-2 block text-m font-medium text-white">Actor Sırası:</label>
                         <input type="number" :placeholder="actor.index.toString()" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                       </div>
                       <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteActor(actor.requestTypeId,actor.staffId,actor.index)">Aktörü Talepten Sil</button> <!-- -->
@@ -119,7 +140,7 @@
                     </div>
                   </div>
                 </div>
-                <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="">Yeni Aktör Ekle</button>
+                <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Yeni Aktör Ekle</button>
               </div>
             </div>
           </div>
@@ -154,6 +175,7 @@ export default defineComponent({
 data() {
     return {
       popupVisible: false,
+      ActorPopupVisible: false,
       showEditStaffModal: false,
       id: ""
     };
@@ -161,6 +183,9 @@ data() {
   methods: {
     togglePopup() {
       this.popupVisible = !this.popupVisible;
+    },
+    ActorPopup() {
+      this.ActorPopupVisible = !this.ActorPopupVisible;
     }
   },
 
