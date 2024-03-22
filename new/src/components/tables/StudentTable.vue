@@ -10,27 +10,17 @@
               <p class="text-sm text-gray-500">
                 <!--TODO DB CONNECTION-->
                 <strong>Öğrenci Numarası:</strong> {{ selectedRequest.getStudentId() }}<br>
-                <strong>Talep Türü:</strong>  selectedRequest.getRequestTypeId() <br>
-                <strong>Oluşturulan Tarih:</strong> {{ selectedRequest.getWhenCreated() }}<br>
-                <strong>Öğrenci Açıklaması:</strong> {{ selectedRequest.getInformation() }}<br>
-                <strong>Buludunduğu Konum:</strong> {{ selectedRequest.getCurrentIndex() }}<br>
+                <strong>Talep Türü:</strong>  {{ selectedRequest.getInformation() }}<br>
+                <strong>Oluşturulan Tarih:</strong> {{ formatDate(selectedRequest.getWhenCreated()) }}<br>
                 <strong>Talep Durumu:</strong> {{ selectedRequest.getStatus() }}<br>
-                <div v-if="!hasCommented" @submit.prevent="submitComment">
-                  <strong>Yorum ekleyebilirsiniz</strong><textarea class="border rounded w-full h-16 resize-none"></textarea><br>
-                </div>
-                <div v-else>
-                  <strong>Öğrenci Yorumu:</strong><p>{{ selectedRequest.getStudentComment() }}</p>
-                </div>
-              </p>
+                <strong>Öğrenci Açıklaması:</strong> {{ selectedRequest ? selectedRequest.getAddition() : '' }}<br>
+                </p>
             </div>
           </div>
         </div>
           <div class="flex justify-end mt-4">
             <button @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-[2%] px-[2%] rounded">
               Geri Dön
-            </button>
-            <button @click="addComment" class="bg-indigo-700 hover:bg-indigo-400 ml-[1%] py-[2%] px-[2%] rounded">
-              Yorum Ekle
             </button>
           </div>
         </div>
@@ -51,9 +41,6 @@
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('requestTypeId')">
                       TALEP TÜRÜ
                     </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('currentIndex')">
-                      BULUNDUĞU KONUM
-                    </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('time')">
                       GÖNDERİLEN TARİH
                     </th>
@@ -68,9 +55,8 @@
                 <template v-for="(request, index) in paginatedRequests" :key="request.studentId">
                   <!-- Table Row -->
                   <tr>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">request.getRequestTypeId()</td> <!--baglanmamis hala-->
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getCurrentIndex() }}</td>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getWhenCreated() }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getInformation()  }}</td> 
+                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ formatDate(request.getWhenCreated()) }}</td>
                     <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getStatus() }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <!-- Toggle button to show additional information -->
@@ -110,7 +96,6 @@
 import { ref, onMounted, computed } from 'vue';
 import { StudentRequestHandler } from '../../Scripts/StudentRequestHandler';
 import { StudentRequests } from '../../Models/StudentRequests';
-import { Request } from '../../Models/Request'
 import { useRouter } from 'vue-router';
 
 const searchQuery = ref('');
@@ -120,7 +105,16 @@ const allRequests = ref<StudentRequests[]>([]);
 const router = useRouter();
 const requests = ref<StudentRequests[]>([]);
 const totalEntries = ref(0);
-const requestId = ref(0);
+
+function formatDate(dateString: Date): string {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
 
 const filteredRequests = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
@@ -152,8 +146,9 @@ export default {
           searchQuery,
           paginatedRequests,
           showModal: false,
-          selectedRequest: null as unknown as Request,
-          hasCommented: false
+          selectedRequest: {} as StudentRequests,
+          hasCommented: false,
+          formatDate
         };
       },
       methods: {

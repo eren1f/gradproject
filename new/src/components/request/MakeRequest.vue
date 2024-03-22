@@ -24,9 +24,7 @@
     <div v-if="showRequirements()" class="flex flex-col items-center md:items-start p-4 text-white">
         <h2 class="text-lg font-semibold mb-2">Öğrenci Açıklaması</h2>
         <!-- FOR EXAMPLE: KEY=BIL343 VALUE=KODLU DERSIN UPDATE YOUR DB PRETEXT COLUMN-->
-        <textarea class="w-[90%] md:w-[36%] p-2 border rounded bg-gray-600" 
-        :value="`${userInfo!.getId()} numaralı öğrencinizim. `+ Object.entries(requirementValues).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
-        Object.entries(requirementValuesMulti).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '')"
+        <textarea id="requestInfo" v-model="requestInfo" class="w-[90%] md:w-[36%] p-2 border rounded bg-gray-600"
         placeholder="Lütfen bilgilerinizi eksiksiz yazınız.">
         </textarea>
     </div>
@@ -42,12 +40,9 @@ import { RequestRequirement } from '@/Models/RequestRequirements';
 import { StudentRequestHandler } from '@/Scripts/StudentRequestHandler';
 import { Request } from '@/Models/Request';
 import { StudentSideBarInfo } from '@/Models/StudentSideBarInfo';
-//import { userInfo } from 'os';
-
 
 export default{
     setup(){
-        const requestString = ref('');
         const requestTypes = ref<RequestTypes[]>([]);
         const selectedRequestType = ref<number>(0);
         const requestRequirements = ref<RequestRequirement[]>([]);
@@ -56,6 +51,7 @@ export default{
         const multiReq = ref('');
         const requirementValues = ref<Record<string, unknown>>({});
         const requirementValuesMulti = ref<Record<string, unknown>>({});
+        const requestInfo = ref('');
         const showRequirements = () => {
             if (selectedRequestType.value == 0 || selectedRequestType.value == null) {
                 console.log("False: " + selectedRequestType.value); //debug
@@ -66,11 +62,19 @@ export default{
             return true;
         }
         const submitRequest = () => {
-            const request = new Request(userInfo.value!.getId(), selectedRequestType.value , requestTypes.value[selectedRequestType.value].getRequestName(), 'addition', 1, 'studentComment');
+            const request = new Request(userInfo.value!.getId(), selectedRequestType.value , requestTypes.value[selectedRequestType.value - 1].getRequestName(), requestInfo.value, 1, 'studentComment');
             const studentRequestHandler = new StudentRequestHandler();
             studentRequestHandler.makeRequest(request);
             console.log("Submit Request");
+            console.log(request);
         }
+        const updateRequestInfo = () => {
+            requestInfo.value = `${userInfo!.value?.getId()} numaralı öğrencinizim. `+  Object.entries(requirementValues.value).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
+            Object.entries(requirementValuesMulti.value).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '');
+            console.log(requestInfo.value)
+        }
+        watch(requirementValues, updateRequestInfo, { deep: true });
+        watch(requirementValuesMulti, updateRequestInfo, { deep: true });
         watch(selectedRequestType, async (newVal, oldVal) => {
             //to clear requestRequirements
             requestRequirements.value = [];
@@ -135,8 +139,8 @@ export default{
             multiReq,
             requirementValues,
             requirementValuesMulti,
-            requestString
-        }
+            requestInfo,
+                }
     },
     data (){
         return {

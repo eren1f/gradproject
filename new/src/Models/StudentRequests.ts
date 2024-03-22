@@ -3,13 +3,15 @@ export class StudentRequests {
     private currentIndex: number;
     private information: String;
     private status: string;
+    private addition: string;
     private whenCreated: Date;
 
-    constructor(studentId: number, currentIndex: number, information: String, status: string, whenCreated: Date) {
+    constructor(studentId: number, currentIndex: number, information: String, status: string, addition: string, whenCreated: Date) {
         this.studentId = studentId;
         this.currentIndex = currentIndex;
         this.information = information;
         this.status = status;
+        this.addition = addition;
         this.whenCreated = whenCreated;
     }
 
@@ -31,6 +33,9 @@ export class StudentRequests {
 
     getWhenCreated(): Date {
         return this.whenCreated;
+    }
+    getAddition(): string {
+        return this.addition;
     }
 
     getWhenCreatedFormatted(): string {

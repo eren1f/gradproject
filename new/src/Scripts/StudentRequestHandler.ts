@@ -72,6 +72,7 @@ export class StudentRequestHandler {
                 request.currentIndex,
                 request.information,
                 request.status,
+                request.addition,
                 new Date(request.when),
             ));
             return res;
