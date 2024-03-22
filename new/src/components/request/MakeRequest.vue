@@ -24,8 +24,8 @@
     <div v-if="showRequirements()" class="flex flex-col items-center md:items-start p-4 text-white">
         <h2 class="text-lg font-semibold mb-2">Öğrenci Açıklaması</h2>
         <!-- FOR EXAMPLE: KEY=BIL343 VALUE=KODLU DERSIN UPDATE YOUR DB PRETEXT COLUMN-->
-        <textarea class="w-[90%] md:w-[36%] p-2 border rounded bg-gray-600"
-        :value="Object.entries(requirementValues).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
+        <textarea class="w-[90%] md:w-[36%] p-2 border rounded bg-gray-600" 
+        :value="`${userInfo!.getId()} numaralı öğrencinizim. `+ Object.entries(requirementValues).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
         Object.entries(requirementValuesMulti).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '')"
         placeholder="Lütfen bilgilerinizi eksiksiz yazınız.">
         </textarea>
@@ -42,14 +42,16 @@ import { RequestRequirement } from '@/Models/RequestRequirements';
 import { StudentRequestHandler } from '@/Scripts/StudentRequestHandler';
 import { Request } from '@/Models/Request';
 import { StudentSideBarInfo } from '@/Models/StudentSideBarInfo';
+//import { userInfo } from 'os';
 
 
 export default{
     setup(){
+        const requestString = ref('');
         const requestTypes = ref<RequestTypes[]>([]);
         const selectedRequestType = ref<number>(0);
         const requestRequirements = ref<RequestRequirement[]>([]);
-        const userInfo = ref<StudentSideBarInfo[]>([]);
+        const userInfo = ref<StudentSideBarInfo>();
         const singleReq = ref('');
         const multiReq = ref('');
         const requirementValues = ref<Record<string, unknown>>({});
@@ -64,7 +66,7 @@ export default{
             return true;
         }
         const submitRequest = () => {
-            const request = new Request(userInfo.value[0].getId(), selectedRequestType.value , 'info', 'addition', 1, 'studentComment');
+            const request = new Request(userInfo.value!.getId(), selectedRequestType.value , requestTypes.value[selectedRequestType.value].getRequestName(), 'addition', 1, 'studentComment');
             const studentRequestHandler = new StudentRequestHandler();
             studentRequestHandler.makeRequest(request);
             console.log("Submit Request");
@@ -120,7 +122,7 @@ export default{
 
             const data2 = await response2.json();
             const studentInfo = new StudentSideBarInfo(data2.firstname, data2.lastname, data2.id);
-            userInfo.value.push(studentInfo);
+            userInfo.value=(studentInfo);
         })
         return {
             requestTypes, 
@@ -133,6 +135,12 @@ export default{
             multiReq,
             requirementValues,
             requirementValuesMulti,
+            requestString
+        }
+    },
+    data (){
+        return {
+            requestValue: '',
         }
     }
 }

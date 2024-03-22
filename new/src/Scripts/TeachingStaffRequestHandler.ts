@@ -26,7 +26,7 @@ export class TeachingStaffRequestHandler {
                 item.studentDepartment,
                 item.requestTypeId,
                 item.requestTypeName,
-                item.currentIndex,
+                item.current_index,
                 item.information,
                 new Date(item.whenCreated),
                 item.currentActorId
@@ -37,10 +37,10 @@ export class TeachingStaffRequestHandler {
     }
 
     async acceptRequest(studentId:number,requestTypeId:number,when:string,currentIndex:number): Promise<any>{
-        const url= apiRoute + "/acceptRequest";
+        const url= apiRoute + "acceptRequest";
         try {
             const response = await fetch(url, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },

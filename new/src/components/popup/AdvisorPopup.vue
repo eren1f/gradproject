@@ -45,8 +45,14 @@
 
 <script lang="ts">
 import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
+import { WaitingRequests } from '@/Models/WaitingRequests';
 export default {
-  props: ['request'],
+  props: {
+    request: {
+      type: WaitingRequests,
+      default: null
+    }
+  },
   data() {
     return {
       popupVisible: false,
@@ -61,13 +67,14 @@ export default {
     acceptRequest() {
       this.popupVisible = false;
       let requestHandler = new TeachingStaffRequestHandler();
-      requestHandler.acceptRequest(this.request.getId(), this.request.getRequestType(), this.request.getWhenCreated(), this.request.getCurrentIndex());
+      requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
     }
   },
   watch: {
     request(newVal) {
       if (newVal !== null) {
         this.popupVisible = true;
+        console.log(this.request);
       }
     }
   }
