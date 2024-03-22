@@ -35,7 +35,7 @@ export class Auth {
     }
 
     async logoutTokenDeleter() {
-        const url = "http://localhost:8080/letmeout";
+        const url = "http://localhost:8080/logout";
         const response = await fetch(url, {
             method: 'GET',
             headers: {

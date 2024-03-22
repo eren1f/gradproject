@@ -75,6 +75,7 @@ export class StudentRequestHandler {
                 request.addition,
                 new Date(request.when),
             ));
+            console.log(res); 
             return res;
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);

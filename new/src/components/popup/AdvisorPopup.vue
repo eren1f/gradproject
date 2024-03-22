@@ -35,7 +35,7 @@
         </div>
         <div class="flex justify-between mt-4">
           <button @click="togglePopup" class="bg-blue-500 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
-          <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full mx-2">Reddet</button>
+          <button @click="rejectRequest" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full mx-2">Reddet</button>
           <button @click="acceptRequest" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
         </div>
       </div>
@@ -68,6 +68,14 @@ export default {
       this.popupVisible = false;
       let requestHandler = new TeachingStaffRequestHandler();
       requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+    },
+    rejectRequest(){
+      this.popupVisible = false;
+      let requestHandler = new TeachingStaffRequestHandler();
+      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+      alert("Talep reddedildi.");
+      //reload page
+      location.reload();
     }
   },
   watch: {

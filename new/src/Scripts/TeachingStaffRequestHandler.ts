@@ -63,7 +63,31 @@ export class TeachingStaffRequestHandler {
         }
     }
 
-    async rejectRequest(){
+    async rejectRequest(studentId:number, requestTypeId:number, when:string, currentIndex:number): Promise<any>{
+        const url= apiRoute + "rejectRequest";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    studentId: studentId,
+                    requestTypeId: requestTypeId,
+                    when: when,
+                    currentIndex: currentIndex
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        }
+        catch (error) {
+            throw new Error(`HTTP error! status: ${error}`);
+        }
 
     }
 }

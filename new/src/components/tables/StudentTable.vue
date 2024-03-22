@@ -13,7 +13,7 @@
                 <strong>Talep Türü:</strong>  {{ selectedRequest.getInformation() }}<br>
                 <strong>Oluşturulan Tarih:</strong> {{ formatDate(selectedRequest.getWhenCreated()) }}<br>
                 <strong>Talep Durumu:</strong> {{ selectedRequest.getStatus() }}<br>
-                <strong>Öğrenci Açıklaması:</strong> {{ selectedRequest ? selectedRequest.getAddition() : '' }}<br>
+                <strong>Öğrenci Açıklaması:</strong> {{  selectedRequest.getAddition() }}<br>
                 </p>
             </div>
           </div>
