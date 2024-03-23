@@ -12,7 +12,7 @@
                 <strong>Öğrenci Numarası:</strong> {{ selectedRequest.getStudentId() }}<br>
                 <strong>Talep Türü:</strong>  {{ selectedRequest.getInformation() }}<br>
                 <strong>Oluşturulan Tarih:</strong> {{ formatDate(selectedRequest.getWhenCreated()) }}<br>
-                <strong>Talep Durumu:</strong> {{ selectedRequest.getStatus() }}<br>
+                <strong>Talep Durumu:</strong> {{ translateStatus(selectedRequest.getStatus()) }}<br>
                 <strong>Öğrenci Açıklaması:</strong> {{  selectedRequest.getAddition() }}<br>
                 </p>
             </div>
@@ -38,13 +38,13 @@
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('requestTypeId')">
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byRequestName')">
                       TALEP TÜRÜ
                     </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('time')">
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byDate')">
                       GÖNDERİLEN TARİH
                     </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('status')">
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byStatus')">
                       TALEP DURUMU
                     </th>
                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -52,12 +52,12 @@
                  </tr>
               </thead>
               <tbody class="bg-gray-50">
-                <template v-for="(request, index) in paginatedRequests" :key="request.studentId">
+                <template v-for="(request, index) in paginatedRequests">
                   <!-- Table Row -->
                   <tr>
                     <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getInformation()  }}</td> 
                     <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ formatDate(request.getWhenCreated()) }}</td>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getStatus() }}</td>
+                    <td class="px-6 py-3 whitespace-nowrap text-sm" :class="statusColored(request.getStatus())">{{ translateStatus(request.getStatus()) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <!-- Toggle button to show additional information -->
                       <button @click="toggleDetails(index)" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
@@ -96,16 +96,50 @@
 import { ref, onMounted, computed } from 'vue';
 import { StudentRequestHandler } from '../../Scripts/StudentRequestHandler';
 import { StudentRequests } from '../../Models/StudentRequests';
-import { useRouter } from 'vue-router';
 
 const searchQuery = ref('');
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
-const allRequests = ref<StudentRequests[]>([]);
-const router = useRouter();
 const requests = ref<StudentRequests[]>([]);
 const totalEntries = ref(0);
+const filteredRequests = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase();
+  let result = requests.value;
+  if(query) {
+    // Search by request name
+    result = result.filter(request =>
+      request.getInformation().toLowerCase().includes(query) ||
+      request.getInformation().toLowerCase().split(' ').reverse().join(' ').includes(query)
+    )
+  }
+  // Sort by date
+  result.sort((a, b) => new Date(b.getWhenCreated()).getTime() - new Date(a.getWhenCreated()).getTime());
+  return result;
+})
+const totalPages = computed(() => {
+  totalEntries.value = filteredRequests.value.length;
+    return Math.ceil(totalEntries.value / itemsPerPage);
+  })
+const paginatedRequests = computed(() => {
+  const startIndex = (currentPage.value - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return filteredRequests.value.slice(startIndex, endIndex);
+})
 
+function statusColored(status: string){
+  if (status === 'ACCEPTED') return 'text-green-600';
+  if (status === 'WAITING') return 'text-yellow-600';
+  if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
+  if (status === 'REJECTED') return 'text-red-600';
+  return 'bg-gray-100 text-gray-800';
+}
+function translateStatus(status: string){
+  if (status === 'ACCEPTED') return 'Kabul Edildi';
+  if (status === 'WAITING') return 'Beklemede';
+  if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
+  if (status === 'REJECTED') return 'Reddedildi';
+  return 'Bilinmeyen';
+}
 function formatDate(dateString: Date): string {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -115,27 +149,6 @@ function formatDate(dateString: Date): string {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
-
-const filteredRequests = computed(() => {
-  const query = searchQuery.value.trim().toLowerCase();
-  if(!query) return requests.value;
-  // Search by request name
-  return requests.value.filter(request =>
-    request.getFullName().toLowerCase().includes(query) ||
-    request.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-  )
-})
-
-const totalPages = computed(() => {
-  totalEntries.value = filteredRequests.value.length;
-    return Math.ceil(totalEntries.value / itemsPerPage);
-  })
-
-const paginatedRequests = computed(() => {
-  const startIndex = (currentPage.value - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  return filteredRequests.value.slice(startIndex, endIndex);
-})
 export default {
   data() {
         return {
@@ -148,7 +161,9 @@ export default {
           showModal: false,
           selectedRequest: {} as StudentRequests,
           hasCommented: false,
-          formatDate
+          formatDate,
+          statusColored,
+          translateStatus
         };
       },
       methods: {
@@ -162,34 +177,30 @@ export default {
             this.currentPage++;
           }
         },
-
         setCurrentPage(page: number){
           this.currentPage = page;
         },
-        // sortByColumn(columnName: string) {
-        //   requests.value.sort((a, b) => {
-        //       if (columnName === 'name') {
-                 
-        //         const fullNameA = a.getFullName ? a.getFullName().toLowerCase() : '';
-        //         const fullNameB = b.getFullName ? b.getFullName().toLowerCase() : '';                  
-        //           if (fullNameA < fullNameB) return -1;
-        //           if (fullNameA > fullNameB) return 1;
-        //           return 0;
-        //       } else if (columnName === 'id') {
-                  
-        //           const idA = parseInt(a[columnName]);
-        //           const idB = parseInt(b[columnName]);
-        //           return idA - idB;
-        //       } else {
-                  
-        //           const aValue = a[columnName]?.toLowerCase();
-        //           const bValue = b[columnName]?.toLowerCase();
-        //           if (aValue < bValue) return -1;
-        //           if (aValue > bValue) return 1;
-        //           return 0;
-        //       }
-        //   });
-        // },
+        sortByColumn(columnName: string) {
+          requests.value.sort((a, b) => {
+              if (columnName === 'byRequestName') {
+                const fullNameA = a.getInformation ? a.getInformation().toLowerCase() : '';
+                const fullNameB = b.getInformation ? b.getInformation().toLowerCase() : '';                  
+                  if (fullNameA < fullNameB) return -1;
+                  if (fullNameA > fullNameB) return 1;
+                  return 0;
+              } else if (columnName === 'byDate') {
+                const timeA = new Date(a.getWhenCreated()).getTime();
+                const timeB = new Date(b.getWhenCreated()).getTime();
+                return timeB - timeA;
+              } else { // byStatus
+                const statusA = a.getStatus ? a.getStatus().toLowerCase() : '';
+                const statusB = b.getStatus ? b.getStatus().toLowerCase() : '';
+                if (statusA < statusB) return -1;
+                if (statusA > statusB) return 1;
+                return 0;
+              }
+          });
+        },
         toggleDetails(index: number){
           // Fetch the data from the database
           this.selectedRequest = this.paginatedRequests[index];

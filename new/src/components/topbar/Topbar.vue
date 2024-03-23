@@ -4,10 +4,10 @@
             <span class="material-symbols-outlined ml-[1%] text-white" style="font-size: 200%">account_circle</span>
             <div class="flex flex-col ml-[1%]" style="font-size: 50%">
                 <div class="flex flex-row">
-                    <p class="font-bold m-[2%] text-white">{{ user.firstname }}</p>
-                    <p class="font-bold m-[2%] text-white">{{ user.lastname }}</p>
+                    <p class="font-bold m-[2%] text-white">{{ userInfo?.getFirstname() }}</p>
+                    <p class="font-bold m-[2%] text-white">{{ userInfo?.getLastname() }}</p>
                 </div>
-                <p class="font-thin m-[2%] text-white">{{ user.role }}</p>
+                <p class="font-thin m-[2%] text-white">{{ userInfo?.getRole() }}</p>
             </div>
         </div>
         <h6 class="font-extrabold text-white" style="font-size: 150%;">EDUFLOW</h6>
@@ -40,20 +40,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Auth } from '@/Scripts/Auth';
+import { UserInfo } from '@/Models/UserInfo';
+import { useRoute } from 'vue-router';
 import router from '@/router';
 
-export default defineComponent({
+export default{
     name: 'Topbar',
     setup() {
-        const handleClick = async() => {
-            const authHandler = new Auth();
-            const res = await authHandler.logoutTokenDeleter();
-            if(res == 0)
-                router.push('/');
-        };
-
+        const route = useRoute();
+        const userInfo = ref<UserInfo>();
         const showNotifications = ref(false);
         const notifications = ref([
             // Add your notifications here
@@ -65,18 +62,33 @@ export default defineComponent({
             { id: 6, content: 'Notification 6' },
             // ...
         ]);
-        const user = ref(
-            {firstname: 'Isim', 
-            lastname: 'Soyisim', 
-            role: 'Rol'}
-        );
-
+        const handleClick = async() => {
+            const authHandler = new Auth();
+            const res = await authHandler.logoutTokenDeleter();
+            if(res == 0)
+                router.push('/');
+        };
+        onMounted(async() => {
+            //User Name -->
+            const url = "http://localhost:8080/userInformation";
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            })
+            const data = await response.json();
+            const UserInfos = new UserInfo(data.id, data.name, data.surname, data.email, data.departmentId, data.adviserId, data.password, data.role, data.fullName, data.firstname, data.lastname, data.advisorId);
+            if (UserInfos.getRole() == null) { UserInfos.setRole('Öğrenci'); }
+            userInfo.value = (UserInfos);
+        });
         return {
             handleClick,
             showNotifications,
             notifications,
-            user
+            userInfo,
         };
     }
-});
+};
 </script>
