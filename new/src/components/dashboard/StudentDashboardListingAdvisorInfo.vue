@@ -1,17 +1,21 @@
 <template>
-    <div class=" md:px-1 ">
-        <div class="flex items-center bg-white shadow-lg rounded-lg overflow-hidden mt-4">
-            <div class="p-4">
-                <div class="pl-4">
-                <img src="../assets/user.png" alt="" class="w-24 h-24 object-cover rounded-md">
-                </div>
-                <p class="text-xl font-semibold">{{ advisorFirstname }} {{ advisorLastname }}</p>
+    <div class="px-1 md:px-4">
+        <div class="flex flex-col md:flex-row items-center justify-center bg-white shadow-lg rounded-lg overflow-hidden mt-4">
+            <div class="p-2 md:p-4 flex flex-col items-center">
+                <img src="../assets/user.png" alt="" class="w-32 h-32 object-cover rounded-md">
+                <p class="text-lg md:text-xl font-bold">{{ advisorFirstname }} {{ advisorLastname }}</p>
             </div>
-            <div class="p-4">
-                <div class="text-lg font-semibold">Danışman Bilgileri</div>
-                <div class="text-gray-600">Bölümü: {{ advisorDepartment }}</div>
-                <div class="text-gray-600">Telefon: {{ advisorPhoneNumber }}</div>
-                <div class="text-gray-600">Web: {{ advisorWeb }}</div>
+            <div class="md:p-4 flex flex-col items-center md:items-start">
+                <div class="pb-2 text-md md:text-lg font-bold">Danışman Bilgileri</div>
+                <div class="pb-1 text-gray-600 font-semibold flex items-center">Bölümü:
+                    <p class="font-light ml-2"> {{ advisorDepartment }}</p>
+                </div>
+                <div class="pb-1 text-gray-600  font-semibold flex items-center">Telefon:
+                    <p class="font-light ml-2">{{ advisorPhoneNumber }}</p>
+                </div>
+                <div class="pb-1 text-gray-600  font-semibold flex items-center">Web:
+                    <p class="font-light ml-2">{{ advisorWeb }}</p>
+                </div>
             </div>
         </div>
     </div>

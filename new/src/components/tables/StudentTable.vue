@@ -1,66 +1,71 @@
 <template>
-      <!-- Request Details Modal -->
-      <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-        <div class="bg-white p-[5%] m-[10%] rounded-lg">
-          <h2 class="text-xl font-bold mb-4">Talep Detayları</h2>
-          <!-- Request Details -->
-          <div class="sm:flex sm:items-start">
-          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <div class="mt-2">
-              <p class="text-sm text-gray-500">
-                <!--TODO DB CONNECTION-->
-                <strong>Öğrenci Numarası:</strong> {{ selectedRequest.getStudentId() }}<br>
-                <strong>Talep Türü:</strong>  {{ selectedRequest.getInformation() }}<br>
-                <strong>Oluşturulan Tarih:</strong> {{ formatDate(selectedRequest.getWhenCreated()) }}<br>
-                <strong>Talep Durumu:</strong> {{ translateStatus(selectedRequest.getStatus()) }}<br>
-                <strong>Öğrenci Açıklaması:</strong> {{  selectedRequest.getAddition() }}<br>
-                </p>
+    <!-- Request Details Modal -->
+    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75" @click="showModal = false">
+        <div class="bg-white p-[3%] m-[1%] rounded-lg shadow-lg" @click.stop>
+            <h2 class="text-2xl font-bold mb-4 text-gray-700">Talep Detayları</h2>
+            <!-- Request Details -->
+            <div class="sm:flex sm:items-start">
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <div class="mt-2">
+                        <p class="text-sm text-left text-gray-500">
+                            <strong class="text-gray-700">Öğrenci Numarası:</strong> {{ selectedRequest.getStudentId() }}<br>
+                            <strong class="text-gray-700">Talep Türü:</strong>  {{ selectedRequest.getInformation() }}<br>
+                            <strong class="text-gray-700">Oluşturulan Tarih:</strong> {{ formatDate(selectedRequest.getWhenCreated()) }}<br>
+                            <strong class="text-gray-700">Talep Durumu:</strong> {{ translateStatus(selectedRequest.getStatus()) }}<br>
+                            <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{  selectedRequest.getAddition() }}<br>
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-          <div class="flex justify-end mt-4">
-            <button @click="showModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-[2%] px-[2%] rounded">
-              Geri Dön
-            </button>
-          </div>
+            <div class="flex justify-end mt-4">
+                <button @click="showModal = false" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                    Geri Dön
+                </button>
+            </div>
         </div>
     </div>
-    <!--Staff Listing Table-->
+    <!--Student Request Table-->
     <div class="flex flex-col">
       <!-- SearchBar-->
-      <div class="px-2 my-4 flex justify-between">
+      <div class="px-[1%] my-[1%] flex self-center sm:self-start">
         <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
       </div>
       <!-- Table Content -->
-      <div class="px-2 my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+      <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
+        <div class="py-2 md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
+          <div class="shadow overflow-hidden rounded-lg">
+            <table class="w-full md:min-w-full">
+              <thead class="bg-gray-50 hidden md:table-header-group">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byRequestName')">
-                      TALEP TÜRÜ
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byDate')">
-                      GÖNDERİLEN TARİH
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byStatus')">
-                      TALEP DURUMU
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byRequestName')">
+                    TALEP TÜRÜ
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byDate')">
+                    GÖNDERİLEN TARİH
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byStatus')">
+                    TALEP DURUMU
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  </th>
                  </tr>
               </thead>
               <tbody class="bg-gray-50">
                 <template v-for="(request, index) in paginatedRequests">
                   <!-- Table Row -->
-                  <tr>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ request.getInformation()  }}</td> 
-                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">{{ formatDate(request.getWhenCreated()) }}</td>
-                    <td class="px-6 py-3 whitespace-nowrap text-sm" :class="statusColored(request.getStatus())">{{ translateStatus(request.getStatus()) }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                  <tr class="border border-gray-400">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Talep Türü</span>{{ request.getInformation() }}
+                    </td> 
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
+                    </td>
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell" :class="statusColored(request.getStatus())">
+                      <span class="table-cell font-bold text-gray-500 md:hidden">Talep Durumu</span>{{ translateStatus(request.getStatus()) }}
+                    </td>
+                    <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
                       <!-- Toggle button to show additional information -->
-                      <button @click="toggleDetails(index)" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
+                      <button @click="toggleDetails(index)" class="text-sm text-blue-600 hover:text-blue-900 font-bold">Detaylar</button>
                     </td>
                   </tr>
                 </template>
@@ -71,22 +76,25 @@
       </div>
       <!-- Pagination -->
       <div class="my-4">
-          <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-          <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-           Toplam {{ currentPage * itemsPerPage - itemsPerPage + 1 }} sonuç içerisinden {{ Math.min(currentPage * itemsPerPage, totalEntries) }} - {{ totalEntries }} görmektesiniz.</span>
-          <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-            <li>
-              <a href="#" @click.prevent="prevPage" :disabled="currentPage === 1" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                Önceki</a>
-            </li>
-            <li v-for="page in totalPages" :key="page">
-              <a href="#" @click.prevent="setCurrentPage(page)" :class="{ 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === currentPage, 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white': page !== currentPage }" class="flex items-center justify-center px-3 h-8 leading-tight">{{ page }}</a>
-            </li>
-            <li>
-              <a href="#" @click.prevent="nextPage" :disabled="currentPage === totalPages" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                Sonraki</a>
-            </li>
-          </ul>
+          <nav class="flex items-center flex-col md:flex-row justify-center md:justify-between pt-1" aria-label="Table navigation">
+            <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 md:inline md:w-auto">
+            Toplam {{ currentPage * itemsPerPage - itemsPerPage + 1 }} sonuç içerisinden {{ Math.min(currentPage * itemsPerPage, totalEntries) }} - {{ totalEntries }} görmektesiniz.
+            </span>
+            <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+              <li>
+                <button @click="prevPage" :disabled="currentPage === 1" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <span class="material-icons">chevron_left</span>
+                </button>
+              </li>
+              <li v-for="(page, index) in totalPages" :key="index">
+                <button @click="setCurrentPage(page)" :class="{ 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === currentPage, 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white': page !== currentPage }" class="flex items-center justify-center px-3 h-8 leading-tight">{{ page }}</button>
+              </li>
+              <li>
+                <button @click="nextPage" :disabled="currentPage === totalPages" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <span class="material-icons">chevron_right</span>
+                </button>
+              </li>
+            </ul>
           </nav>
       </div>
     </div>
@@ -98,7 +106,7 @@ import { StudentRequestHandler } from '../../Scripts/StudentRequestHandler';
 import { StudentRequests } from '../../Models/StudentRequests';
 
 const searchQuery = ref('');
-const itemsPerPage = 10; // default
+const itemsPerPage = 10; // default for student
 const currentPage = ref(1);
 const requests = ref<StudentRequests[]>([]);
 const totalEntries = ref(0);
@@ -202,9 +210,8 @@ export default {
           });
         },
         toggleDetails(index: number){
-          // Fetch the data from the database
+          // Fetch
           this.selectedRequest = this.paginatedRequests[index];
-          // Show the modal
           this.showModal = true;
         },
         submitComment(){

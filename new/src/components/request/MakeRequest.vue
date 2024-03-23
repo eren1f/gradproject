@@ -1,36 +1,38 @@
 <template>
-    <!-- Request Type DP -->
-    <div class="flex flex-col items-center md:items-start p-4 text-white">
-        <h2 class="text-lg font-semibold mt-4 mb-2">Talep Türü</h2>
-        <select v-model="selectedRequestType" class="w-[80%] md:w-[36%] p-2 border rounded bg-gray-600">
-            <option v-for="request in requestTypes" :key="request.getRequestTypeId()" :value="request.getRequestTypeId()">
-                {{ request.getRequestName() }}</option>
-        </select>
-    </div>
-    <!-- Request Requirements -->
-    <div v-if="showRequirements()" class="flex flex-col items-center md:items-start md:w-[39%] p-4 md:pl-4 text-white">
-        <h2 class="text-lg font-semibold mt-2 mb-2">Talep Gereksinimleri</h2>
-        <div v-for="(requirement, index) in requestRequirements" :key="index" class="flex flex-col md:flex-row items-center md:items-start py-2 text-white">
-            <p class="">{{ requirement.getName() }}</p>
-            <div v-if="requirement.getType() === 'single'" class="flex flex-col md:flex items-center md:items-start">
-                <input id="singleReq" type="text" v-model="requirementValues[requirement.getPretext()]" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600" placeholder="Doldur.">
-            </div>
-            <div v-if="requirement.getType() === 'multi'" class="flex flex-col md:flex items-center md:items-start" >
-                <input id="multiReq" type="text" v-model="requirementValuesMulti[requirement.getPretext()]" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600" placeholder="Doldur.">
+    <div class="sm:mx-auto sm:w-[50%] md:w-[70%] text-white text-left">
+        <!-- Request Type DP -->
+        <div class="flex flex-col items-center md:items-start">
+            <h2 class="text-lg font-semibold mt-4 mb-2">Talep Türü</h2>
+            <select v-model="selectedRequestType" class="w-full p-2 border rounded bg-gray-600">
+                <option v-for="request in requestTypes" :key="request.getRequestTypeId()" :value="request.getRequestTypeId()">
+                    {{ request.getRequestName() }}</option>
+            </select>
+        </div>
+        <!-- Request Requirements -->
+        <div v-if="showRequirements()" class="flex flex-col items-center md:items-stretch">
+            <h2 class="text-lg font-semibold mt-2 mb-2">Talep Gereksinimleri</h2>
+            <div v-for="(requirement, index) in requestRequirements" :key="index" class="flex flex-col text-center md:flex-row py-2 text-white">
+                <p class="">{{ requirement.getName() }}</p>
+                <div v-if="requirement.getType() === 'single'" class="md:ml-auto">
+                    <input id="singleReq" type="text" v-model="requirementValues[requirement.getPretext()]" class="w-32 p-2 mt-4 md:mt-0 border rounded bg-gray-600" placeholder="Doldur.">
+                </div>
+                <div v-if="requirement.getType() === 'multi'" class="md:ml-auto">
+                    <input id="multiReq" type="text" v-model="requirementValuesMulti[requirement.getPretext()]" class="w-32 p-2 mt-4 md:mt-0 border rounded bg-gray-600" placeholder="Doldur.">
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Student Reason -->
-    <div v-if="showRequirements()" class="flex flex-col items-center md:items-start p-4 text-white">
-        <h2 class="text-lg font-semibold mb-2">Öğrenci Açıklaması</h2>
-        <!-- FOR EXAMPLE: KEY=BIL343 VALUE=KODLU DERSIN UPDATE YOUR DB PRETEXT COLUMN-->
-        <textarea id="requestInfo" v-model="requestInfo" class="w-[90%] md:w-[36%] p-2 border rounded bg-gray-600"
-        placeholder="Lütfen bilgilerinizi eksiksiz yazınız.">
-        </textarea>
-    </div>
-    <!-- Submit Button -->
-    <div v-if="showRequirements()" class="flex flex-col items-center md:items-start p-4 text-white">
-        <button class="w-[36%] p-2 border rounded bg-gray-600 hover:bg-blue-500" @click="submitRequest">Gönder</button>
+        <!-- Student Reason -->
+        <div v-if="showRequirements()" class="flex flex-col items-center md:items-start">
+            <h2 class="text-lg font-semibold mt-2 mb-2">Öğrenci Açıklaması</h2>
+            <!-- FOR EXAMPLE: KEY=BIL343 VALUE=KODLU DERSIN UPDATE YOUR DB PRETEXT COLUMN-->
+            <textarea id="requestInfo" v-model="requestInfo" class="w-full h-28 p-2 border rounded bg-gray-600 resize-none scroll-ms-3"
+            placeholder="Lütfen bilgilerinizi eksiksiz yazınız.">
+            </textarea>
+        </div>
+        <!-- Submit Button -->
+        <div v-if="showRequirements()" class="flex flex-col items-center text-left p-4 text-white">
+            <button class="w-[36%] md:w-[50%] p-2 border rounded bg-gray-600 hover:bg-blue-500" @click="submitRequest">Gönder</button>
+        </div>
     </div>
 </template>
 <script lang="ts">

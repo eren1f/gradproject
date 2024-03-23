@@ -1,31 +1,31 @@
 <template>
-	<div class="box-border p-3 mx-[4%] my-[18%] md:mx-[3%] md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md">
-			<div class="md:flex flex-row">
-				<ul class="flex flex-col md:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-					<li>
-						<a href="#" @click="showDanismanBilgi" :class="{ 'selected-tab': activeTab === 'DanismanBilgileri' }"
-							class="flex flex-col md:inline-block py-3 md:px-3 rounded-lg">Danışman Bilgileri</a>
-					</li>
-					<li>
-						<a href="#" @click="showGTalepler" :class="{ 'selected-tab': activeTab === 'GonderilenTalep' }"
-							class="flex flex-col py-3 md:px-3 rounded-lg">Gönderilen Talepler</a>
-					</li>
-					<li>
-						<a href="#" @click="showYTalep" :class="{ 'selected-tab': activeTab === 'YeniTalep' }"
-							class="flex flex-col py-3 md:px-3 rounded-lg">Yeni Talep Oluştur</a>
-					</li>
-				</ul>
-			</div>
-		<div v-if="activeTab === 'DanismanBilgileri'">
-			<StudentDashboardListingAdvisorInfo />
-		</div>
-		<div v-if="activeTab === 'GonderilenTalep'">
-			<StudentTable />
-		</div>
-		<div v-if="activeTab === 'YeniTalep'">
-			<Request />
-		</div>
-	</div>
+    <div class="box-border p-[3%] mx-[1%] sm:mx-[2%] my-[18%] sm:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <div class="md:flex flex-row">
+                <ul class="flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+                    <li>
+                        <a href="#" @click="showDanismanBilgi" :class="{ 'selected-tab': activeTab === 'DanismanBilgileri' }"
+                            class="flex flex-col sm:inline-block py-3 sm:px-3 rounded-lg">Danışman Bilgileri</a>
+                    </li>
+                    <li>
+                        <a href="#" @click="showGTalepler" :class="{ 'selected-tab': activeTab === 'GonderilenTalep' }"
+                            class="flex flex-col py-3 sm:px-3 rounded-lg">Gönderilen Talepler</a>
+                    </li>
+                    <li>
+                        <a href="#" @click="showYTalep" :class="{ 'selected-tab': activeTab === 'YeniTalep' }"
+                            class="flex flex-col py-3 sm:px-3 rounded-lg">Yeni Talep Oluştur</a>
+                    </li>
+                </ul>
+            </div>
+        <div v-if="activeTab === 'DanismanBilgileri'">
+            <StudentDashboardListingAdvisorInfo />
+        </div>
+        <div v-if="activeTab === 'GonderilenTalep'">
+            <StudentTable />
+        </div>
+        <div v-if="activeTab === 'YeniTalep'">
+            <Request />
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -34,7 +34,6 @@ import StudentDashboardListingAdvisorInfo from '@/components/dashboard/StudentDa
 import Request from '@/views/StudentViews/Request.vue';
 import StudentTable from '@/components/tables/StudentTable.vue'
 const activeTab = ref('DanismanBilgileri');
-const selectedStaffs = ref([]);
 
 const showDanismanBilgi= () => {
 	activeTab.value = 'DanismanBilgileri'
