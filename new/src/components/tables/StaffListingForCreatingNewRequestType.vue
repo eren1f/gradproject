@@ -178,16 +178,17 @@ export default defineComponent({
             new_Actor_FullName.classList.add('flex', 'flex-row', 'justify-between', 'w-1/4');
             new_Actor_Department.classList.add('flex', 'flex-row', 'justify-between', 'w-1/4');
             new_Actor_Role.classList.add('flex', 'flex-row', 'justify-between', 'w-1/4');
-            move_up_button.classList.add('bg-green-500', 'text-white', 'rounded', 'p-1', 'hover:bg-green-700', 'hover:text-white');
-            move_down_button.classList.add('bg-green-500', 'text-white', 'rounded', 'p-1', 'hover:bg-green-700', 'hover:text-white');
+            move_up_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1', 'px-5', 'hover:bg-green-700', 'hover:text-white');
+            move_down_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1','px-5', 'hover:bg-green-700', 'hover:text-white');
             new_Actor_RemoveButton.classList.add('bg-red-500', 'text-white', 'rounded', 'p-1', 'hover:bg-red-700', 'hover:text-white');
 
             new_Actor_div.dataset.id = staffForAdminListing.getId().toString();
             new_Actor_FullName.innerHTML = staffForAdminListing.getFullName();
             new_Actor_Department.innerHTML = staffForAdminListing.getDepartment();
             new_Actor_Role.innerHTML = staffForAdminListing.getRole();
-            move_up_button.innerHTML = 'Move Up';
-            move_down_button.innerHTML = 'Move Down';
+            move_up_button.innerHTML = '&#8593;'; 
+            move_down_button.innerHTML = '&#8595;'; 
+
             new_Actor_RemoveButton.innerHTML = 'Remove';
 
             new_Actor_div.appendChild(new_Actor_FullName);

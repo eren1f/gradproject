@@ -18,6 +18,8 @@
           <div class="flex items-center">
             <label for="name-of-req" class="text-black">Name</label>
             <input id="name-of-req" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+            <label for="name-of-req" class="text-black">Pretext</label>
+            <input id="name-of-req" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
           </div>
 
           <div class="flex items-center mt-3">
@@ -42,10 +44,7 @@
         <div class="requirements-wrapper-div">
           <div class="flex items-center">
             <label for="name-of-req" class="text-black">Buraya eklenilmemiş aktörler listelenebilir oradan seçer</label>
-            
           </div>
-
-          
           <div class="flex justify-between mt-4 space-x-4">
     <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
     <button @click="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
@@ -101,8 +100,8 @@
         <div class=" p-8 rounded-lg">
             <h1 class="text-2xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
             <div class="mb-4 flex items-center">
-              <label for="Talep İsmi" class="mr-2 block text-m font-medium text-white"> Talep Ismi</label>
-              <input type="text" :placeholder="requestOnEdit.getName()" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+              <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Talep Ismi</label>
+              <input type="text" :placeholder="requestOnEdit.getName()" class="w-[50%] md:w-[25%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
             </div>
             <div class="mb-4 flex justify-between">
               <div class="mb-4 ">
@@ -110,20 +109,20 @@
                   <div class="overflow-y-auto max-h-[202px]">  
                       <div v-for="requirement in requestRequirements">
                         <div class="parent-div">
-                          <div class="flex">
-                            <label for="Gereksinim" class="mr-2 block text-m font-medium text-white">Gereksinim: {{ requirement.name }}</label>
-                            <input type="text" :placeholder="requirement.name" v-model="newRequirementName" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
-                            <label for="İndex" class="mr-2 block text-m font-medium text-white">Gereksinim Sırası: </label>
-                            <input type="number" :placeholder="requirement.index.toString()" v-model="newRequirementIndex" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                          <div class="flex ">
+                            <span for="Gereksinim" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Gereksinim: {{ requirement.name }}</span>
+                            <input type="text" :placeholder="requirement.name" v-model="newRequirementName" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
+                            <label for="İndex" class="inline-flex items-center bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-1 ml-1"> Sırası: </label>
+                            <input type="number" :placeholder="requirement.index.toString()" v-model="newRequirementIndex" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
                           </div>
                             <div class="mt-2 flex"> 
-                              <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteRequirement(requirement.requestTypeId,requirement.index)">Gereksinimi Sil </button><!-- "-->
-                              <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700" >Kaydet</button> <!--@click="updateRequirement(requirement, {requestTypeId: requirement.requestTypeId ,name: newRequirementName,index: newRequirementIndex})"-->
+                              <button class="px-4 py-2 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteRequirement(requirement.requestTypeId,requirement.index)">Gereksinimi Sil </button><!-- "-->        
                             </div>
                         </div>
                       </div>
                     </div>
                 <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup">Yeni Gereksinim Ekle</button>
+                <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700" >Gereksinimleri Kaydet</button> <!--@click="updateRequirement(requirement, {requestTypeId: requirement.requestTypeId ,name: newRequirementName,index: newRequirementIndex})"-->
               </div>
               <div class="mb-4 ">
                 <h2 class="text-2xl font-bold mb-5 text-white" >Talep Aktörleri</h2>
@@ -131,16 +130,17 @@
                  <div v-for="actor in requestActors"> 
                    <div class="actorParent-div">
                       <div class="flex">
-                        <p class="mr-2 block text-m font-medium text-white">Aktör Id: {{ actor.staffId }}, Aktör Rolü:,  </p>
-                        <label for="İndex" class="mr-2 block text-m font-medium text-white">Actor Sırası:</label>
-                        <input type="number" :placeholder="actor.index.toString()" class="mt-1 w-1/10 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                        <label class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Id: {{ actor.staffId }} <br/> Isim: {{ actor.name }} <br/> Rol: {{ actor.role }}   </label>
+                        <label for="İndex" class="inline-flex items-center bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Sırası:</label>
+                        <input type="number" :placeholder="actor.index.toString()" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-center border rounded bg-gray-600 text-white" />
                       </div>
-                      <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteActor(actor.requestTypeId,actor.staffId,actor.index)">Aktörü Talepten Sil</button> <!-- -->
-                      <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700">Kaydet</button>
+                      <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteActor(actor.requestTypeId,actor.staffId,actor.index)">Aktörü Talepten Sil</button> <!-- -->
                     </div>
                   </div>
                 </div>
                 <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Yeni Aktör Ekle</button>
+                <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700">Aktörleri Kaydet</button>
+                
               </div>
             </div>
           </div>
@@ -155,6 +155,7 @@
 import { defineComponent, ref } from 'vue';
 import RequestName from '@/components/request/createRequestType/RequestName.vue';
 import RequestCredentials from '../RequestCredentials.vue';
+//import AddActorPopup from '@/components/popup/AddActorPopUp.vue';
 import { watch } from 'fs';
 import { ListDepartments } from '@/Models/ListDepartments';
 import { RequestTypes } from '@/Models/RequestTypes';
@@ -187,6 +188,7 @@ data() {
     ActorPopup() {
       this.ActorPopupVisible = !this.ActorPopupVisible;
     }
+    
   },
 
 
@@ -221,7 +223,7 @@ data() {
       }
 
       const deleteRequestType = (id: number) => {
-        console.log(id);
+        
         handler.deleteRequestType(id);
         const tr = document.querySelector(`tr[data-id="${id}"]`)
         if (tr) {
@@ -243,7 +245,7 @@ data() {
         if (selectedDepartment.value != null){
           requestTypes.value = await handler.getRequestTypesByDepartmentId(selectedDepartment.value.getDepartmentId());
   
-          console.log(requestTypes.value);
+          
         }
       }
       
