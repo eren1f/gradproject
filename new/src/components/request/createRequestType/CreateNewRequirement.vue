@@ -4,7 +4,7 @@
             Create new requirement
         </button>
         <div class="overflow-auto max-h-80">
-        <Requirement v-for="req in requirements" :key="req.id" :id="req.id" :name="req.name" :multiSelect="req.multiSelect"
+        <Requirement v-for="req in requirements" :key="req.id" :id="req.id" :pretext="req.pretext" :name="req.name" :multiSelect="req.multiSelect"
             @delete="handleDeleteRequirement(req.id)" @move="handleMoveRequirement(req.id, $event)"
             @change="handleChange(req.id, $event)" />
         </div>
@@ -24,7 +24,7 @@ export default defineComponent({
         const requirements = ref([] as any[]);
 
         const handleCreateNewReqClick = () => {
-            requirements.value.push({ id: requirements.value.length, name: '', multiSelect: false });
+            requirements.value.push({ id: requirements.value.length, pretext: '', name: '', multiSelect: false });
         };
 
         const handleDeleteRequirement = (id: number) => {
@@ -45,9 +45,10 @@ export default defineComponent({
             }
         };
 
-        const handleChange = (id: number, { name, multiSelect }: { name: string, multiSelect: boolean }) => {
+        const handleChange = (id: number, { pretext, name, multiSelect }: { pretext: string, name: string, multiSelect: boolean }) => {
             const index = requirements.value.findIndex(req => req.id === id);
             if (index !== -1) {
+                requirements.value[index].pretext = pretext;
                 requirements.value[index].name = name;
                 requirements.value[index].multiSelect = multiSelect;
             }

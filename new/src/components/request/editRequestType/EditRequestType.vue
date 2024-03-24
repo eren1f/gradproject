@@ -98,8 +98,8 @@
 
       <div v-if="edit" >
         <div class=" p-8 rounded-lg">
-            <h1 class="text-2xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
-            <div class="mb-4 flex items-center">
+            <h1 class="flex w-1/2 text-2xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
+            <div class="mb-4 flex items-center w-1/2">
               <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Talep Ismi</label>
               <input type="text" :placeholder="requestOnEdit.getName()" class="w-[50%] md:w-[25%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
             </div>
@@ -110,19 +110,21 @@
                       <div v-for="requirement in requestRequirements">
                         <div class="parent-div">
                           <div class="flex ">
+                            <span for="Pretext" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Pretext: {{ requirement.pretext }}</span>
+                            <input type="text" :placeholder="requirement.pretext" v-model="newRequirementPretext" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
                             <span for="Gereksinim" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Gereksinim: {{ requirement.name }}</span>
                             <input type="text" :placeholder="requirement.name" v-model="newRequirementName" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
                             <label for="İndex" class="inline-flex items-center bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-1 ml-1"> Sırası: </label>
-                            <input type="number" :placeholder="requirement.index.toString()" v-model="newRequirementIndex" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
+                            <input type="number" :placeholder="requirement.index.toString()" v-model="newRequirementIndex" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white max-w-16" />
                           </div>
                             <div class="mt-2 flex"> 
-                              <button class="px-4 py-2 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteRequirement(requirement.requestTypeId,requirement.index)">Gereksinimi Sil </button><!-- "-->        
+                              <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteRequirement(requirement.requestTypeId,requirement.index)">Gereksinimi Sil </button><!-- "-->        
                             </div>
                         </div>
                       </div>
                     </div>
-                <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup">Yeni Gereksinim Ekle</button>
-                <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700" >Gereksinimleri Kaydet</button> <!--@click="updateRequirement(requirement, {requestTypeId: requirement.requestTypeId ,name: newRequirementName,index: newRequirementIndex})"-->
+                <button class="px-4 py-1 mt-2 mb-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup">Yeni Gereksinim Ekle</button>
+                <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700" >Gereksinimleri Kaydet</button> <!--@click="updateRequirement(requirement, {requestTypeId: requirement.requestTypeId ,name: newRequirementName,index: newRequirementIndex})"-->
               </div>
               <div class="mb-4 ">
                 <h2 class="text-2xl font-bold mb-5 text-white" >Talep Aktörleri</h2>
@@ -138,14 +140,14 @@
                     </div>
                   </div>
                 </div>
-                <button class="mt-5 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Yeni Aktör Ekle</button>
-                <button class="px-4 py-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700">Aktörleri Kaydet</button>
+                <button class="px-4 py-1 mt-2 mb-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Yeni Aktör Ekle</button>
+                <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700">Aktörleri Kaydet</button>
                 
               </div>
             </div>
           </div>
           <div class="flex justify-between p-8">
-            <button class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">İptal</button><!--  -->
+            <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">İptal</button><!--  -->
           </div> 
       </div>
   </div>

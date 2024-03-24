@@ -88,9 +88,11 @@
                     return;
                 }
                 const requirementsData = Array.from(allRequirements).map((requirementDiv) => {
-                    const nameInput = requirementDiv.querySelector('input[type="text"]') as HTMLInputElement;
+                    const pretextInput = requirementDiv.querySelector('#pretext-of-req') as HTMLInputElement;
+                    const nameInput = requirementDiv.querySelector('#name-of-req') as HTMLInputElement;
                     const checkboxInput = requirementDiv.querySelector('input[type="checkbox"]') as HTMLInputElement;
                     return {
+                        pretext: pretextInput ? pretextInput.value : '',
                         name: nameInput ? nameInput.value : '',
                         isMultiSelect: checkboxInput ? checkboxInput.checked : false
                     };
@@ -121,9 +123,10 @@
                     return {
                         requestTypeId: res,
                         index: index + 1,
+                        pretext: requirement?.pretext,
                         name: requirement?.name,
                         type: requirement?.isMultiSelect ? 'multi' : 'single',
-                        pretext: 'pretext'
+                        
                     };
                 });
                 await AdminRequestHandlerInstance.addNewRequestTypesActors(actorObjects);

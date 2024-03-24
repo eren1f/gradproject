@@ -1,7 +1,11 @@
 <template>
     <div class="requirements-wrapper-div">
         <div>
-            <label for="name-of-req" class="text-white">Name </label>
+            <label for="pretext-of-req" class="text-white">Pretext </label>
+            <input id="pretext-of-req" type="text" v-model="pretext" @input="emitChange" class="border rounded-md p-2 mt-2 ml-5 text-black bg-gray-100 w-40 h-8" >
+        </div>
+        <div class="mt-2">
+            <label for="name-of-req" class="text-white mr-2">Name </label>
             <input id="name-of-req" type="text" v-model="name" @input="emitChange" class="border rounded-md p-2 mt-2 ml-5 text-black bg-gray-100 w-40 h-8" >
         </div>
         <div>
@@ -24,10 +28,11 @@
 
     export default defineComponent({
         name: 'Requirement',
-        props: ['id', 'name', 'multiSelect'],
+        props: ['id', 'pretext',  'name', 'multiSelect'],
         setup(props, { emit }) {
             const name = ref(props.name);
             const multiSelect = ref(props.multiSelect);
+            const pretext = ref(props.pretext);
 
             const handleMoveUp = () => {
                 emit('move', 'up');
@@ -39,10 +44,10 @@
                 emit('delete');
             };
             const emitChange = () => {
-                emit('change', { id: props.id, name: name.value, multiSelect: multiSelect.value });
+                emit('change', { id: props.id,pretext: pretext.value, name: name.value, multiSelect: multiSelect.value });
             };
 
-            return { name, multiSelect, handleMoveUp, handleMoveDown, handleDeleteButton, emitChange };
+            return { pretext,name, multiSelect, handleMoveUp, handleMoveDown, handleDeleteButton, emitChange };
         },
     });
 </script>
