@@ -3,8 +3,8 @@
         <!-- Request Type DP -->
         <div class="flex flex-col items-center md:items-start">
             <h2 class="text-lg font-semibold mt-4 mb-2">Talep Türü</h2>
-            <select v-model="selectedRequestType" class="w-full p-2 border rounded bg-gray-600">
-                <option v-for="request in requestTypes" :key="request.getRequestTypeId()" :value="request.getRequestTypeId()">
+            <select v-model="selectedRequest" class="w-full p-2 border rounded bg-gray-600">
+                <option v-for="request in requestTypes"  :value="request">
                     {{ request.getRequestName() }}</option>
             </select>
         </div>
@@ -45,6 +45,7 @@ import { StudentSideBarInfo } from '@/Models/StudentSideBarInfo';
 
 export default{
     setup(){
+        const selectedRequest = ref<RequestTypes>();
         const requestTypes = ref<RequestTypes[]>([]);
         const selectedRequestType = ref<number>(0);
         const requestRequirements = ref<RequestRequirement[]>([]);
@@ -55,16 +56,17 @@ export default{
         const requirementValuesMulti = ref<Record<string, unknown>>({});
         const requestInfo = ref('');
         const showRequirements = () => {
-            if (selectedRequestType.value == 0 || selectedRequestType.value == null) {
-                console.log("False: " + selectedRequestType.value); //debug
+            if (selectedRequest.value?.getRequestTypeId() == 0 || selectedRequest.value == null) {
+                console.log("False: " + selectedRequest.value?.getRequestTypeId()); //debug
                 return false;
             }
-            console.log("True:  " +  selectedRequestType.value); //debug
+            //console.log("True:  " +  selectedRequest.value); //debug
             //console.log("True: " + requestRequirements.value)
             return true;
         }
         const submitRequest = () => {
-            const request = new Request(userInfo.value!.getId(), selectedRequestType.value , requestTypes.value[selectedRequestType.value - 1].getRequestName(), requestInfo.value, 1, 'studentComment');
+            const request = new Request(userInfo.value!.getId(), selectedRequest.value!.getRequestTypeId(), selectedRequest.value!.getRequestName() ,requestInfo.value, 1, 'studentComment');
+            //const request = new Request(userInfo.value!.getId(), selectedRequestType.value , requestTypes.value[selectedRequestType.value - 1].getRequestName(), requestInfo.value, 1, 'studentComment');
             const studentRequestHandler = new StudentRequestHandler();
             studentRequestHandler.makeRequest(request);
             console.log("Submit Request");
@@ -77,13 +79,14 @@ export default{
         }
         watch(requirementValues, updateRequestInfo, { deep: true });
         watch(requirementValuesMulti, updateRequestInfo, { deep: true });
-        watch(selectedRequestType, async (newVal, oldVal) => {
+        watch(selectedRequest, async (newVal, oldVal) => {
             //to clear requestRequirements
+            console.log("request type ıd: "+ newVal!.getRequestTypeId());
             requestRequirements.value = [];
             requirementValues.value = {};
             requirementValuesMulti.value = {};
             if (newVal !== null) {
-                const url2 = `http://localhost:8080/requestRequirements/${newVal}`;
+                const url2 = `http://localhost:8080/requestRequirements/${newVal!.getRequestTypeId()}`;
                 const response2 = await fetch(url2, {
                     method: 'GET',
                     headers: {
@@ -142,6 +145,7 @@ export default{
             requirementValues,
             requirementValuesMulti,
             requestInfo,
+            selectedRequest
                 }
     },
     data (){
