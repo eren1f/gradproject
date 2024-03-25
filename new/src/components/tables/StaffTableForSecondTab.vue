@@ -22,83 +22,50 @@
                     Bölüm
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
-                    E-Posta
+                    Tarih
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
                     Talep Türü
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
-                    Durum
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   </th>
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <template v-for="(student, index) in paginatedStudents" :key="student.getId()">
+              <template v-for="(request) in allRequests"  :key ="request.getWhenCreated()">
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render student id -->
-                    {{ student.getId() }}
+                    {{ request.getStudentId() }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
-                    {{ student.getFullName() }}
+                    {{ request.studentName }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff department -->
-                    {{ student.getDepartment() }}
+                    {{ request.studentDepartment }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff email -->
-                    {{ student.getEmail() }}
+                    {{ formatDate(request.getWhenCreated()) }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
-                    {{ student.getRequestTypeName() }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <!-- Render staff Request STATUS-->
-                    {{  }}
+                    {{ request.getRequestTypeName() }}
                   </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <!-- Toggle button to show/hide additional information -->
-                  <button @click="toggleDetails(index)" class="text-indigo-600 hover:text-indigo-900">Toggle Details</button>
+<!--                   <div> 
+                    <AdvisorPopup /> 
+                  </div> -->
+                   
+                      <!-- Toggle button to show additional information -->
+                      <button @click="toggleDetails()" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
+                    
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
-               <tr v-if="expandedRows.includes(index)">
-                <td colspan="2" class="px-6 py-4 whitespace-nowrap">
-                <div class="overflow-y-scroll h-24 pr-4 ">
-                  <template v-if="showEditStaffModal">
-                    <input v-model="student.id" type="text" class="p-1 border rounded">
-                  </template>
-                  <template v-else>
-                    <div>
-                      {{ student.getId() }}
-                      <h1 class="font-bold">TALEP ILE ILGILI EK DETAYLAR</h1>
-                      <p>Who killed captain alex ?</p>
-                      <p>dummy text</p>
-                      <p>dummy text</p>
-                      <p>dummy text</p>
-                    </div>
-                  </template>
-                </div>
-              </td>
-              <td colspan="3" class="px-6 py-4 whitespace-nowrap">
-                <div>
-                  <textarea class="border rounded border-gray-950 w-full h-24 resize-none m-1" readonly>Yaralim.
-                  </textarea>
-                </div>
-                <textarea placeholder="Talep Aciklamasi Giriniz" class="border rounded border-gray-950 w-full h-24 resize-none m-1"></textarea>
-              </td>
-              <td>
-                <div class="flex  flex-col">
-                  <button class="px-2 py-2 m-1 border rounded border-gray-900 bg-green-500 text-black">Onayla</button>
-                  <button class="px-2 py-2 m-1 border rounded border-gray-900 bg-red-500 text-black">Reddet</button>
-                </div>
-              </td>
-              </tr>
               </template>
             </tbody>
           </table>
@@ -132,15 +99,16 @@
 import { ref, computed, onMounted } from 'vue';
 //import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
+import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
+import { WaitingRequests } from '@/Models/WaitingRequests';
+const allRequests = ref <WaitingRequests[]>([]);
 const searchQuery = ref('');
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
-const allStudents = ref<StaffForAdminListing[]>([]);
 const students = ref<StudentForTeachingStaffListing[]>([]);
-const departments = ref<ListDepartments[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
 const filteredStudents = computed(() => {
@@ -163,10 +131,19 @@ const paginatedStudents = computed(() => {
   const endIndex = startIndex + itemsPerPage;
   return filteredStudents.value.slice(startIndex, endIndex);
 })
-const staffInfo = computed(() => {
+/* const staffInfo = computed(() => {
   staffId = TeachingStaff.getStaffId();
   return staffId;
-})
+}); */
+function formatDate(dateString: Date): string {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
   export default {
       data() {
         return {
@@ -174,12 +151,12 @@ const staffInfo = computed(() => {
           itemsPerPage,
           totalPages,
           totalEntries,
-          students,
-          departments,
           searchQuery,
           paginatedStudents,
-          staffInfo,
+          //staffInfo,
           expandedRows: [],
+          allRequests,
+          formatDate
         };
       },
       methods: {
@@ -221,34 +198,22 @@ const staffInfo = computed(() => {
               }
           });
         },
-        toggleDetails(index){
-          if(this.expandedRows.includes(index)){
+        toggleDetails(){
+/*           if(this.expandedRows.includes(index)){
             this.expandedRows = this.expandedRows.filter(i => i !== index );
           } else {
             this.expandedRows.push(index)
-          }
+          } */
         }
       },
       setup(){
         onMounted(async () => {
-          const url = apiRoute + 'listWaitingRequestsForStaff/'+'13';
-          const response = await fetch(url, {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              credentials: 'include',
-          })
-          const data = await response.json();
+          let requestHandler = new TeachingStaffRequestHandler();
 
-          allStudents.value = [];
-
-          for (let i = 0; i < data.length; i++) {
-              const student = new StudentForTeachingStaffListing(data[i].id, data[i].fullName, data[i].email, data[i].department, data[i].requestTypeName);
-              allStudents.value.push(student);
-          }
-          students.value = allStudents.value; 
-        });
-      }
-  };
+          const requests = await requestHandler.getAllRequestsForTeachingStaff();
+          
+          allRequests.value = requests;
+        })
+      },
+  }
 </script>

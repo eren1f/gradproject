@@ -4,7 +4,7 @@
     <!-- SearchBar -->
     <AdvisorPopup :request="selectedRequest"></AdvisorPopup>
     <div class="mb-2 mt-2 flex justify-between">
-      <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
+      <input type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
     </div>
     
     <!-- Table Content -->
@@ -63,43 +63,11 @@
                   </div> -->
                    
                       <!-- Toggle button to show additional information -->
-                      <button @click="toggleDetails(request)" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
+                      <button @click="toggleDetails(request as WaitingRequests)" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
                     
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
-               <tr v-if="expandedRows.includes(index)">
-                <td colspan="2" class="px-6 py-4 whitespace-nowrap">
-                <div class="overflow-y-scroll h-24 pr-4 ">
-                  <template v-if="showEditStaffModal">
-                    <input v-model="student.id" type="text" class="p-1 border rounded">
-                  </template>
-                  <template v-else>
-                    <div>
-                      {{ student.getId() }}
-                      <h1 class="font-bold">TALEP ILE ILGILI EK DETAYLAR</h1>
-                      <p>Who killed captain alex ?</p>
-                      <p>dummy text</p>
-                      <p>dummy text</p>
-                      <p>dummy text</p>
-                    </div>
-                  </template>
-                </div>
-              </td>
-              <td colspan="3" class="px-6 py-4 whitespace-nowrap">
-                <div>
-                  <textarea class="border rounded border-gray-950 w-full h-24 resize-none m-1" readonly>Yaralim.
-                  </textarea>
-                </div>
-                <textarea placeholder="Talep Aciklamasi Giriniz" class="border rounded border-gray-950 w-full h-24 resize-none m-1"></textarea>
-              </td>
-              <td>
-                <div class="flex  flex-col">
-                  <button class="px-2 py-2 m-1 border rounded border-gray-900 bg-green-500 text-black">Onayla</button>
-                  <button class="px-2 py-2 m-1 border rounded border-gray-900 bg-red-500 text-black">Reddet</button>
-                </div>
-              </td>
-              </tr>
               </template>
             </tbody>
           </table>
@@ -171,10 +139,10 @@ const paginatedStudents = computed(() => {
   const endIndex = startIndex + itemsPerPage;
   return filteredStudents.value.slice(startIndex, endIndex);
 })
-const staffInfo = computed(() => {
+/* const staffInfo = computed(() => {
   staffId = TeachingStaff.getId();
   return staffId;
-})
+}) */
 
 function formatDate(dateString: Date): string {
   const date = new Date(dateString);
@@ -248,7 +216,7 @@ function formatDate(dateString: Date): string {
             this.expandedRows.push(index)
           } */
           this.selectedRequest = request;
-          console.log(request);
+          //console.log(request);
           
         }
       },
