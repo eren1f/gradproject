@@ -12,23 +12,27 @@
   <div>
     <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-50">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-1/5 text-black"> <!-- Apply text-black class -->
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-3/10 text-black"> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Gereksinim</h2>
         <div class="requirements-wrapper-div">
-          <div class="flex items-center">
-            <label for="name-of-req" class="text-black">Name</label>
-            <input id="name-of-req" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
-            <label for="name-of-req" class="text-black">Pretext</label>
-            <input id="name-of-req" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+          <div class="flex flex-col"> 
+            <div>
+              <label for="pretext-of-req" class="text-black">Pretext</label>
+              <input id="pretext-of-req" v-model="newPretext" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+            </div>
+            <div>
+              <label for="name-of-req" class="text-black">Name</label>
+              <input id="name-of-req" v-model="newName" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
+            </div>  
           </div>
-
+          
           <div class="flex items-center mt-3">
               <label for="multi-select-button" class="text-black">Multi-Select</label>
-              <input id="multi-select-button" type="checkbox" class="border border-black mt-1 ml-2 form-checkbox h-4 w-4 text-indigo-600">
+              <input id="multi-select-button" v-model="newMultiSelect"type="checkbox" class="border border-black mt-1 ml-2 form-checkbox h-4 w-4 text-indigo-600">
           </div>
           <div class="flex justify-between mt-4 space-x-4">
     <button @click="togglePopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
-    <button @click="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
+    <button @click="addRequirement(requestOnEdit.getId(), newPretext, newName, newMultiSelect )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
           </div>
 
         </div>
@@ -107,10 +111,10 @@
               <div class="mb-4 ">
                 <h2 class="text-2xl font-bold mb-5 text-white">Talep Gereksinimleri</h2>
                   <div class="overflow-y-auto max-h-[202px]">  
-                      <div v-for="requirement in requestRequirements">
-                        <div class="parent-div">
+                      <div v-for="requirement in requestRequirements" v-bind:key="requirement.index" >
+                        <div :id="'parent-div-' + requirement.index" class="parent-div">
                           <div class="flex ">
-                            <span for="Pretext" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Pretext: {{ requirement.pretext }}</span>
+                            <span for="Pretext" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Pretext: {{ requirement.pretext }}  </span>
                             <input type="text" :placeholder="requirement.pretext" v-model="newRequirementPretext" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
                             <span for="Gereksinim" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Gereksinim: {{ requirement.name }}</span>
                             <input type="text" :placeholder="requirement.name" v-model="newRequirementName" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
@@ -163,7 +167,7 @@ import { ListDepartments } from '@/Models/ListDepartments';
 import { RequestTypes } from '@/Models/RequestTypes';
 import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
 import { ListRequestTypes } from '@/Models/ListRequestTypes';
-import  type { RequestRequirement } from '@/Models/RequestRequirements';
+import { RequestRequirement } from '@/Models/RequestRequirements';
 import type { RequestActor } from '@/Models/RequestActor';
 
 
@@ -177,19 +181,13 @@ export default defineComponent({
 
 data() {
     return {
-      popupVisible: false,
-      ActorPopupVisible: false,
+      
       showEditStaffModal: false,
       id: ""
     };
   },
   methods: {
-    togglePopup() {
-      this.popupVisible = !this.popupVisible;
-    },
-    ActorPopup() {
-      this.ActorPopupVisible = !this.ActorPopupVisible;
-    }
+    
     
   },
 
@@ -198,25 +196,41 @@ data() {
   setup() {
    const requestActors = ref<RequestActor[]>([]);
    const requestRequirements = ref<RequestRequirement[]>([]);
+    const requirementToAdd = new RequestRequirement(1,1,'','','');
    const requestTypes = ref<ListRequestTypes[]>([]);
    let requestOnEdit = new ListRequestTypes(1,' ');
    const edit = ref(false);
+   const popupVisible = ref(false);
+   const ActorPopupVisible = ref(false);
    const handler = new AdminRequestHandler();
    const selectedDepartment = ref<ListDepartments>();
-   
+  const newPretext = ref('');
+  const newName = ref('');
+  const newMultiSelect = ref(false); 
   
     const deleteRequirement = (id: number,index: number) => {
-      const parentDiv = document.querySelector('.parent-div');
+      const parentDiv = document.getElementById('parent-div-' + index);
       if (parentDiv) {
         parentDiv.remove();
       }
       handler.deleteRequestRequirement(id,index);
    }  
    
-
+   const addRequirement = async (id: number, pretext: string, name: string, type: boolean ) => {
+    requirementToAdd.setRequestTypeId(id);
+    requirementToAdd.setPretext(pretext);
+    requirementToAdd.setName(name);
+    requirementToAdd.setType(type ? 'multi' : 'single');
+    requirementToAdd.setIndex(requestRequirements.value.length + 1);
+    togglePopup();
+     requestRequirements.value.push(requirementToAdd);
+     handler.addNewRequestRequirement(requirementToAdd);
+   }  
+    //const parentDiv = document.querySelector('.parent-div');
+      //handler.addNewRequestRequirement(requirementToAdd); 
 
    
-   const deleteActor = (requestId:number, staffId: number, index: number) => {
+   const deleteActor =  (requestId:number, staffId: number, index: number) => {
     const parentDiv = document.querySelector('.actorParent-div');
       if (parentDiv) {
         parentDiv.remove();
@@ -236,9 +250,14 @@ data() {
 
     
       const cancel = () => {
-      edit.value = false;
+      edit.value = !edit.value;
     }
-    
+      const togglePopup= () => {
+       popupVisible.value = !popupVisible.value;
+      }
+      const ActorPopup= () => {
+        ActorPopupVisible.value = !ActorPopupVisible.value;
+      }
     
    
     const handleDepartmentChange = async ( newDepartment: ListDepartments ) => {
@@ -267,10 +286,15 @@ data() {
       
     // Return reactive variables and methods
     return {
+      togglePopup,
+      popupVisible,
+      ActorPopup,
+      ActorPopupVisible,
       edit,
       selectedDepartment,
       handleDepartmentChange,
       deleteRequirement,
+      addRequirement,
       editRequest,
       deleteActor,
       deleteRequestType,
@@ -278,7 +302,10 @@ data() {
       requestRequirements,
       requestOnEdit,
       requestActors,
-      requestTypes
+      requestTypes,
+      newPretext,
+      newName,
+      newMultiSelect,
     };
   }
 });

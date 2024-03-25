@@ -28,6 +28,23 @@ export class RequestRequirement {
     public getPretext(): string {
         return this.pretext;
     }
+    
+    public setRequestTypeId(requestTypeId: number): void {
+        this.requestTypeId = requestTypeId;
+    }
+    
+    public setIndex(index: number): void {
+        this.index = index;
+    }
+    
+    public setName(name: string): void {
+        this.name = name;
+    }
+    
+    public setType(type: string): void {
+        this.type = type;
+    }
+    
     public setPretext(pretext: string): void {
         this.pretext = pretext;
     }
