@@ -320,7 +320,7 @@ export class AdminRequestHandler {
         }
     }
 
-    async updateRequestRequirement( oldRequirement: RequestRequirement, newRequirement: RequestRequirement): Promise <RequestRequirement | null>{
+/*     async updateRequestRequirement( oldRequirement: RequestRequirement, newRequirement: RequestRequirement): Promise <RequestRequirement | null>{
         const url = apiRoute + "updateRequestRequirement/" + oldRequirement.requestTypeId + "/" + oldRequirement.index ;
         try {
             const response = await fetch(url, {
@@ -339,9 +339,51 @@ export class AdminRequestHandler {
         }catch (error) {
             return null;
         }
+    } */
+
+    async updateRequestRequirement(requirements: RequestRequirement[]): Promise <any>{
+        const url = apiRoute + "updateRequirements/"
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(requirements),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
     }
 
-    async updateRequestActor (oldActor: RequestActor, newActor: RequestActor): Promise <RequestActor | null>{
+    async updateRequestActor ( actors: RequestActor[]): Promise <any>{
+        const url = apiRoute + "updateActors/" ;
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(actors),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
+    }
+
+/*     async updateRequestActor (oldActor: RequestActor, newActor: RequestActor): Promise <RequestActor | null>{
         const url = apiRoute + "updateRequestActor/" + oldActor.requestTypeId + "/" + oldActor.staffId;
         try {
             const response = await fetch(url, {
@@ -360,7 +402,7 @@ export class AdminRequestHandler {
         }catch (error) {
             return null;
         }
-    }
+    } */
 
     async updateRequestType(request: RequestTypes): Promise<RequestTypes | null> {
         const url = apiRoute + "updateRequestType";
