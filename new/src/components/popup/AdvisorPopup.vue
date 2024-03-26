@@ -4,6 +4,10 @@
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
       <div class="relative bg-white rounded-lg shadow-xl p-4 w-3/4 h-5/7 text-black">
         <h2 class="text-lg font-bold mb-2 flex justify-between items-center">Talep Detayları
+          <div class="flex items-center ml-6">
+            <p class="mr-2">Talep Durumu:</p>
+            <span :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
+          </div>
           <div class="sm:flex sm:items-start">
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <div class="mt-2">
@@ -26,9 +30,10 @@
             <div>
               <p>
                 <strong class="text-gray-700">Öğrenci Numarası:</strong> {{ request.getStudentId() }}<br>
+                <strong class="text-gray-700">Öğrenci Adı:</strong> {{ request.getStudentName() }}<br>
                 <strong class="text-gray-700">Talep Türü:</strong> {{ request.getRequestTypeName() }}<br>
-                <strong class="text-gray-700">Talep Durumu:</strong> {{ request.getStatus() }}<br>
-                <strong class="text-gray-700">Talep Türü:</strong> {{ request.getStudentMail() }}<br>
+                
+                <strong class="text-gray-700">Öğrenci E-posta:</strong> {{ request.getStudentMail() }}<br>
                 <strong class="text-gray-700">Oluşturulan Tarih:</strong> {{ formatDate(request.getWhenCreated()) }}<br>
                 <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{ request.getInformation() }} <br>
               </p>
@@ -58,6 +63,21 @@
 import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 import { WaitingRequests } from '@/Models/WaitingRequests';
 
+function statusColored(status: string){
+  if (status === 'ACCEPTED') return 'text-green-600';
+  if (status === 'waiting') return 'text-yellow-600';
+  if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
+  if (status === 'REJECTED') return 'text-red-600';
+  return 'bg-gray-100 text-gray-800';
+}
+function translateStatus(status: string){
+  if (status === 'ACCEPTED') return 'Kabul Edildi';
+  if (status === 'waiting') return 'Beklemede';
+  if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
+  if (status === 'REJECTED') return 'Reddedildi';
+  return 'Bilinmeyen';
+}
+
 function formatDate(dateString: Date): string {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -80,6 +100,8 @@ export default {
       popupVisible: false,
       showEditStaffModal: false,
       formatDate,
+      statusColored,
+      translateStatus,
       id: ""
     };
   },

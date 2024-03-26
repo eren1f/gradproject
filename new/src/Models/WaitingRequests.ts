@@ -35,6 +35,14 @@ export class WaitingRequests {
         this.studentMail = studentMail;
     }
 
+    public getStudentName(): string {
+        return this.studentName;
+    }
+
+    public setStudentName(studentName: string): void{
+        this.studentName = studentName;
+    }
+
     public getStatus(): string {
         return this.status;
     }
