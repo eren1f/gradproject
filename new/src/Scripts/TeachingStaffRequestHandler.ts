@@ -29,7 +29,8 @@ export class TeachingStaffRequestHandler {
                 item.current_index,
                 item.information,
                 new Date(item.whenCreated),
-                item.currentActorId
+                item.currentActorId,
+                item.status
             ));
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);
@@ -65,7 +66,7 @@ export class TeachingStaffRequestHandler {
                 item.currentActorId
             )); */
             for(let i=0; i<data.length; i++){
-                let temp = new WaitingRequests(data[i].studentId,data[i].studentName,data[i].studentMail,data[i].studentDepartment,data[i].requestTypeId,data[i].requestTypeName,data[i].current_index,data[i].information,new Date(data[i].whenCreated),data[i].currentActorId);
+                let temp = new WaitingRequests(data[i].studentId,data[i].studentName,data[i].studentMail,data[i].studentDepartment,data[i].requestTypeId,data[i].requestTypeName,data[i].current_index,data[i].information,new Date(data[i].whenCreated),data[i].currentActorId, data[i].status);
                 requests.push(temp);
                 console.log(temp);
             }

@@ -2,6 +2,7 @@
   <!--Staff Listing Table-->
   <div class="flex flex-col">
     <!-- SearchBar -->
+    <AdvisorPopup :request="selectedRequest"></AdvisorPopup>
     <div class="mb-2 mt-2 flex justify-between">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
     </div>
@@ -13,16 +14,10 @@
             <thead class="bg-gray-50">
               <tr>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
-                    Öğrencİ No
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
-                    İsİm
+                    Öğrencİ Adi
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
                     Bölüm
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
-                    Tarih
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
                     Talep Türü
@@ -35,10 +30,6 @@
               <template v-for="(request) in allRequests"  :key ="request.getWhenCreated()">
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <!-- Render student id -->
-                    {{ request.getStudentId() }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
                     {{ request.studentName }}
                   </td>
@@ -46,10 +37,7 @@
                     <!-- Render staff department -->
                     {{ request.studentDepartment }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <!-- Render staff email -->
-                    {{ formatDate(request.getWhenCreated()) }}
-                  </td>
+
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
                     {{ request.getRequestTypeName() }}
@@ -61,7 +49,7 @@
                   </div> -->
                    
                       <!-- Toggle button to show additional information -->
-                      <button @click="toggleDetails()" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
+                      <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
                     
                 </td>
               </tr>
@@ -104,13 +92,18 @@ import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
+import AdvisorPopup from '../popup/AdvisorPopup.vue';
+
 const allRequests = ref <WaitingRequests[]>([]);
+const totalRequests = ref(0);
 const searchQuery = ref('');
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
 const students = ref<StudentForTeachingStaffListing[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
+const selectedRequest = ref<WaitingRequests>();
+
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   if(!query) return students.value;
@@ -145,6 +138,9 @@ function formatDate(dateString: Date): string {
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
   export default {
+    components: {
+    AdvisorPopup
+  },
       data() {
         return {
           currentPage,
@@ -153,10 +149,10 @@ function formatDate(dateString: Date): string {
           totalEntries,
           searchQuery,
           paginatedStudents,
-          //staffInfo,
-          expandedRows: [],
           allRequests,
-          formatDate
+          formatDate,
+          totalRequests,
+          selectedRequest,
         };
       },
       methods: {
@@ -198,22 +194,21 @@ function formatDate(dateString: Date): string {
               }
           });
         },
-        toggleDetails(){
-/*           if(this.expandedRows.includes(index)){
-            this.expandedRows = this.expandedRows.filter(i => i !== index );
-          } else {
-            this.expandedRows.push(index)
-          } */
+        toggleDetails(request: WaitingRequests){
+
+          this.selectedRequest = request;
+          //console.log(request);
+          
         }
       },
       setup(){
         onMounted(async () => {
-          let requestHandler = new TeachingStaffRequestHandler();
-
-          const requests = await requestHandler.getAllRequestsForTeachingStaff();
-          
-          allRequests.value = requests;
-        })
-      },
+          const requestHandler = new TeachingStaffRequestHandler();
+          const response = await requestHandler.getWaitingRequestsForTeachingStaff();
+          console.log(response);
+          totalRequests.value = response.length;
+          allRequests.value = response;
+        });
+      }
   }
 </script>

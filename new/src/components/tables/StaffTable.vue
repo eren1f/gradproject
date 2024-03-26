@@ -14,17 +14,11 @@
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
-                    Öğrencİ No
-                  </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
-                    İsİm
+                    Öğrenci Adi
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
                     Bölüm
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
-                    Tarih
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
                     Talep Türü
@@ -37,20 +31,12 @@
               <template v-for="(request) in allRequests"  :key ="request.getWhenCreated()">
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <!-- Render student id -->
-                    {{ request.getStudentId() }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
                     {{ request.studentName }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff department -->
                     {{ request.studentDepartment }}
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <!-- Render staff email -->
-                    {{ formatDate(request.getWhenCreated()) }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
@@ -63,7 +49,7 @@
                   </div> -->
                    
                       <!-- Toggle button to show additional information -->
-                      <button @click="toggleDetails(request as WaitingRequests)" class="text-indigo-600 hover:text-indigo-900">Detaylar</button>
+                      <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
                     
                 </td>
               </tr>
@@ -119,6 +105,7 @@ const students = ref<StudentForTeachingStaffListing[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
 const selectedRequest = ref<WaitingRequests>();
+
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   if(!query) return students.value;
@@ -164,7 +151,6 @@ function formatDate(dateString: Date): string {
           totalPages,
           totalEntries,
           totalRequests,
-          expandedRows: [],
           allRequests,
           formatDate,
           selectedRequest,
@@ -210,11 +196,7 @@ function formatDate(dateString: Date): string {
           });
         },
         toggleDetails(request: WaitingRequests){
-/*           if(this.expandedRows.includes(index)){
-            this.expandedRows = this.expandedRows.filter(i => i !== index );
-          } else {
-            this.expandedRows.push(index)
-          } */
+
           this.selectedRequest = request;
           //console.log(request);
           
