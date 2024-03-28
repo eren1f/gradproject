@@ -65,9 +65,9 @@ export default{
             // ...
         ]);
         const handleClick = async() => {
-            const authHandler = new Auth();
+            const authHandler =  Auth.getInstance();
             const res = await authHandler.logoutTokenDeleter();
-            if(res == 0)
+            if(res == 1)
                 router.push('/');
         };
         onMounted(async() => {

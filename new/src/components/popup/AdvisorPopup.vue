@@ -113,6 +113,11 @@ export default {
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
       requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+      alert("Talep kabul edildi.");
+
+      //reload page
+
+      window.location.reload();
     },
 
     rejectRequest(){
@@ -121,7 +126,7 @@ export default {
       requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
       alert("Talep reddedildi.");
       //reload page
-      location.reload();
+      window.location.reload();
     }
   },
   watch: {
