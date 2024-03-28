@@ -3,6 +3,18 @@ import { LoginResponse } from "@/Models/LoginResponse";
 import type { LogoutResponse } from "@/Models/LogoutResponse";
 
 export class Auth {
+
+    private static instance: Auth;
+
+    private constructor() {}
+
+    public static getInstance(): Auth {
+        if (!Auth.instance) {
+            Auth.instance = new Auth();
+        }
+        return Auth.instance;
+    }
+
     async loginRequest(data: Login): Promise<string> {
         const url = "http://localhost:8080/login";
         const response = await fetch(url, {

@@ -7,6 +7,7 @@ import type { RequestActor } from "@/Models/RequestActor";
 import type { RequestRequirement } from "@/Models/RequestRequirements";
 
 export class AdminRequestHandler {
+    
     async getRequestTypes(): Promise<ListRequestTypes[]> {
         const url = "http://localhost:8080/getAllRequestTypes";
         try {
