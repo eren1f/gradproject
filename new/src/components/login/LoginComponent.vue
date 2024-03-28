@@ -33,7 +33,7 @@
             const password = ref('');
 
             const submitForm = async () => {
-                const handler = new Auth();
+                const handler = Auth.getInstance();
                 const role = await handler.loginRequest(new Login(username.value, password.value));
 
 				if (role === 'Admin') router.push('/adminHomePage');

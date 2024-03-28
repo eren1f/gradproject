@@ -3,6 +3,17 @@ import { WaitingRequests } from "@/Models/WaitingRequests";
 import { apiRoute } from "../Api_Routes/apiRoute" ;
 
 export class TeachingStaffRequestHandler {
+    private static instance: TeachingStaffRequestHandler;
+
+    private constructor() {}
+
+    public static getInstance(): TeachingStaffRequestHandler {
+        if (!TeachingStaffRequestHandler.instance) {
+            TeachingStaffRequestHandler.instance = new TeachingStaffRequestHandler();
+        }
+        return TeachingStaffRequestHandler.instance;
+    }
+
     async getWaitingRequestsForTeachingStaff(): Promise<WaitingRequests[]> {
         const url = "http://localhost:8080/listWaitingRequestsForStaff";
         try {
@@ -28,6 +39,7 @@ export class TeachingStaffRequestHandler {
                 item.requestTypeName,
                 item.current_index,
                 item.information,
+                item.addition,
                 new Date(item.whenCreated),
                 item.currentActorId,
                 item.status
@@ -66,7 +78,9 @@ export class TeachingStaffRequestHandler {
                 item.currentActorId
             )); */
             for(let i=0; i<data.length; i++){
-                let temp = new WaitingRequests(data[i].studentId,data[i].studentName,data[i].studentMail,data[i].studentDepartment,data[i].requestTypeId,data[i].requestTypeName,data[i].current_index,data[i].information,new Date(data[i].whenCreated),data[i].currentActorId, data[i].status);
+                let temp = new WaitingRequests(data[i].studentId,data[i].studentName,data[i].studentMail,data[i].studentDepartment,
+                    data[i].requestTypeId,data[i].requestTypeName,data[i].current_index,data[i].information,
+                    data[i].addition,new Date(data[i].whenCreated),data[i].currentActorId, data[i].status);
                 requests.push(temp);
                 console.log(temp);
             }

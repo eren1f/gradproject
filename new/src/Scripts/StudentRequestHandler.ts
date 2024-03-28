@@ -4,6 +4,9 @@ import type { StudentSideBarInfo } from "@/Models/StudentSideBarInfo";
 import type { Request } from "@/Models/Request";
 
 export class StudentRequestHandler {
+
+    
+
     async getStudentSideBarInfoRequest(): Promise<StudentSideBarInfo> {
         const url = "http://localhost:8080/studentInfo";
         try {

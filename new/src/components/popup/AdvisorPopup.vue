@@ -35,7 +35,7 @@
                 
                 <strong class="text-gray-700">Öğrenci E-posta:</strong> {{ request.getStudentMail() }}<br>
                 <strong class="text-gray-700">Oluşturulan Tarih:</strong> {{ formatDate(request.getWhenCreated()) }}<br>
-                <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{ request.getInformation() }} <br>
+                <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{ request.getAddition() }} <br>
               </p>
             </div>
           </template>
@@ -72,7 +72,7 @@ function statusColored(status: string){
 }
 function translateStatus(status: string){
   if (status === 'ACCEPTED') return 'Kabul Edildi';
-  if (status === 'waiting') return 'Beklemede';
+  if (status === 'WAITING') return 'Beklemede';
   if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
   if (status === 'REJECTED') return 'Reddedildi';
   return 'Bilinmeyen';
@@ -111,17 +111,22 @@ export default {
     },
     acceptRequest() {
       this.popupVisible = false;
-      let requestHandler = new TeachingStaffRequestHandler();
+      let requestHandler = TeachingStaffRequestHandler.getInstance();
       requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+      alert("Talep kabul edildi.");
+
+      //reload page
+
+      window.location.reload();
     },
 
     rejectRequest(){
       this.popupVisible = false;
-      let requestHandler = new TeachingStaffRequestHandler();
+      let requestHandler = TeachingStaffRequestHandler.getInstance();
       requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
       alert("Talep reddedildi.");
       //reload page
-      location.reload();
+      window.location.reload();
     }
   },
   watch: {

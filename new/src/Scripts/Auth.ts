@@ -3,6 +3,18 @@ import { LoginResponse } from "@/Models/LoginResponse";
 import type { LogoutResponse } from "@/Models/LogoutResponse";
 
 export class Auth {
+
+    private static instance: Auth;
+
+    private constructor() {}
+
+    public static getInstance(): Auth {
+        if (!Auth.instance) {
+            Auth.instance = new Auth();
+        }
+        return Auth.instance;
+    }
+
     async loginRequest(data: Login): Promise<string> {
         const url = "http://localhost:8080/login";
         const response = await fetch(url, {
@@ -35,9 +47,9 @@ export class Auth {
     }
 
     async logoutTokenDeleter() {
-        const url = "http://localhost:8080/logout";
+        const url = "http://localhost:8080/letmeout";
         const response = await fetch(url, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -45,6 +57,13 @@ export class Auth {
         });
         if(!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
+        }else{
+            //return to login page
+            const res: LogoutResponse = await response.json();
+            if(res.status === "success"){
+                return 1;
+            }
+
         }
         return 0;
     }

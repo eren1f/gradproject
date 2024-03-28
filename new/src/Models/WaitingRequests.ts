@@ -4,6 +4,7 @@ export class WaitingRequests {
     private requestTypeName: string;
     private currentIndex: number;
     private information: string;
+    private addition:string;
     private whenCreated: Date;
     private currentActorId: number;
     private status: string;
@@ -13,7 +14,7 @@ export class WaitingRequests {
 
 
     constructor(studentId: number,studentName:string, studentMail:string, studentDepartment:number,
-         requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, whenCreated: Date, currentActorId: number, status:string) {
+         requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, addition:string, whenCreated: Date, currentActorId: number, status:string) {
         this.studentId = studentId;
         this.requestTypeIds = requestTypeIds;
         this.requestTypeName = requestTypeName;
@@ -25,8 +26,12 @@ export class WaitingRequests {
         this.studentMail=studentMail;
         this.studentDepartment=studentDepartment;
         this.status=status;
+        this.addition=addition;
     }
 
+    public getAddition(): string {
+        return this.addition;
+    }
     public getStudentMail(): string {
         return this.studentMail;
     }
