@@ -444,6 +444,11 @@ data() {
       
      // const newRequirementMultiSelect = ref(false);
       
+    const updateRequirements = async (requirements :RequestRequirement[]) =>{
+      handler.updateRequestRequirement(requirements);
+    }
+
+    
 
     const deleteRequirement = async (id: number,index: number) => {
       
@@ -627,6 +632,7 @@ data() {
           requestRequirements.value.sort((a, b) => a.index - b.index);
           console.log( requestRequirements.value);
           
+          //updateRequirements(requestRequirements.value as RequestRequirement[]);
          // requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
           //console.log(requestActors.value);
         }
