@@ -364,7 +364,7 @@ export class AdminRequestHandler {
     }
 
     async updateRequestActor ( actors: RequestActor[]): Promise <any>{
-        const url = apiRoute + "updateActors/" ;
+        const url = apiRoute + "updateActors" ;
         try {
             const response = await fetch(url, {
                 method: 'POST',

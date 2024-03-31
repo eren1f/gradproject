@@ -1,7 +1,7 @@
 export type RequestActor = {
     requestTypeId: number;
     staffId: number;
-    role?: number;
+    role?: string;
     name?: string;
     index: number;
 }
