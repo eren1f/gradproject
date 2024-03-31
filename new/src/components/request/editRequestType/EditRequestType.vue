@@ -73,20 +73,85 @@
 
   <div>
     <div v-if="ActorPopupVisible" class="fixed inset-0 flex justify-center items-center z-50">
-      <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-1/5 text-black"> <!-- Apply text-black class -->
+      <!--table-->
+      <div class="absolute inset-0 bg-gray-800 opacity-50">
+        
+      </div>
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-3/4 h-1/2 text-black"> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Aktör</h2>
         <div class="requirements-wrapper-div">
           <div class="flex items-center">
-            <label for="name-of-req" class="text-black">Buraya eklenilmemiş aktörler listelenebilir oradan seçer</label>
+            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ID
+                                    <div id="idFilter">
+                                        <input type="text" placeholder="filter" v-model="idFilter">
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name
+                                    <div id="nameFilter">
+                                        <input type="text" placeholder="filter" v-model="nameFilter">
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Department
+                                    <div id="departmentFilter">
+                                        <input type="text" placeholder="filter" v-model="departmentFilter">
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    E-Mail
+                                    <div id="emailFilter">
+                                        <input type="text" placeholder="filter" v-model="emailFilter">
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Role
+                                    <div id="roleFilter">
+                                        <input type="text" placeholder="filter" v-model="roleFilter">
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr tr v-for="staff in filteredStaffs" :key="staff.getId()">
+                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getId() }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getFullName() }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getDepartment() }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getEmail() }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getRole() }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">     
+                                  <button @click="addActor(staff)" class="text-indigo-600 hover:text-indigo-900">Ekle</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
           </div>
           <div class="flex justify-between mt-4 space-x-4">
-    <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
-    <button @click="" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
+            <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
+            
           </div>
 
         </div>
       </div>
+      <!--table-->
     </div>
   </div>
   <!--temporarily here-->
@@ -164,7 +229,7 @@
                           </th>
                         </tr>
                     </thead>
-                    <tbody class=" bg-white divide-y divide-gray-200 w-1/2">
+                    <tbody class=" overflow-y-auto max-h-48 bg-white divide-y divide-gray-200 w-1/2">
                       <tr tr v-for="requirement, in requestRequirements"   > <!-- -->  
                         <td class="px-6 py-4 whitespace-nowrap">
                           <template v-if="showEditStaffModal">
@@ -255,7 +320,7 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 w-1/2">
-                      <tr tr v-for="requirement in requestRequirements" > <!--:key="requirement.index" -->
+                      <tr tr v-for="actor in requestActors" > <!--:key="requirement.index" -->
                         <td class="px-6 py-4 whitespace-nowrap">
                           <template v-if="showEditStaffModal">
                             <!-- Render input boxes for editing -->
@@ -263,7 +328,7 @@
                           </template>
                           <template v-else>
                             <!-- Render actor RequestTypeID -->
-                            RequestTypeID
+                            {{actor.requestTypeId}}
                           </template>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -273,7 +338,7 @@
                           </template>
                           <template v-else>
                             <!-- Render actor StaffID -->
-                            StaffID
+                            {{actor.staffId}}
                           </template>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -303,21 +368,20 @@
                           </template>
                           <template v-else>
                             <!-- Render actor index -->
-                            Index
+                            {{actor.index}}
                           </template>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                          <button @click="" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&uarr;</button>
-                          <button @click="" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&darr;</button>
-                          <button @click="" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700" v-if="!showEditStaffModal">Edit</button>
-                          <button @click="" class="px-4 py-1 mt-2 mb-2 mx-1 bg-red-500 text-white rounded hover:bg-red-700" v-if="!showEditStaffModal">Sil</button>
+                          <button @click="goUpActor(actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&uarr;</button>
+                          <button @click="goDownActor(actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&darr;</button>                          
+                          <button @click="deleteActor(actor.requestTypeId,actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-red-500 text-white rounded hover:bg-red-700" v-if="!showEditStaffModal">Sil</button>
                           
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <button class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup">Aktör Ekle</button>
+                <button class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Aktör Ekle</button>
                 
               </div>
               
@@ -328,7 +392,7 @@
 
           <div class="flex p-8">
             <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">İptal</button>
-            <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded hover:bg-green-700 mx-auto" @click="updateAll(requestRequirements as RequestRequirement[], requestActors)">Kaydet</button>
+            <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded hover:bg-green-700 mx-auto" @click="updateAll(requestRequirements as RequestRequirement[], requestActors as RequestActor[])">Kaydet</button>
           </div> 
       </div>
   </div>
@@ -339,7 +403,7 @@
 
 
 <script lang="ts">
-import { defineComponent,computed, ref } from 'vue';
+import { defineComponent,computed,onMounted, ref } from 'vue';
 import RequestName from '@/components/request/createRequestType/RequestName.vue';
 import RequestCredentials from '../RequestCredentials.vue';
 //import AddActorPopup from '@/components/popup/AddActorPopUp.vue';
@@ -349,8 +413,10 @@ import { RequestTypes } from '@/Models/RequestTypes';
 import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
 import { ListRequestTypes } from '@/Models/ListRequestTypes';
 import { RequestRequirement } from '@/Models/RequestRequirements';
+import { StaffForAdminListing } from '@/Models/StaffForAdminListing'
 import type { RequestActor } from '@/Models/RequestActor';
 import { group } from 'console';
+import { request } from 'http';
 
 
 
@@ -382,6 +448,8 @@ data() {
    const requestActors = ref<RequestActor[]>([]);
    const requestRequirements = ref<RequestRequirement[]>([]);
    //const requirementToAdd = new RequestRequirement(1,1,'','','');
+   const staffs = ref<StaffForAdminListing[]>([]);
+   const filteredStaffs = ref<StaffForAdminListing[]>([]);
    const requirementToUpdate = new RequestRequirement(1,1,'','','');
    const requestTypes = ref<ListRequestTypes[]>([]);
    let requestOnEdit = new ListRequestTypes(1,' ');
@@ -420,7 +488,7 @@ data() {
           }
     });
     
-    console.log(requestRequirements.value);
+    
     
      
    }  
@@ -529,16 +597,80 @@ data() {
         }
     }
 }
+const goUpActor = (index: number) => {
+    let max = 0;
+    // if(index > 1 find max index smaller than index then swap)
+    const currentElement = requestActors.value.find(req => req.index == index);
+    if (currentElement) {
+        const currentIndex = requestActors.value.indexOf(currentElement);
 
+        if (currentIndex > 0) {
+            requestActors.value.forEach(function (actor) {
+                if (index - actor.index != 0) {
+                    max = actor.index;
+                }
+            });
+            const prevElement = requestActors.value.find(req => req.index == max);
+            if (currentElement && prevElement) {
+                const currentIndex = requestActors.value.indexOf(currentElement);
+                const prevIndex = currentIndex - 1;
+
+                // Swap the elements
+                [requestActors.value[currentIndex], requestActors.value[prevIndex]] =
+                    [requestActors.value[prevIndex], requestActors.value[currentIndex]];
+
+                max = requestActors.value[currentIndex].index;
+                requestActors.value[currentIndex].index = requestActors.value[prevIndex].index;
+                requestActors.value[prevIndex].index = max;
+            }
+        }
+    }
+    console.log(requestActors.value);
+}
+
+const goDownActor = (index: number) => {
+    let max = 0;
+    const currentElement = requestActors.value.find(req => req.index === index);
+    if (currentElement) {
+        const currentIndex = requestActors.value.indexOf(currentElement);
+
+        if (currentIndex < requestActors.value.length - 1) {
+            const nextIndex = currentIndex + 1;
+            const nextElement = requestActors.value[nextIndex];
+
+            if (nextElement) {
+                // Swap the positions of the elements in the array
+                [requestActors.value[currentIndex], requestActors.value[nextIndex]] =
+                    [requestActors.value[nextIndex], requestActors.value[currentIndex]];
+
+                max = requestActors.value[currentIndex].index;
+                requestActors.value[currentIndex].index = requestActors.value[nextIndex].index;
+                requestActors.value[nextIndex].index = max;
+            }
+        }
+    }
+    console.log(requestActors.value);
+}
+
+ 
+const addActor = async (staffToAdd: StaffForAdminListing ) => {
+  
+    
+    const requestActor = {
+    requestTypeId: requestOnEdit.getId(),
+    staffId: staffToAdd.getId(),
+    role: staffToAdd.getRole(),
+    name: staffToAdd.getFullName(),
+    index: requestActors.value.length + 1
+};
+  
+  requestActors.value.push(requestActor);
+  ActorPopupVisible.value = !ActorPopupVisible.value;
+    console.log(requestActors.value);
+   }  
    
    
-   const deleteActor =  (requestId:number, staffId: number, index: number) => {
-    const parentDiv = document.querySelector('.actorParent-div');
-      if (parentDiv) {
-        parentDiv.remove();
-      }
-        handler.deleteRequestActor(requestId, staffId, index);
-      }
+   
 
       const deleteRequestType = (id: number) => {
         
@@ -549,7 +681,43 @@ data() {
         }
         
     }
+    const deleteActor = async (id: number,index: number) => {
+      
+      requestActors.value.splice(index - 1, 1);
+      
+      
+      requestActors.value.forEach(function (actor) {
+        
+          if(actor.index > index)
+          {
+            actor.index -= 1;
+            
+          }
+    });
+ 
+    console.log(requestActors.value); 
+   }  
 
+    onMounted(async () => {
+            const apiRoute ="http://localhost:8080/" ;
+            const url = apiRoute + "getStaffInfoForAdmin";
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            const data = await response.json();
+
+            staffs.value = [];
+
+            for (let i = 0; i < data.length; i++) {
+                const staff = new StaffForAdminListing(data[i].id, data[i].fullName, data[i].email, data[i].department, data[i].role);
+                staffs.value.push(staff);
+            }
+            
+        });
     
       const cancel = () => {
       edit.value = !edit.value;
@@ -565,12 +733,26 @@ data() {
        editPopupVisible.value = !editPopupVisible.value;
       }
       const ActorPopup= () => {
+        filteredStaffs.value = [];
+        let staffIds = [];
+          requestActors.value.forEach(function (actor)  {
+            staffIds.push(actor.staffId);
+          });
+          
+          staffs.value.forEach(function (staff) {
+              if (!staffIds.includes(staff.getId())) {
+                  
+                  filteredStaffs.value.push(staff);
+                  
+              }
+          });
+        
         ActorPopupVisible.value = !ActorPopupVisible.value;
       }
     
-      const updateAll = async (requirements :RequestRequirement[], actors : any ) => {
+      const updateAll = async (requirements :RequestRequirement[], actors :RequestActor[]) => {
           await handler.updateRequestRequirement(requirements);
-          //handler.updateRequestActor(actors);
+          await handler.updateRequestActor(actors);
       }
    
     const handleDepartmentChange = async ( newDepartment: ListDepartments ) => {
@@ -590,11 +772,11 @@ data() {
           
           requestRequirements.value = await handler.getRequestRequirementsByRequestTypeId(id);
           //requestRequirements.value.sort((a, b) => a.index - b.index);
-          // console.log( requestRequirements.value);
           
-          //updateRequirements(requestRequirements.value as RequestRequirement[]);
-         // requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
-          //console.log(requestActors.value);
+          
+          
+          requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
+          
         }
         edit.value = true; 
     }
@@ -616,6 +798,7 @@ data() {
       addRequirement,
       editRequirement,
       editRequest,
+      addActor,
       deleteActor,
       deleteRequestType,
       cancel,
@@ -632,8 +815,12 @@ data() {
       requirementToUpdate,
       goUp,
       goDown,
+      goUpActor,
+      goDownActor,
       updateAll,
-      editIndex
+      editIndex,
+      staffs,
+      filteredStaffs,
       
     };
   }
