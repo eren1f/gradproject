@@ -39,6 +39,7 @@
       </div>
     </div>
   </div>
+
   <div>
     <div v-if="editPopupVisible" class="fixed inset-0 flex justify-center items-center z-50">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
@@ -164,7 +165,7 @@
                         </tr>
                     </thead>
                     <tbody class=" bg-white divide-y divide-gray-200 w-1/2">
-                      <tr tr v-for="requirement in requestRequirements"  > <!-- -->  
+                      <tr tr v-for="requirement, in requestRequirements"   > <!-- -->  
                         <td class="px-6 py-4 whitespace-nowrap">
                           <template v-if="showEditStaffModal">
                             {{requestOnEdit.getId()}}
@@ -177,7 +178,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                           <template v-if="showEditStaffModal">
                             <!-- Render input boxes for editing -->
-                            <input v-model.lazy="requirement.name" @focus="handleRequirementChange(requirement.index, requirement.requestTypeId, 'b', requirement.name, $event.target.value)" type="text" class="p-1 border rounded">
+                            <input v-model.lazy="requirement.name"  type="text" class="p-1 border rounded">
                           </template>
                           
                             <!-- Render requirement name -->
@@ -187,7 +188,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                           <template v-if="showEditStaffModal">
                             <!-- Render input boxes for editing -->
-                            <input v-model.lazy="requirement.pretext" @focus="handleRequirementChange(requirement.index, requirement.requestTypeId, 'a', requirement.pretext, $event.target.value)" type="text" class="p-1 border rounded">
+                            <input v-model.lazy="requirement.pretext"  type="text" class="p-1 border rounded">
                           </template>
                           <template v-else>
                             <!-- Render  Pretext -->
@@ -197,7 +198,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                           <template v-if="showEditStaffModal">
                             <!-- Render input boxes for editing -->
-                            <input v-model.lazy="requirement.type" @focus="handleRequirementChange(requirement.index, requirement.requestTypeId, 'c', requirement.type, $event.target.value)" type="text" class="p-1 border rounded">
+                            <input v-model.lazy="requirement.type"  type="text" class="p-1 border rounded">
                           </template>
                           <template v-else>
                             <!-- Render Type -->
@@ -325,8 +326,9 @@
             </div>
        
 
-          <div class="flex justify-between p-8">
+          <div class="flex p-8">
             <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">İptal</button>
+            <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded hover:bg-green-700 mx-auto" @click="updateAll(requestRequirements as RequestRequirement[], requestActors)">Kaydet</button>
           </div> 
       </div>
   </div>
@@ -334,53 +336,7 @@
   
 </template>
 
-<!--
-            <div class="mb-4 flex justify-between">
-              <div class="mb-4 ">
-                <h2 class="text-2xl font-bold mb-5 text-white">Talep Gereksinimleri</h2>
-                  <div class="overflow-y-auto max-h-[202px]">  
-                      <div v-for="requirement in requestRequirements" :key="requirement.index" >
-                        <div :id="'parent-div-' + requirement.index" class="parent-div">
-                          <div class="flex ">
-                            <span for="Pretext" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Pretext: {{ requirement.pretext }}  </span>
-                            <input type="text"  v-model.lazy="requirement.pretext" @focus="handleRequirementChange(requirement.requestTypeId, 'a', requirement.pretext, $event.target.value)" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
-                            <span for="Gereksinim" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2">Gereksinim: {{ requirement.name }}</span>
-                            <input type="text"  v-model.lazy="requirement.name" @focus="handleRequirementChange(requirement.requestTypeId, 'b', requirement.name, $event.target.value)" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
-                            <label for="İndex" class="inline-flex items-center bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-1 ml-1"> Sırası: </label>
-                            <input type="number"  v-model.lazy="requirement.index" @focus="handleRequirementChange(requirement.requestTypeId, 'c', requirement.index, $event.target.value)" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white max-w-16" />
-                          </div>
-                            <div class="mt-2 flex"> 
-                              <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteRequirement(requirement.requestTypeId,requirement.index)">Gereksinimi Sil </button>
-                              <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700" @click="updateRequirement( requirement.pretext, requirement.name, requirement.index )">Gereksinimi Kaydet</button>        
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                <button class="px-4 py-1 mt-2 mb-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup">Yeni Gereksinim Ekle</button>
-              </div>
-             
-              <div class="mb-4 ">
-                <h2 class="text-2xl font-bold mb-5 text-white" >Talep Aktörleri</h2>
-                <div class="overflow-y-auto max-h-[202px]">
-                 <div v-for="actor in requestActors"> 
-                   <div class="actorParent-div">
-                      <div class="flex">
-                        <label class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Id: {{ actor.staffId }} <br/> Isim: {{ actor.name }} <br/> Rol: {{ actor.role }}   </label>
-                        <label for="İndex" class="inline-flex items-center bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Sırası:</label>
-                        <input type="number" :placeholder="actor.index.toString()" class="w-[50%] md:w-[45%] p-2 mt-4 md:mt-0 md:self-center border rounded bg-gray-600 text-white" />
-                      </div>
-                      <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="deleteActor(actor.requestTypeId,actor.staffId,actor.index)">Aktörü Talepten Sil</button> 
-                      <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded ml-2 hover:bg-green-700">Aktörü Kaydet</button>
-                    </div>
-                  </div>
-                </div>
-                <button class="px-4 py-1 mt-2 mb-2 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Yeni Aktör Ekle</button>
-                
-              
-              </div>
-                
-            </div>
-             -->
+
 
 <script lang="ts">
 import { defineComponent,computed, ref } from 'vue';
@@ -425,7 +381,7 @@ data() {
   setup() {
    const requestActors = ref<RequestActor[]>([]);
    const requestRequirements = ref<RequestRequirement[]>([]);
-   const requirementToAdd = new RequestRequirement(1,1,'','','');
+   //const requirementToAdd = new RequestRequirement(1,1,'','','');
    const requirementToUpdate = new RequestRequirement(1,1,'','','');
    const requestTypes = ref<ListRequestTypes[]>([]);
    let requestOnEdit = new ListRequestTypes(1,' ');
@@ -441,38 +397,36 @@ data() {
       const editPretext = ref('');
       const editName = ref('');
       const editMultiSelect = ref(false); 
-      
+      const editIndex = ref(1);
      // const newRequirementMultiSelect = ref(false);
       
     const updateRequirements = async (requirements :RequestRequirement[]) =>{
-      handler.updateRequestRequirement(requirements);
+      await handler.updateRequestRequirement(requirements);
     }
 
     
-
+    
     const deleteRequirement = async (id: number,index: number) => {
       
-      requestRequirements.value.splice(index, 1);
+      requestRequirements.value.splice(index - 1, 1);
       
-      await handler.deleteRequestRequirement(id,index);
       
-      await editRequest(requestOnEdit.getId(),requestOnEdit.getName());
-      console.log()
-      /*requestRequirements.value.forEach(function (requirement) {
+      requestRequirements.value.forEach(function (requirement) {
         
           if(requirement.index > index)
           {
             requirement.index -= 1;
             
           }
-    });*/
+    });
     
+    console.log(requestRequirements.value);
     
      
    }  
    
    const addRequirement = async (id: number, pretext: string, name: string, type: boolean ) => {
-
+    const requirementToAdd = new RequestRequirement(1,1,'','','');
     
     requirementToAdd.setRequestTypeId(id);
     requirementToAdd.setPretext(pretext);
@@ -480,48 +434,38 @@ data() {
     requirementToAdd.setType(type ? 'multi' : 'single');
    
     requirementToAdd.setIndex(requestRequirements.value.length + 1);
-    console.log(requirementToAdd.getIndex());
-    
+     
      requestRequirements.value.push(requirementToAdd as any );
-     await handler.addNewRequestRequirement(requirementToAdd);
-     editRequest(requestOnEdit.getId(),requestOnEdit.getName());
+     console.log(requestRequirements.value);
+      // updateRequirements(requestRequirements.value as RequestRequirement[]);
+      // await editRequest(requestOnEdit.getId(),requestOnEdit.getName());
+     
+      
+     
      
      togglePopup();
    }  
 
    
    const editRequirement = async (id: number, pretext: string, name: string, type: boolean ) => {
-   
+    const requirementToAdd = new RequestRequirement(1,editIndex.value,'','','');
     requirementToAdd.setRequestTypeId(id);
     requirementToAdd.setPretext(pretext);
     requirementToAdd.setName(name);
     requirementToAdd.setType(type ? 'multi' : 'single');
-    
-     
-     await deleteRequirement(requirementToAdd.getRequestTypeId(),requirementToAdd.getIndex())
-     requestRequirements.value.push(requirementToAdd as any);
-     await handler.addNewRequestRequirement(requirementToAdd);
-     editRequest(requestOnEdit.getId(),requestOnEdit.getName());
+    if(editIndex.value != 0){
+      requestRequirements.value.splice(editIndex.value - 1,1,requirementToAdd);
+    }
+    console.log(requestRequirements.value);
+     //await deleteRequirement(requirementToAdd.getRequestTypeId(),requirementToAdd.getIndex())
+    // requestRequirements.value.push(requirementToAdd as any);
+    // await handler.addNewRequestRequirement(requirementToAdd);
+    // editRequest(requestOnEdit.getId(),requestOnEdit.getName());
      if(editPopupVisible.value == true){
       editPopupClose();
      }
     }  
-   const handleRequirementChange =  (index: number,id: number, type: string, oldValue: any, newValue : any)  => {
-    requirementToAdd.setRequestTypeId(id);
-    if(type == 'a'){
-      requirementToAdd.setPretext(oldValue);
-      
-    }
-    else if(type == 'b'){
-      requirementToAdd.setName(oldValue);
-     
-    }
-    else if(type == 'c'){
-      requirementToAdd.setType(oldValue);
-  
-    }
-     
-   } 
+   
 
    const goUp = (index: number) => {
     let max = 0;
@@ -541,22 +485,26 @@ data() {
     });
     const prevElement = requestRequirements.value.find(req => req.index == max);
     if (currentElement && prevElement) {
-             // Swap the positions of the elements in the array
+             
              const currentIndex = requestRequirements.value.indexOf(currentElement);
             const prevIndex = currentIndex - 1;
 
             // Swap the elements
             [requestRequirements.value[currentIndex], requestRequirements.value[prevIndex]] =
             [requestRequirements.value[prevIndex], requestRequirements.value[currentIndex]];
+
+            max = requestRequirements.value[currentIndex].index ;
+            requestRequirements.value[currentIndex].index = requestRequirements.value[prevIndex].index;
+            requestRequirements.value[prevIndex].index = max;
         }
-        console.log(requestRequirements.value);
+        
       //editRequest(requestOnEdit.getId(),requestOnEdit.getName());
+      }
     }
-  }
-  
    }
 
    const goDown = (index: number) => {
+    let max = 0;
     const currentElement = requestRequirements.value.find(req => req.index === index);
     if (currentElement) {
         const currentIndex = requestRequirements.value.indexOf(currentElement);
@@ -569,7 +517,15 @@ data() {
                 // Swap the positions of the elements in the array
                 [requestRequirements.value[currentIndex], requestRequirements.value[nextIndex]] =
                 [requestRequirements.value[nextIndex], requestRequirements.value[currentIndex]];
+                
+                
+                
+                max = requestRequirements.value[currentIndex].index ;
+                requestRequirements.value[currentIndex].index = requestRequirements.value[nextIndex].index;
+                requestRequirements.value[nextIndex].index = max;
+                
             }
+            
         }
     }
 }
@@ -602,7 +558,7 @@ data() {
        popupVisible.value = !popupVisible.value;
       }
       const editPopup= (index: number) => {
-        requirementToAdd.setIndex(index);
+        editIndex.value = index;
        editPopupVisible.value = !editPopupVisible.value;
       }
       const editPopupClose= () => {  
@@ -612,6 +568,10 @@ data() {
         ActorPopupVisible.value = !ActorPopupVisible.value;
       }
     
+      const updateAll = async (requirements :RequestRequirement[], actors : any ) => {
+          await handler.updateRequestRequirement(requirements);
+          //handler.updateRequestActor(actors);
+      }
    
     const handleDepartmentChange = async ( newDepartment: ListDepartments ) => {
         selectedDepartment.value = newDepartment;
@@ -629,8 +589,8 @@ data() {
           requestOnEdit.setName(name);
           
           requestRequirements.value = await handler.getRequestRequirementsByRequestTypeId(id);
-          requestRequirements.value.sort((a, b) => a.index - b.index);
-          console.log( requestRequirements.value);
+          //requestRequirements.value.sort((a, b) => a.index - b.index);
+          // console.log( requestRequirements.value);
           
           //updateRequirements(requestRequirements.value as RequestRequirement[]);
          // requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
@@ -670,9 +630,10 @@ data() {
       newName,
       newMultiSelect,
       requirementToUpdate,
-      handleRequirementChange,
       goUp,
-      goDown
+      goDown,
+      updateAll,
+      editIndex
       
     };
   }
