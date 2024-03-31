@@ -12,12 +12,15 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "@vue/compiler-sfc": "^3.4.18",
     "dependencies": "^0.0.1",
     "dotenv": "^16.4.1",
     "pinia": "^2.1.7",
+    "stompjs": "^2.3.3",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",

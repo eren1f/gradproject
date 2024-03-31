@@ -343,7 +343,7 @@ export class AdminRequestHandler {
     } */
 
     async updateRequestRequirement(requirements: RequestRequirement[]): Promise <any>{
-        const url = apiRoute + "updateRequirements/"
+        const url = apiRoute + "updateRequirements"
         try {
             const response = await fetch(url, {
                 method: 'POST',
