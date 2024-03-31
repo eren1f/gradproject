@@ -1,7 +1,7 @@
 <template>
-    <div class="px-1 md:px-4">
+    <div>
         <div class="flex flex-col md:flex-row items-center justify-center bg-white shadow-lg rounded-lg overflow-hidden mt-4">
-            <div class="p-2 md:p-4 flex flex-col items-center">
+            <div class="p-[1%] flex flex-col items-center">
                 <img src="../assets/user.png" alt="" class="w-32 h-32 object-cover rounded-md">
                 <p class="text-lg md:text-xl font-bold">{{ advisorFirstname }} {{ advisorLastname }}</p>
             </div>

@@ -41,6 +41,22 @@ export class UserInfo {
     public setRole(role: string){
         this.role = role;
     }
+
+    public getId(): number {
+        return this.id;
+    }
+
+    public getEmail(): string {
+        return this.email;
+    }
+
+    public getDepartmentId(): number {
+        return this.departmentId;
+    }
+
+    public getAdviserId(): number {
+        return this.adviserId;
+    }
 }
 
 

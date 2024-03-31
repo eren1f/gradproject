@@ -26,8 +26,8 @@
                 </div>
                 <!-- Lower part -->
                 <div class="overflow-y-scroll h-32">
-                    <div v-for="notification in notifications" :key="notification.id">
-                        <p class="m-[1%] text-white break-words hover:bg-blue-800">{{ notification.content }}</p>
+                    <div v-for="notification in notifications" >
+                        <button class="m-[1%] text-white break-words hover:bg-blue-800">{{ notification.whenCreated }}</button>
                     </div>
                 </div>
             </div>
@@ -47,23 +47,17 @@ import { Auth } from '@/Scripts/Auth';
 import { UserInfo } from '@/Models/UserInfo';
 import { useRoute } from 'vue-router';
 import router from '@/router';
-
+import { Client } from '@stomp/stompjs';
+import type { Notification} from '../../Models/Notifitcation';
 export default{
     name: 'Topbar',
     setup() {
         const route = useRoute();
+        const socket = ref<WebSocket>();
+        const client = ref<Client>();
         const userInfo = ref<UserInfo>();
         const showNotifications = ref(false);
-        const notifications = ref([
-            // Add your notifications here
-            { id: 1, content: 'OgrenciIDden yeni bir talebiniz var.'},
-            { id: 2, content: 'Notification 2' },
-            { id: 3, content: 'Notification 3' },
-            { id: 4, content: 'Notification 4' },
-            { id: 5, content: 'Notification 5' },
-            { id: 6, content: 'Notification 6' },
-            // ...
-        ]);
+        const notifications = ref<Notification[]>([]);
         const handleClick = async() => {
             const authHandler =  Auth.getInstance();
             const res = await authHandler.logoutTokenDeleter();
@@ -71,6 +65,8 @@ export default{
                 router.push('/');
         };
         onMounted(async() => {
+
+            
             //User Name -->
             const url = "http://localhost:8080/userInformation";
             const response = await fetch(url, {
@@ -83,13 +79,41 @@ export default{
             const data = await response.json();
             const UserInfos = new UserInfo(data.id, data.name, data.surname, data.email, data.departmentId, data.adviserId, data.password, data.role, data.fullName, data.firstname, data.lastname, data.advisorId);
             if (UserInfos.getRole() == null) { UserInfos.setRole('Öğrenci'); }
+
             userInfo.value = (UserInfos);
+            //socket.value = new WebSocket('ws://localhost:8080/ws'); 
+
+            client.value = new Client({
+                brokerURL: 'ws://localhost:8080/ws',
+            });
+
+            client.value.activate();
+
+            client.value.onStompError = (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+            };
+
+            client.value.onConnect = () => {
+                console.log('Connected to the server');
+                client.value!.subscribe('/request/notification/'+userInfo.value?.getId(), (message) => {
+                    console.log('subscribed');
+                    const notification = JSON.parse(message.body);
+                    console.log(notification);
+                    notifications.value.push(notification);
+                });
+            };
+
+            
+            
         });
+
         return {
             handleClick,
             showNotifications,
             notifications,
             userInfo,
+            socket,
         };
     }
 };
