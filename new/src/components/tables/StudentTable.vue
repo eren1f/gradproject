@@ -31,8 +31,8 @@
         <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
       </div>
       <!-- Table Content -->
-      <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
-        <div class="py-2 md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
+      <div class="px-[1%]">
+        <div class="md:inline-block w-full md:min-w-full">
           <div class="shadow overflow-hidden rounded-lg">
             <table class="w-full md:min-w-full">
               <thead class="bg-gray-50 hidden md:table-header-group">
@@ -75,7 +75,7 @@
         </div>
       </div>
       <!-- Pagination -->
-      <div class="my-4">
+      <div class="mx-[1%]">
           <nav class="flex items-center flex-col md:flex-row justify-center md:justify-between pt-1" aria-label="Table navigation">
             <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 md:inline md:w-auto">
             Toplam {{ currentPage * itemsPerPage - itemsPerPage + 1 }} sonuç içerisinden {{ Math.min(currentPage * itemsPerPage, totalEntries) }} - {{ totalEntries }} görmektesiniz.
