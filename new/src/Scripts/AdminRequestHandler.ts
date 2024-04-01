@@ -453,7 +453,8 @@ export class AdminRequestHandler {
         }
     
     }
-    async getRequestActorsByRequestTypeId(requestTypeId: number): Promise<RequestActor[]> {
+    
+    async getRequestActorsByRequestTypeId(requestTypeId: number): Promise<RequestActor[]> { //role and name please
         const url= apiRoute + "GetRequestActors/" + requestTypeId;
         let actors: RequestActor[] = [];
         try{
@@ -480,6 +481,8 @@ export class AdminRequestHandler {
 
     
     }
+
+
     
-    
+    // boss can you hook me up with async updateStaff(staffs: StaffForAdminListing[]): Promise<any)> {
 }

@@ -77,7 +77,7 @@
       <div class="absolute inset-0 bg-gray-800 opacity-50">
         
       </div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-3/4 h-1/2 text-black"> <!-- Apply text-black class -->
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-2/3/5 h-1/2 text-black"> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Aktör</h2>
         <div class="requirements-wrapper-div">
           <div class="flex items-center">
@@ -145,7 +145,7 @@
         </div>
           </div>
           <div class="flex justify-between mt-4 space-x-4">
-            <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
+            <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-1/4">İptal</button>
             
           </div>
 
@@ -200,15 +200,16 @@
         <div class=" p-8 rounded-lg">
             <h1 class="flex w-1/2 text-2xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
             <div class="mb-4 flex items-center w-1/2">
-              <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Talep Ismi</label>
-              <input type="text" :placeholder="requestOnEdit.getName()" class="w-[50%] md:w-[25%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />
+              <label for="Talep İsmi" class="inline-blockrounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Talep Ismi</label>
+              <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-md font-semibold text-white mr-2"> {{requestOnEdit.getName()}}</label>
+              <!--<input type="text" :placeholder="requestOnEdit.getName()" class="w-[50%] md:w-[25%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />-->
             </div>
             <!--Request requirement table-->
             <div class="flex justify-between -my-2  sm:-mx-6 lg:-mx-8 ">
               <div class="py-2 align-middle inline-block  sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                <div class="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
+                  <table class="table-auto min-w-full divide-y divide-gray-200">
+                    <thead class="sticky top-0 bg-gray-50">
                       <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('id')"><!--sortByColumn-->
                             RequestTypeID
@@ -229,8 +230,8 @@
                           </th>
                         </tr>
                     </thead>
-                    <tbody class=" overflow-y-auto max-h-48 bg-white divide-y divide-gray-200 w-1/2">
-                      <tr tr v-for="requirement, in requestRequirements"   > <!-- -->  
+                    <tbody class=" bg-white divide-y divide-gray-200 w-1/2 overflow-y-auto max-h-80">
+                      <tr tr v-for="requirement in requestRequirements"   > <!-- -->  
                         <td class="px-6 py-4 whitespace-nowrap">
                           <template v-if="showEditStaffModal">
                             {{requestOnEdit.getId()}}
@@ -753,6 +754,8 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       const updateAll = async (requirements :RequestRequirement[], actors :RequestActor[]) => {
           await handler.updateRequestRequirement(requirements);
           await handler.updateRequestActor(actors);
+          alert('Request type edited successfully');
+          edit.value = false;
       }
    
     const handleDepartmentChange = async ( newDepartment: ListDepartments ) => {

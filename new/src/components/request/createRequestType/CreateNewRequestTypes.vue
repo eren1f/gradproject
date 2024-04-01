@@ -18,7 +18,7 @@
                                     <span class="table-row" >
                                         <span class="gap1">Name</span>
                                         <span class="gap2">Department</span>
-                                        <span style="padding-right: 300px;" >Role</span>
+                                        <span style="padding-right: 440px;" >Role</span>
                                     </span>
                                     
                                 </th>   
@@ -143,6 +143,7 @@
             const handleDataChange = (data: any) => {
                 departmentId.value = data;
             }
+            
 
             return {
                 departmentId,
@@ -162,10 +163,10 @@
     }
 
     .gap1 {
-        margin-right: 225px; /* Adjust the first gap size */
+        margin-right: 235px; /* Adjust the first gap size */
     }
 
     .gap2 {
-        margin-right: 170px; /* Adjust the second gap size */
+        margin-right: 190px; /* Adjust the second gap size */
     }
 </style>

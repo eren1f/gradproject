@@ -15,11 +15,12 @@
           <!-- Add Staff Form -->
           <div class="flex flex-row space-x-4">
             <div class="flex flex-col space-y-4">
-              <input v-model="addStaff.Name" type="text" placeholder="İsim" class="p-2 border rounded">
-              <input v-model="addStaff.surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
-              <input v-model="addStaff.email" type="email" placeholder="E-Mail" class="p-2 border rounded">
-              <input v-model="addStaff.password" type="text" placeholder="Şifre" class="p-2 border rounded">
+              <input v-model="addStaff2.name" type="text" placeholder="İsim" class="p-2 border rounded"> <!--v-model="addStaff.Name"--><!--placeholder="İsim"-->
+              <input v-model="addStaff2.email" type="text" placeholder="Email" class="p-2 border rounded"><!--v-model="addStaff.surname"--><!--placeholder="Soyisim"-->
+              <input v-model="addStaff2.department" type="email" placeholder="Bölüm" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
+              <input v-model="addStaff2.role" type="text" placeholder="Rol" class="p-2 border rounded"><!--v-model="addStaff.password"--><!--placeholder="Şifre"-->
             </div>
+           <!--
             <div class="flex flex-col space-y-4">
               <button @click="toggleRoleDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
               Rol -> {{ selectedRoleOption }}
@@ -30,7 +31,9 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
+          --> 
              <!-- Role Dropdown menu -->
+             <!--
               <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
                 <div v-for="option in roleDropdownOptions" :key="option.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
                   <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option.value; isRoleOpen = false">{{ option.label }}</a>
@@ -45,24 +48,62 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
+            -->
                 <!-- Faculty Dropdown menu -->
+            <!--    
             <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
               <div v-for="department in departments" :depKey="department.getDepartmentId()" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
                 <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.getDepartmentName(); selectedDepartmentId=department.getDepartmentId(); isDepartmentOpen = false">{{ department.getDepartmentName() }}</a>
               </div>
             </div>
             </div>
+            -->
           </div>
           <div class="flex justify-end mt-4">
             <button @click="showAddStaffModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="saveStaff" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded">
+            <button @click="saveAddedStaff(addStaff2.name,addStaff2.department,addStaff2.email,addStaff2.role)" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
         </div>
     </div>
+    <!--Edit Popup-->
+    <div>
+    <div v-if="showEditPopup" class="fixed inset-0 flex justify-center items-center z-50">
+      <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-3/10 text-black"> <!-- Apply text-black class -->
+        <h2 class="text-lg font-bold mb-2 text-center">Duzenlenecek Birim</h2>
+        <div class="requirements-wrapper-div">
+          <div class="flex flex-col"> 
+            <div>
+              <label for="pretext-of-req" class="text-black">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input id="pretext-of-req" v-model="editedStaff.name" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+            </div>
+            <div>
+              <label for="name-of-req" class="text-black">Department</label>
+              <input id="name-of-req" v-model="editedStaff.department" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
+            </div>
+            <div>
+              <label for="pretext-of-req" class="text-black">E-mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input id="pretext-of-req" v-model="editedStaff.email" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+            </div>
+            <div>
+              <label for="name-of-req" class="text-black">Role&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input id="name-of-req" v-model="editedStaff.role" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
+            </div>    
+          </div>
+          <div class="flex justify-between mt-4 space-x-4">
+    <button @click="toggleEditClose" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
+    <button @click="editStaff(editedStaff.name, editedStaff.department, editedStaff.email, editedStaff.role )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Düzenle</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
     <!-- Table Content -->
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -90,7 +131,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <tr tr v-for="staff in paginatedStaffs" :key="staff.getId()">
+              <tr tr v-for="(staff, index) in paginatedStaffs" :key="staff.getId()">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <template v-if="showEditStaffModal">
                     <!-- Render input boxes for editing -->
@@ -142,14 +183,8 @@
                   </template>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="!showEditStaffModal">Edit</button>
-                  <template v-if="showEditStaffModal">
-                    <div class="flex flex-col space-x-2">
-                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Save</button>
-                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Cancel</button>
-                    <button @click="toggleEdit" class="text-indigo-600 hover:text-indigo-900" v-if="showEditStaffModal">Delete</button>
-                    </div>
-                  </template>
+                  <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700" >Edit</button>
+                  
                 </td>
               </tr>
             </tbody>
@@ -193,7 +228,7 @@ const staffs = ref<StaffForAdminListing[]>([]);
 const allDepartments = ref<ListDepartments[]>([]);
 const departments = ref<ListDepartments[]>([]);
 const totalEntries = ref(0);
-const editedStaff = null;
+
 const filteredStaffs = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   if(!query) return staffs.value;
@@ -239,12 +274,11 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           totalEntries,
           staffs,
           departments,
-          editedStaff,
           searchQuery,
           paginatedStaffs,
           showEditStaffModal: false,
           showAddStaffModal: false,
-          
+          showEditPopup: false,
           isRoleOpen: false,
           selectedRoleOption: '',
           roleDropdownOptions: [
@@ -262,6 +296,22 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             email: '',
             password: '',
           },
+          addStaff2: {
+            id: 0,
+            name: '',
+            department: '',
+            email: '',
+            role: '',
+          },
+          editedStaff: {
+            id: 0,
+            name: '',
+            department: '',
+            email: '',
+            role: '',
+          },
+          idToEdit: 0,
+          indexToEdit: 0,
 
         };
       },
@@ -272,8 +322,13 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         toggleDepartmentDropdown() {
           this.isDepartmentOpen = !this.isDepartmentOpen; // Toggle the dropdown state
         },
-        toggleEdit() {
-          this.showEditStaffModal = !this.showEditStaffModal; // Toggle the edit modal
+        toggleEdit(staffIndex: number, staffId: number) {
+          this.idToEdit = staffId; // Toggle
+          this.indexToEdit = staffIndex; // Toggle
+          this.showEditPopup = !this.showEditPopup; // Toggle the edit modal
+        },
+        toggleEditClose() {
+          this.showEditPopup = !this.showEditPopup; // Toggle the edit modal
         },
         prevPage (){
           if (this.currentPage > 1) {
@@ -289,6 +344,22 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           event.preventDefault();
           saveStaff(this.addStaff.Name, this.addStaff.surname, this.addStaff.email, this.addStaff.password, this.selectedRoleOption, this.selectedDepartmentId);
           this.showAddStaffModal = false;
+        },
+        editStaff(name: string, department: string, email: string, role: string)
+        {     const staffToEdit = new StaffForAdminListing(this.idToEdit,name,email,department,role);
+              paginatedStaffs.value.splice(this.indexToEdit,1,staffToEdit);
+               
+            console.log(name, department, email, role);
+            this.toggleEditClose();
+        },
+        saveAddedStaff(name: string, department: string, email: string, role: string){
+            const staffToAdd = new StaffForAdminListing(paginatedStaffs.value.length ,name,email,department,role);
+            if(paginatedStaffs.value.length < 10)
+            {
+              paginatedStaffs.value.splice(paginatedStaffs.value.length,1,staffToAdd);
+            }
+            this.showAddStaffModal = false;
+            
         },
         setCurrentPage(page: number){
           this.currentPage = page;
