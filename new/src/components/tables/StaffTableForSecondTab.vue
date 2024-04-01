@@ -203,7 +203,7 @@ function formatDate(dateString: Date): string {
       },
       setup(){
         onMounted(async () => {
-          const requestHandler = new TeachingStaffRequestHandler();
+          const requestHandler =  TeachingStaffRequestHandler.getInstance();
           const response = await requestHandler.getWaitingRequestsForTeachingStaff();
           console.log(response);
           totalRequests.value = response.length;
