@@ -1,5 +1,5 @@
 <template>
-    <div class="box-border p-3 mx-[4%] my-[18%] md:mx-[1%] md:p-[2%] md:my-[8%] xl:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md">
+    <div class="box-border mx-[4%] my-[18%] md:mx-[1%] p-[2%] md:my-[8%] xl:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md">
             <div class="md:flex flex-row">
                 <ul class="flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
                     <li>

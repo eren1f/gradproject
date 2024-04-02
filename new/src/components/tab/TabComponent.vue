@@ -1,26 +1,28 @@
 <template>
-	<div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5">
-		<ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-			<li class="me-2">
-				<a href="#" @click="showTalepOlustur" :class="{ 'selected-tab': activeTab === 'TalepOlustur' }"
-					class="inline-block px-4 py-3 rounded-lg">Talep Türü Oluştur</a>
-			</li>
-			<li class="me-2">
-				<a href="#" @click="showTalepDuzenle" :class="{ 'selected-tab': activeTab === 'TalepDuzenle' }"
-					class="inline-block px-4 py-3 rounded-lg">Talep Türü Düzenle</a>
-			</li>
-			<li class="me-2">
-				<a href="#" @click="showAktorListele" :class="{ 'selected-tab': activeTab === 'StaffListing' }"
-					class="inline-block px-4 py-3 rounded-lg">Öğretim Elemanlarını Listele</a>
-			</li>
-		</ul>
+    <div class="box-border mx-[1%] my-[25%] md:mx-[1%] p-[2%] md:my-[8%] xl:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md">
+		<div class="md:flex flex-row">
+			<ul class="flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+				<li>
+					<a href="#" @click="showTalepOlustur" :class="{ 'selected-tab': activeTab === 'TalepOlustur' }"
+					class="flex flex-col sm:inline-block py-3 rounded-lg">Talep Türü Oluştur</a>
+				</li>
+				<li>
+					<a href="#" @click="showTalepDuzenle" :class="{ 'selected-tab': activeTab === 'TalepDuzenle' }"
+					class="flex flex-col py-3 rounded-lg">Talep Türü Düzenle</a>
+				</li>
+				<li>
+					<a href="#" @click="showAktorListele" :class="{ 'selected-tab': activeTab === 'StaffListing' }"
+					class="flex flex-col py-3 rounded-lg">Öğretim Elemanlarını Listele</a>
+				</li>
+			</ul>
+		</div>	
 		<div v-if="activeTab === 'TalepOlustur'">
 			<CreateNewRequestTypes :selected-staffs="selectedStaffs" />
 		</div>
 		<div v-if="activeTab === 'TalepDuzenle'">
 			<EditRequestType />
 		</div>
-		<div v-if="activeTab === 'StaffListing'" class="p-5">
+		<div v-if="activeTab === 'StaffListing'">
 			<StaffListing />
 		</div>
 	</div>

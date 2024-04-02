@@ -7,11 +7,11 @@
         <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
       </div>
       <!-- Table Content -->
-      <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
-        <div class="py-2 md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
+      <div class="p-[1%] xl:overflow-x-auto lg:-mx-8">
+        <div class="py-2 xl:align-middle xl:inline-block w-full xl:min-w-full lg:px-8 mx-auto">
           <div class="shadow overflow-hidden rounded-lg">
-            <table class="w-full md:min-w-full">
-              <thead class="bg-gray-50 hidden md:table-header-group">
+            <table class="w-full xl:min-w-full">
+              <thead class="bg-gray-50 hidden xl:table-header-group">
                 <tr>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byStudentName')">
                     ÖĞRENCİ
@@ -36,22 +36,22 @@
                 <template v-for="(request) in allRequests" :key ="request.getWhenCreated()">
                   <!-- Table Row -->
                   <tr class="border border-gray-400">
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
-                      <span class="table-cell font-bold md:hidden">Öğrenci</span>{{ request.getStudentName() }}
+                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm text-gray-500 block text-left xl:table-cell">
+                      <span class="table-cell font-bold xl:hidden">Öğrenci</span>{{ request.getStudentName() }}
                     </td> 
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
-                      <span class="table-cell font-bold md:hidden">Danışman</span>{ advisorname }
+                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm text-gray-500 block text-left xl:table-cell">
+                      <span class="table-cell font-bold xl:hidden">Danışman</span>{ advisorname }
                     </td> 
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
-                      <span class="table-cell font-bold text-gray-500 md:hidden">Talep Türü</span>{{ request.getInformation() }}
+                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm block text-left xl:table-cell">
+                      <span class="table-cell font-bold text-gray-500 xl:hidden">Talep Türü</span>{{ request.getInformation() }}
                     </td>
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
-                      <span class="table-cell font-bold md:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
+                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm text-gray-500 block text-left xl:table-cell">
+                      <span class="table-cell font-bold xl:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
                     </td>
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell" :class="statusColored(request.getStatus())">
-                      <span class="table-cell font-bold text-gray-500 md:hidden">Talep Durumu</span>{{ translateStatus(request.getStatus()) }}
+                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm block text-left xl:table-cell" :class="statusColored(request.getStatus())">
+                      <span class="table-cell font-bold text-gray-500 xl:hidden">Talep Durumu</span>{{ translateStatus(request.getStatus()) }}
                     </td>
-                    <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
+                    <td class="px-6 py-4 xl:whitespace-nowrap block text-center xl:table-cell">
                       <!-- Toggle button to show additional information -->
                       <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
                     </td>

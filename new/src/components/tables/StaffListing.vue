@@ -2,16 +2,17 @@
   <!--Staff Listing Table-->
   <div class="flex flex-col">
     <!-- SearchBar & Add Staff Button -->
-    <div class="mb-4 flex justify-between">
-      <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
-      <button @click="showAddStaffModal = true" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
-        Öğretim Elemanı Ekle
+    <div class="flex justify-between my-[1%]">
+      <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="border rounded flex-grow">
+      <div class="w-1/4"></div>
+      <button @click="showAddStaffModal = true" class="bg-blue-500 hover:bg-blue-700 text-white rounded w-1/4">
+        Birim Ekle
       </button>
     </div>
     <!-- Add Staff Modal -->
     <div v-if="showAddStaffModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
         <div class="bg-white p-8 rounded-lg">
-          <h2 class="text-xl font-bold mb-4">Aktör Ekle</h2>
+          <h2 class="text-xl font-bold mb-4">Birim Ekle</h2>
           <!-- Add Staff Form -->
           <div class="flex flex-row space-x-4">
             <div class="flex flex-col space-y-4">
@@ -71,31 +72,30 @@
     </div>
     <!--Edit Popup-->
     <div>
-    <div v-if="showEditPopup" class="fixed inset-0 flex justify-center items-center z-50">
-      <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-3/10 text-black"> <!-- Apply text-black class -->
-        <h2 class="text-lg font-bold mb-2 text-center">Duzenlenecek Birim</h2>
+    <div v-if="showEditPopup" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75" @click="showEditPopup = false">
+      <div class="bg-white p-[5%] m-[1%] rounded-lg shadow-lg" @click.stop>
+        <h2 class="text-lg font-bold text-center">Düzenlenecek Birim</h2>
         <div class="requirements-wrapper-div">
           <div class="flex flex-col"> 
-            <div>
-              <label for="pretext-of-req" class="text-black">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <input id="pretext-of-req" v-model="editedStaff.name" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+            <div class="flex justify-between mt-2">
+              <label for="pretext-of-req" class="self-center text-black">İsim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input id="pretext-of-req" v-model="editedStaff.name" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
             </div>
-            <div>
-              <label for="name-of-req" class="text-black">Department</label>
-              <input id="name-of-req" v-model="editedStaff.department" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
+            <div class="flex justify-between mt-2">
+              <label for="name-of-req" class="self-center text-black">Bölüm</label>
+              <input id="name-of-req" v-model="editedStaff.department" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
             </div>
-            <div>
-              <label for="pretext-of-req" class="text-black">E-mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <input id="pretext-of-req" v-model="editedStaff.email" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
+            <div class="flex justify-between mt-2">
+              <label for="pretext-of-req" class="self-center text-black">E-mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input id="pretext-of-req" v-model="editedStaff.email" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
             </div>
-            <div>
-              <label for="name-of-req" class="text-black">Role&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <input id="name-of-req" v-model="editedStaff.role" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
+            <div class="flex justify-between mt-2">
+              <label for="name-of-req" class="self-center text-black">Rolü&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+              <input id="name-of-req" v-model="editedStaff.role" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
             </div>    
           </div>
           <div class="flex justify-between mt-4 space-x-4">
-    <button @click="toggleEditClose" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
+    <button @click="toggleEditClose" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
     <button @click="editStaff(editedStaff.name, editedStaff.department, editedStaff.email, editedStaff.role )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Düzenle</button>
           </div>
 
@@ -105,11 +105,11 @@
   </div>
   
     <!-- Table Content -->
-    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+    <div class="">
+      <div class="md:inline-block w-full md:min-w-full">
+        <div class="shadow overflow-hidden rounded-lg">
+          <table class="w-full md:min-w-full">
+            <thead class="bg-gray-50 hidden md:table-header-group">
               <tr>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
                     ID
@@ -132,59 +132,29 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <tr tr v-for="(staff, index) in paginatedStaffs" :key="staff.getId()">
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <template v-if="showEditStaffModal">
-                    <!-- Render input boxes for editing -->
-                    <input v-model="staff.id" type="text" class="p-1 border rounded" readonly>
-                  </template>
-                  <template v-else>
-                    <!-- Render staff name -->
-                    {{ staff.getId() }}
-                  </template>
+                <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                  <span class="table cell font-bold text-gray-500 md:hidden">ID</span>
+                      {{ staff.getId() }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <template v-if="showEditStaffModal">
-                    <!-- Render input boxes for editing -->
-                    <input v-model="staff.fullName" type="text" class="p-1 border rounded">
-                  </template>
-                  <template v-else>
-                    <!-- Render staff name -->
+                <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
+                  <span class="table cell font-bold text-gray-500 md:hidden">Isim</span>
                     {{ staff.getFullName() }}
-                  </template>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <template v-if="showEditStaffModal">
-                    <!-- Render input boxes for editing -->
-                    <input v-model="staff.department" type="text" class="p-1 border rounded">
-                  </template>
-                  <template v-else>
-                    <!-- Render staff name -->
+                <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
+                  <span class="table cell font-bold text-gray-500 md:hidden">Bolum</span>
                     {{ staff.getDepartment() }}
-                  </template>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <template v-if="showEditStaffModal">
-                    <!-- Render input boxes for editing -->
-                    <input v-model="staff.email" type="text" class="p-1 border rounded">
-                  </template>
-                  <template v-else>
-                    <!-- Render department name -->
+                <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
+                  <span class="table cell font-bold text-gray-500 md:hidden">E-mail</span>
                     {{ staff.getEmail() }}
-                  </template>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <template v-if="showEditStaffModal">
-                    <!-- Render input boxes for editing -->
-                    <input v-model="staff.role" type="text" class="p-1 border rounded">
-                  </template>
-                  <template v-else>
-                    <!-- Render staff name -->
+                <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
+                  <span class="table cell font-bold text-gray-500 md:hidden">Rol</span>
                     {{ staff.getRole() }}
-                  </template>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700" >Edit</button>
-                  
+                <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
+                  <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700">
+                    Düzenle</button>
                 </td>
               </tr>
             </tbody>
