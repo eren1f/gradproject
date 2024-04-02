@@ -96,7 +96,7 @@
           </div>
           <div class="flex justify-between mt-4 space-x-4">
     <button @click="toggleEditClose" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
-    <button @click="editStaff(editedStaff.name, editedStaff.department, editedStaff.email, editedStaff.role )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Düzenle</button>
+    <button @click="editStaff(editedStaff.name, editedStaff.department, editedStaff.email, editedStaff.role )" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full">Düzenle</button>
           </div>
 
         </div>
@@ -361,7 +361,8 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
 
             console.log(newStaff);
             console.log(departments.value);
-           await handler.addStaff(staffToAdd);
+           await handler.addStaff(newStaff);
+           //rol statik unutma
         },
         setCurrentPage(page: number){
           this.currentPage = page;

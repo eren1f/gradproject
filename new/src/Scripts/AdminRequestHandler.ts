@@ -7,6 +7,7 @@ import type { RequestActor } from "@/Models/RequestActor";
 import type { RequestRequirement } from "@/Models/RequestRequirements";
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import type { ActorUpdateType } from "@/Models/ActorUpdateType";
+import type { TeachingStaff } from "@/Models/TeachingStaff";
 
 export class AdminRequestHandler {
     
@@ -484,7 +485,7 @@ export class AdminRequestHandler {
     
     }
 
-    async updateStaff ( staff: StaffForAdminListing): Promise <any>{
+    async updateStaff ( staff: TeachingStaff): Promise <any>{
         const url = apiRoute + "updateStaff" ;
         try {
             const response = await fetch(url, {
@@ -505,7 +506,7 @@ export class AdminRequestHandler {
         }
     }
 
-    async addStaff ( staff: StaffForAdminListing): Promise <any>{
+    async addStaff ( staff: TeachingStaff): Promise <any>{
         const url = apiRoute + "addStaff" ;
         try {
             const response = await fetch(url, {
