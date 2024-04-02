@@ -5,7 +5,7 @@
     <div class="flex justify-between my-[1%]">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-[1%] border rounded">
       <div class="w-1/4 md:w-[1/2]"></div>
-      <button @click="showAddStaffModal = true" class="p-[1%] bg-blue-500 hover:bg-blue-700 text-white rounded">
+      <button @click="toggleModal()" class="p-[1%] bg-blue-500 hover:bg-blue-700 text-white rounded">
         Birim Ekle
       </button>
     </div>
@@ -17,11 +17,11 @@
           <div class="flex flex-row space-x-4">
             <div class="flex flex-col space-y-4">
               <input v-model="addStaff2.name" type="text" placeholder="İsim" class="p-2 border rounded"> <!--v-model="addStaff.Name"--><!--placeholder="İsim"-->
+              <input v-model="addStaff2.surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
               <input v-model="addStaff2.email" type="text" placeholder="Email" class="p-2 border rounded"><!--v-model="addStaff.surname"--><!--placeholder="Soyisim"-->
-              <input v-model="addStaff2.department" type="email" placeholder="Bölüm" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
-              <input v-model="addStaff2.role" type="text" placeholder="Rol" class="p-2 border rounded"><!--v-model="addStaff.password"--><!--placeholder="Şifre"-->
+              <input v-model="addStaff2.password" type="email" placeholder="Şifre" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
             </div>
-           <!--
+           
             <div class="flex flex-col space-y-4">
               <button @click="toggleRoleDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
               Rol -> {{ selectedRoleOption }}
@@ -32,12 +32,12 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
-          --> 
+          
              <!-- Role Dropdown menu -->
-             <!--
+             
               <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-                <div v-for="option in roleDropdownOptions" :key="option.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
-                  <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option.value; isRoleOpen = false">{{ option.label }}</a>
+                <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option; isRoleOpen = false">{{ option }}</a>
                 </div>
               </div>
               <button @click="toggleDepartmentDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
@@ -49,22 +49,22 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
-            -->
+            
                 <!-- Faculty Dropdown menu -->
-            <!--    
+                
             <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-              <div v-for="department in departments" :depKey="department.getDepartmentId()" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
-                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.getDepartmentName(); selectedDepartmentId=department.getDepartmentId(); isDepartmentOpen = false">{{ department.getDepartmentName() }}</a>
+              <div v-for="department in departmentDropdownOptions" :depKey="department.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.label; selectedDepartmentId=department.value; isDepartmentOpen = false">{{ department.label }}</a>
               </div>
             </div>
             </div>
-            -->
+            
           </div>
           <div class="flex justify-end mt-4">
             <button @click="showAddStaffModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="saveAddedStaff(addStaff2.name,addStaff2.department,addStaff2.email,addStaff2.role)" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString())" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
@@ -185,7 +185,7 @@
 
 </template>
 <script lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted,  } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { ListDepartments } from '@/Models/ListDepartments';
 import { TeachingStaff } from '@/Models/TeachingStaff';
@@ -253,9 +253,12 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           isRoleOpen: false,
           selectedRoleOption: '',
           roleDropdownOptions: [
-            { label: 'Danisman', value: 'Danisman' },
-            { label: 'Bolum', value: 'Bolum' },
-            { label: 'Dekanlik', value: 'Dekanlik' },
+             'Bolum',
+             'Danisman',
+             'Dekan'
+          ],
+          departmentDropdownOptions: [
+            { label: '', value: 0 }
           ],
           isDepartmentOpen: false,
           selectedDepartmentOption: '',
@@ -270,9 +273,11 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           addStaff2: {
             id: 0,
             name: '',
-            department: '',
+            surname:'',
             email: '',
+            password: '',
             role: '',
+            departmentId: '',
           },
           editedStaff: {
             id: 0,
@@ -287,6 +292,17 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         };
       },
       methods: {
+        toggleModal() {
+          
+          this.departments.forEach(department => {
+            this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
+          });
+          this.departmentDropdownOptions.shift();
+          console.log(this.departmentDropdownOptions);
+          console.log(this.roleDropdownOptions);
+          
+          this.showAddStaffModal = !this.showAddStaffModal; // Toggle the dropdown state
+        },
         toggleRoleDropdown() {
           this.isRoleOpen = !this.isRoleOpen; // Toggle the dropdown state
         },
@@ -323,9 +339,11 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             console.log(name, department, email, role);
             this.toggleEditClose();
         },
-        async saveAddedStaff(name: string, department: string, email: string, role: string){
+        async saveAddedStaff(  name: string, surname: string, email: string, password: string,  role: string,  departmentId: string){
           let val = 0;
-            const staffToAdd = new StaffForAdminListing(filteredStaffs.value.length ,name,email,department,role);
+          const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
+
+            const staffToAdd = new StaffForAdminListing(filteredStaffs.value.length ,name,email,departmentId,role);
             filteredStaffs.value.forEach(function (staff) {
         
                   if(staff.getId() === filteredStaffs.value.length )
@@ -341,8 +359,9 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             }
             this.showAddStaffModal = false;
 
-            
-           handler.addStaff(staffToAdd);
+            console.log(newStaff);
+            console.log(departments.value);
+           await handler.addStaff(staffToAdd);
         },
         setCurrentPage(page: number){
           this.currentPage = page;
@@ -373,6 +392,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         },
 
       },
+      
       setup(){
         onMounted(async () => {
           const url = apiRoute + "getStaffInfoForAdmin";
@@ -406,7 +426,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           allDepartments.value = [];
 
           for (let i = 0; i < data2.length; i++) {
-              const department = new ListDepartments(data2[i].id, data2[i].departmentName);
+              const department = new ListDepartments(data2[i].id, data2[i].departmentName);           
               console.log(department);
               allDepartments.value.push(department);
           }
