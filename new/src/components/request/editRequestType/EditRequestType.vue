@@ -74,8 +74,7 @@
   <div>
     <div v-if="ActorPopupVisible" class="fixed inset-0 flex justify-center items-center z-50">
       <!--table-->
-      <div class="absolute inset-0 bg-gray-800 opacity-50">
-        
+      <div class="absolute inset-0 bg-gray-800 opacity-50">  
       </div>
       <div class="relative bg-white rounded-lg shadow-xl p-4 w-2/3/5 h-1/2 text-black"> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Aktör</h2>
@@ -88,35 +87,25 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50 sticky top-0 z-10">
                             <tr>
-                                <th scope="col"
-                                    
+                                <th scope="col"  
                                     class="px-6 py-3 text-left text-xs font-medium  text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
                                     ID 
-                                    
                                 </th>
-                                <th scope="col"
-                                    
+                                <th scope="col"  
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
-                                    Name
-                                    
+                                    Name  
                                 </th>
-                                <th scope="col"
-                                    
+                                <th scope="col"   
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
                                     Department
-                                    
                                 </th>
                                 <th scope="col"
-                                    
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
                                     E-Mail
-                                    
                                 </th>
                                 <th scope="col"
-                                    
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('role')">
-                                    Role
-                                    
+                                    Role     
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -154,7 +143,7 @@
   <!--temporarily here-->
       
 
-
+    
       <div v-if="requestTypes.length && !edit"class="flex flex-col">
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -192,19 +181,19 @@
             </div>
           </div>
       </div>
-
-      <div v-if="edit" >
-        <div class=" p-8 rounded-lg">
+    
+      <div v-if="edit" class="flex justify-center" >
+        <div class=" p-8  rounded-lg">
             <h1 class="flex w-1/2 text-2xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
             <div class="mb-4 flex items-center w-1/2">
-              <label for="Talep İsmi" class="inline-blockrounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Talep Ismi</label>
+              <label for="Talep İsmi" class="inline-block rounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Talep Ismi</label>
               <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-md font-semibold text-white mr-2"> {{requestOnEdit.getName()}}</label>
               <!--<input type="text" :placeholder="requestOnEdit.getName()" class="w-[50%] md:w-[25%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />-->
             </div>
             <!--Request requirement table-->
-            <div class="flex justify-between -my-2  sm:-mx-6 lg:-mx-8 ">
+            <div class=" -my-2  sm:-mx-6 lg:-mx-8 ">
               <div class="py-2 align-middle inline-block  sm:px-6 lg:px-8">
-                <div class="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
+                <div class=" overflow-x-auto  sm:rounded-lg">
                   <table class="table-auto min-w-full divide-y divide-gray-200">
                     <thead class="sticky top-0 bg-gray-50">
                       <tr>
@@ -287,14 +276,14 @@
                       </tr>
                     </tbody>
                   </table>
-                  
+        <div>          
         </div>
             <button class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup()">Yeni Gereksinim Ekle</button>     
       </div>
 
       <!--Actor Table-->
-      <div class="py-2 align-middle inline-block  sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+      <div class="py-2  inline-block relative right-8   sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 rounded-lg sm:rounded-lg ">
                   <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
@@ -386,13 +375,14 @@
             </div>
 
             </div>
-       
-
-          <div class="flex p-8">
+            <div class="flex p-8 relative right-8">
             <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">İptal</button>
             <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded hover:bg-green-700 mx-auto" @click="updateAll(requestRequirements as RequestRequirement[], requestActors as RequestActor[])">Kaydet</button>
-          </div> 
+        </div>
+          </div>
+          
       </div>
+      
   </div>
 
   
