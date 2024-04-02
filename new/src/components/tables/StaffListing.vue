@@ -190,6 +190,7 @@ import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { ListDepartments } from '@/Models/ListDepartments';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
+import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
 const searchQuery = ref('');
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
@@ -198,7 +199,7 @@ const staffs = ref<StaffForAdminListing[]>([]);
 const allDepartments = ref<ListDepartments[]>([]);
 const departments = ref<ListDepartments[]>([]);
 const totalEntries = ref(0);
-
+const handler = new AdminRequestHandler();
 const filteredStaffs = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
   if(!query) return staffs.value;
@@ -322,14 +323,26 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             console.log(name, department, email, role);
             this.toggleEditClose();
         },
-        saveAddedStaff(name: string, department: string, email: string, role: string){
-            const staffToAdd = new StaffForAdminListing(paginatedStaffs.value.length ,name,email,department,role);
-            if(paginatedStaffs.value.length < 10)
+        async saveAddedStaff(name: string, department: string, email: string, role: string){
+          let val = 0;
+            const staffToAdd = new StaffForAdminListing(filteredStaffs.value.length ,name,email,department,role);
+            filteredStaffs.value.forEach(function (staff) {
+        
+                  if(staff.getId() === filteredStaffs.value.length )
+                  {
+                    val++;
+                    
+                  }
+            })
+
+            if(val === 0)
             {
-              paginatedStaffs.value.splice(paginatedStaffs.value.length,1,staffToAdd);
+            filteredStaffs.value.splice(filteredStaffs.value.length,1,staffToAdd);
             }
             this.showAddStaffModal = false;
+
             
+           handler.addStaff(staffToAdd);
         },
         setCurrentPage(page: number){
           this.currentPage = page;

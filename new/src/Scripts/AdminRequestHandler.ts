@@ -5,6 +5,7 @@ import { ListRequestTypes } from "@/Models/ListRequestTypes";
 import { apiRoute } from "../Api_Routes/apiRoute" ;
 import type { RequestActor } from "@/Models/RequestActor";
 import type { RequestRequirement } from "@/Models/RequestRequirements";
+import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 
 export class AdminRequestHandler {
     
@@ -454,7 +455,7 @@ export class AdminRequestHandler {
     
     }
     
-    async getRequestActorsByRequestTypeId(requestTypeId: number): Promise<RequestActor[]> { //role and name please
+    async getRequestActorsByRequestTypeId(requestTypeId: number): Promise<RequestActor[]> { 
         const url= apiRoute + "GetRequestActors/" + requestTypeId;
         let actors: RequestActor[] = [];
         try{
@@ -482,7 +483,49 @@ export class AdminRequestHandler {
     
     }
 
+    async updateStaff ( staff: StaffForAdminListing): Promise <any>{
+        const url = apiRoute + "updateStaff" ;
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(staff),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
+    }
+
+    async addStaff ( staff: StaffForAdminListing): Promise <any>{
+        const url = apiRoute + "addStaff" ;
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(staff),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
+    }
+
 
     
-    // boss can you hook me up with async updateStaff(staffs: StaffForAdminListing[]): Promise<any)> {
+    
 }

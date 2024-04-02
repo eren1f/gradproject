@@ -14,7 +14,7 @@
                     <table >
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="w-full py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="w-full py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded">
                                     <span class="table-row" >
                                         <span class="gap1">Name</span>
                                         <span class="gap2">Department</span>

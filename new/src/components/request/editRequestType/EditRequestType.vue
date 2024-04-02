@@ -81,46 +81,42 @@
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Aktör</h2>
         <div class="requirements-wrapper-div">
           <div class="flex items-center">
-            <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="-my-2  sm:-mx-6 lg:-mx-8">
             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                   <div class="overflow-y-auto max-h-80 " >
                     <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                        <thead class="bg-gray-50 sticky top-0 z-10">
                             <tr>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    ID
-                                    <div id="idFilter">
-                                        <input type="text" placeholder="filter" v-model="idFilter">
-                                    </div>
+                                    
+                                    class="px-6 py-3 text-left text-xs font-medium  text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
+                                    ID 
+                                    
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
                                     Name
-                                    <div id="nameFilter">
-                                        <input type="text" placeholder="filter" v-model="nameFilter">
-                                    </div>
+                                    
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
                                     Department
-                                    <div id="departmentFilter">
-                                        <input type="text" placeholder="filter" v-model="departmentFilter">
-                                    </div>
+                                    
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
                                     E-Mail
-                                    <div id="emailFilter">
-                                        <input type="text" placeholder="filter" v-model="emailFilter">
-                                    </div>
+                                    
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('role')">
                                     Role
-                                    <div id="roleFilter">
-                                        <input type="text" placeholder="filter" v-model="roleFilter">
-                                    </div>
+                                    
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -135,11 +131,12 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ staff.getEmail() }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ staff.getRole() }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">     
-                                  <button @click="addActor(staff)" class="text-indigo-600 hover:text-indigo-900">Ekle</button>
+                                  <button @click="addActor(staff as StaffForAdminListing)" class="text-indigo-600 hover:text-indigo-900">Ekle</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                  </div>
                 </div>
             </div>
         </div>
@@ -349,7 +346,7 @@
                           </template>
                           <template v-else>
                             <!-- Render actor name -->
-                            Name
+                            {{actor.name}}
                           </template>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -359,7 +356,7 @@
                           </template>
                           <template v-else>
                             <!-- Render actor role -->
-                            Role
+                            {{actor.role}}
                           </template>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -404,11 +401,11 @@
 
 
 <script lang="ts">
-import { defineComponent,computed,onMounted, ref } from 'vue';
+import { defineComponent,computed,onMounted, ref,watch } from 'vue';
 import RequestName from '@/components/request/createRequestType/RequestName.vue';
 import RequestCredentials from '../RequestCredentials.vue';
 //import AddActorPopup from '@/components/popup/AddActorPopUp.vue';
-import { watch } from 'fs';
+
 import { ListDepartments } from '@/Models/ListDepartments';
 import { RequestTypes } from '@/Models/RequestTypes';
 import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
@@ -442,6 +439,7 @@ data() {
     
     
   },
+  
 
 
 
@@ -467,7 +465,10 @@ data() {
       const editName = ref('');
       const editMultiSelect = ref(false); 
       const editIndex = ref(1);
+       
      // const newRequirementMultiSelect = ref(false);
+
+     
       
     const updateRequirements = async (requirements :RequestRequirement[]) =>{
       await handler.updateRequestRequirement(requirements);
@@ -750,9 +751,36 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
         
         ActorPopupVisible.value = !ActorPopupVisible.value;
       }
+
+      const sortByColumn= (columnName: string) => {
+        
+          filteredStaffs.value.sort((a, b) => {
+              if (columnName === 'name') {
+                 
+                const fullNameA = a.getFullName() ? a.getFullName().toLowerCase() : '';
+                const fullNameB = b.getFullName() ? b.getFullName().toLowerCase() : '';                  
+                  if (fullNameA < fullNameB) return -1;
+                  if (fullNameA > fullNameB) return 1;
+                  return 0;
+              } else if (columnName === 'id') {
+                  
+                  const idA = a.getId();
+                  const idB = b.getId();
+                  return idA - idB;
+              } else {
+                  
+                  const aValue = a[columnName]?.toLowerCase();
+                  const bValue = b[columnName]?.toLowerCase();
+                  if (aValue < bValue) return -1;
+                  if (aValue > bValue) return 1;
+                  return 0;
+              }
+          });
+        }
     
       const updateAll = async (requirements :RequestRequirement[], actors :RequestActor[]) => {
           await handler.updateRequestRequirement(requirements);
+          console.log(actors);
           await handler.updateRequestActor(actors);
           alert('Request type edited successfully');
           edit.value = false;
@@ -824,6 +852,8 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       editIndex,
       staffs,
       filteredStaffs,
+      sortByColumn,
+      
       
     };
   }
