@@ -6,6 +6,7 @@ import { apiRoute } from "../Api_Routes/apiRoute" ;
 import type { RequestActor } from "@/Models/RequestActor";
 import type { RequestRequirement } from "@/Models/RequestRequirements";
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
+import type { ActorUpdateType } from "@/Models/ActorUpdateType";
 
 export class AdminRequestHandler {
     
@@ -364,7 +365,7 @@ export class AdminRequestHandler {
         }
     }
 
-    async updateRequestActor ( actors: RequestActor[]): Promise <any>{
+    async updateRequestActor ( actors: ActorUpdateType[]): Promise <any>{
         const url = apiRoute + "updateActors" ;
         try {
             const response = await fetch(url, {
@@ -373,7 +374,7 @@ export class AdminRequestHandler {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify(actors),
+                body: JSON.stringify(actors)
             });
 
             if (!response.ok) {

@@ -192,9 +192,9 @@
             </div>
             <!--Request requirement table-->
             <div class=" -my-2  sm:-mx-6 lg:-mx-8 ">
-              <div class="py-2 align-middle inline-block  sm:px-6 lg:px-8">
+              <div class="py-2 align-middle inline-block  sm:px-6 lg:px-8 ">
                 <div class=" overflow-x-auto  sm:rounded-lg">
-                  <table class="table-auto min-w-full divide-y divide-gray-200">
+                  <table class="table-auto min-w-full divide-y divide-gray-200  ">
                     <thead class="sticky top-0 bg-gray-50">
                       <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('id')"><!--sortByColumn-->
@@ -218,7 +218,7 @@
                     </thead>
                     <tbody class=" bg-white divide-y divide-gray-200 w-1/2 overflow-y-auto max-h-80">
                       <tr tr v-for="requirement in requestRequirements"   > <!-- -->  
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 whitespace-nowrap ">
                           <template v-if="showEditStaffModal">
                             {{requestOnEdit.getId()}}
                           </template>
@@ -227,7 +227,7 @@
                             {{requestOnEdit.getId()}}
                           </template>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 whitespace-nowrap max-w-[200px] overflow-hidden ">
                           <template v-if="showEditStaffModal">
                             <!-- Render input boxes for editing -->
                             <input v-model.lazy="requirement.name"  type="text" class="p-1 border rounded">
@@ -237,7 +237,7 @@
                             {{ requirement.name }}
                           
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 whitespace-nowrap max-w-[200px] overflow-hidden  ">
                           <template v-if="showEditStaffModal">
                             <!-- Render input boxes for editing -->
                             <input v-model.lazy="requirement.pretext"  type="text" class="p-1 border rounded">
@@ -278,7 +278,7 @@
                   </table>
         <div>          
         </div>
-            <button class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup()">Yeni Gereksinim Ekle</button>     
+            <button class="px-4 py-1 mt-2 mb-2 mx-1 relative right-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup()">Yeni Gereksinim Ekle</button>     
       </div>
 
       <!--Actor Table-->
@@ -328,7 +328,7 @@
                             {{actor.staffId}}
                           </template>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 whitespace-nowrap max-w-[200px] overflow-hidden ">
                           <template v-if="showEditStaffModal">
                             <!-- Render input boxes for editing -->
                             <input  type="text" class="p-1 border rounded">
@@ -368,7 +368,7 @@
                     </tbody>
                   </table>
                 </div>
-                <button class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Aktör Ekle</button>
+                <button class="px-4 py-1 mt-2 mb-2 mx-1 relative right-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Aktör Ekle</button>
                 
               </div>
               
@@ -405,7 +405,7 @@ import { StaffForAdminListing } from '@/Models/StaffForAdminListing'
 import type { RequestActor } from '@/Models/RequestActor';
 import { group } from 'console';
 import { request } from 'http';
-
+import type { ActorUpdateType } from '@/Models/ActorUpdateType';
 
 
 export default defineComponent({
@@ -455,7 +455,7 @@ data() {
       const editName = ref('');
       const editMultiSelect = ref(false); 
       const editIndex = ref(1);
-       
+      
      // const newRequirementMultiSelect = ref(false);
 
      
@@ -769,9 +769,17 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
         }
     
       const updateAll = async (requirements :RequestRequirement[], actors :RequestActor[]) => {
+          let actorUpdates: ActorUpdateType[] =actors.map((actor)=>{
+            return  {
+              staffId : actor.staffId, 
+              requestTypeId : actor.requestTypeId,
+              index : actor.index 
+            }
+          })
+          console.log(actorUpdates);
           await handler.updateRequestRequirement(requirements);
           console.log(actors);
-          await handler.updateRequestActor(actors);
+          await handler.updateRequestActor(actorUpdates);
           alert('Request type edited successfully');
           edit.value = false;
       }
