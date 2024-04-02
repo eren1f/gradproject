@@ -3,9 +3,9 @@
   <div class="flex flex-col">
     <!-- SearchBar & Add Staff Button -->
     <div class="flex justify-between my-[1%]">
-      <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="border rounded flex-grow">
-      <div class="w-1/4"></div>
-      <button @click="showAddStaffModal = true" class="bg-blue-500 hover:bg-blue-700 text-white rounded w-1/4">
+      <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-[1%] border rounded">
+      <div class="w-1/4 md:w-[1/2]"></div>
+      <button @click="showAddStaffModal = true" class="p-[1%] bg-blue-500 hover:bg-blue-700 text-white rounded">
         Birim Ekle
       </button>
     </div>
