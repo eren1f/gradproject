@@ -1,46 +1,47 @@
 <template>
-    <div>
-        <div >
-            <div class="w-1/2 flex justify-between space-x-20">
-                
-                <div>
+        <div class="md:flex md:justify-between">
+            <div class="md:w-1/2">
+                    <h1 class="flex text-2xl font-bold mb-[1%] text-white justify-center md:justify-between">
+                    Talep Türü Gereksinimleri</h1>
                     <RequestCredentials :departmentId="departmentId" @update:selectedDepartment="handleSelectedDepartment" @dataChanged="handleDataChange" />
                     <RequestName />
                     <CreateNewRequirement class="text-black" />
-                </div>
-                <div>
-                    <h1 class="flex text-2xl font-bold mb-[1%] text-white">Talep Türü Birimleri</h1>
-                <div class="mt-5" style="width: 170%;">
-                    <table >
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="w-full py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded">
-                                    <span class="table-row" >
-                                        <span class="gap1">Name</span>
-                                        <span class="gap2">Department</span>
-                                        <span style="padding-right: 440px;" >Role</span>
-                                    </span>
-                                    
-                                </th>   
-                            </tr>
-                        </thead>
-                    </table>
-                    <div class="overflow-y-auto max-h-[145px] max-w-[1017px]" style="width: 59%;">
-                        <div id="fillActors-wrapper">
-                            <!-- Content inside fillActors-wrapper -->
+            </div>
+            <div class="md:w-1/2">
+                <h1 class="flex text-2xl font-bold my-[1%] text-white justify-center md:justify-between">
+                    Talep Türü Birimleri</h1>
+                <div class="px-[1%]">
+                    <div class="md:inline-block w-full md:min-w-full">
+                        <div class="shadow overflow-y-auto max-h-80 rounded-lg">
+                            <table class="w-full md:min-w-full">
+                                <thead class="bg-gray-50 hidden md:table-header-group">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Isim
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Bolum
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Rolu
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Aksiyonlar
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fillActors-wrapper">
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-                </div>       
-            </div>
-                
-            </div>
-            
-            <div class="flex items-center justify-center">
-                <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 rounded"
-                    @click="addNewRequestType()">Add this request type</button>
+                    </div> 
+                </div>   
             </div>
         </div>
-    </div>
+        <div class="flex items-center justify-center">
+                    <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 my-[3%] rounded"
+                        @click="addNewRequestType()">Talep Türünü Kaydet</button>
+        </div>
 </template>
 
 

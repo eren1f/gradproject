@@ -1,5 +1,5 @@
 <template>
-    <div class="faculty-wrapper-div flex md:w-1/4 md:flex-row flex-col items-center md:justify-between justify-center md:my-[1%] md:px-[1%]">
+    <div class="faculty-wrapper-div flex md:w-1/2 md:flex-row flex-col items-center md:justify-between justify-center md:my-[1%] md:px-[1%]">
         <label for="faculty" class="text-white font-semibold m-[1%]">Fakülte</label>
         <div class="relative">
             <select name="faculty" id="faculty" v-model="selectedFaculty"
@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div class="department-wrapper-div flex md:w-1/4 md:flex-row flex-col items-center md:justify-between justify-center md:my-[1%] md:px-[1%]">
+    <div class="department-wrapper-div flex md:w-1/2 md:flex-row flex-col items-center md:justify-between justify-center md:my-[1%] md:px-[1%]">
         <label for="department" class="text-white font-semibold m-[1%]">Bölüm</label>
         <div class="relative">
             <select name="department" id="department" v-model="selectedDepartment"

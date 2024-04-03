@@ -2,11 +2,11 @@
     <!--Staff Listing Table-->
     <div class="flex flex-col" id="StaffListingForCreatingNewRequestType-wrapper">
         <!-- Table Content -->
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+        <div class="px-[1%]">
+            <div class="md:inline-block w-full md:min-w-full">
+                <div class="shadow overflow-hidden rounded-lg">
+                    <table class="w-full md:min-w-full">
+                        <thead class="bg-gray-50 hidden md:table-header-group">
                             <tr>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -48,25 +48,37 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr tr v-for="staff in paginatedStaffs" :key="staff.getId()">
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getId() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getFullName() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getDepartment() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getEmail() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getRole() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">     
-                                    <button class="text-indigo-600 hover:text-indigo-900"
-                                        @click="addNewActorToList(staff)">Add</button>
-                                </td>
-                            </tr>
+                        <tbody class="bg-gray-50">
+                            <template v-for="staff in paginatedStaffs" :key="staff.getId()">
+                                <tr class="border border-gray-400">
+                                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                        <span class="table-cell font-bold md:hidden">ID</span>{{ staff.getId() }}
+                                    </td> 
+                                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                        <span class="table-cell font-bold md:hidden">Ismi</span>{{ staff.getFullName() }}
+                                    </td> 
+                                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                        <span class="table-cell font-bold md:hidden">Bolum</span>{{ staff.getDepartment() }}
+                                    </td>
+                                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                        <span class="table-cell font-bold md:hidden">E-Mail</span>{{ staff.getEmail() }}
+                                    </td>
+                                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                        <span class="table-cell font-bold md:hidden">Rol</span>{{ staff.getRole() }}
+                                    </td>
+                                    <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">     
+                                        <button class="text-indigo-600 hover:text-indigo-900"
+                                            @click="addNewActorToList(staff)">Add</button>
+                                    </td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         <!-- Pagination -->
-        <div class="my-4">
+        <div class="py-[1%] overflow-x-auto whitespace-nowrap">
             <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
                 aria-label="Table navigation">
                 <span
@@ -98,7 +110,6 @@
 <script lang="ts">
 import { ref, computed, onMounted, defineComponent, watch } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
-import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 
 export default defineComponent({
@@ -126,11 +137,14 @@ export default defineComponent({
             const staffForAdminListing: StaffForAdminListing = staff;
             const actors_wrapper_div = document.getElementById('fillActors-wrapper');
 
-            const new_Actor_div = document.createElement('div');
-            const new_Actor_FullName = document.createElement('div');
-            const new_Actor_Department = document.createElement('div');
-            const new_Actor_Role = document.createElement('div');
-
+            const new_Actor_div = document.createElement('tr');
+            const new_Actor_FullName = document.createElement('td');
+            const new_Actor_FullNameMobile = document.createElement('span');
+            const new_Actor_Department = document.createElement('td');
+            const new_Actor_DepartmentMobile = document.createElement('span');
+            const new_Actor_Role = document.createElement('td');
+            const new_Actor_RoleMobile = document.createElement('span');
+            const buttonContainer = document.createElement('td');
             const move_up_button = document.createElement('button');
             const move_down_button = document.createElement('button');
             const new_Actor_RemoveButton = document.createElement('button');
@@ -173,30 +187,41 @@ export default defineComponent({
             new_Actor_RemoveButton.addEventListener('click', () => {
                 new_Actor_div.remove();
             });
-
-            new_Actor_div.classList.add('flex', 'flex-row', 'justify-between', 'w-full', 'bg-gray-100', 'p-2', 'rounded', 'mb-2');
-            new_Actor_FullName.classList.add('flex', 'flex-row', 'justify-between', 'w-1/4');
-            new_Actor_Department.classList.add('flex', 'flex-row', 'justify-between', 'w-1/4');
-            new_Actor_Role.classList.add('flex', 'flex-row', 'justify-between', 'w-1/4');
+            
+            new_Actor_div.classList.add('border', 'border-gray-400', 'bg-gray-50');
+            new_Actor_FullName.classList.add('px-6','py-3','bg-white','md:whitespace-nowrap' ,'text-sm','text-black','block','text-left', 'md:table-cell');
+            new_Actor_FullNameMobile.classList.add('table-cell','font-bold','md:hidden')
+            new_Actor_Department.classList.add('px-6','py-3','bg-white','md:whitespace-nowrap' ,'text-sm','text-black','block','text-left', 'md:table-cell');
+            new_Actor_DepartmentMobile.classList.add('table-cell','font-bold','md:hidden')
+            new_Actor_Role.classList.add('px-6','py-3','bg-white','md:whitespace-nowrap' ,'text-sm','text-black','block','text-left', 'md:table-cell');
+            new_Actor_RoleMobile.classList.add('table-cell','font-bold','md:hidden')
+            buttonContainer.classList.add('flex', 'items-start', 'justify-center', 'table-cell', );
             move_up_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1', 'px-5', 'hover:bg-green-700', 'hover:text-white');
-            move_down_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1','px-5', 'hover:bg-green-700', 'hover:text-white');
-            new_Actor_RemoveButton.classList.add('bg-red-500', 'text-white', 'rounded', 'p-1', 'hover:bg-red-700', 'hover:text-white');
+            move_down_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1','px-5', 'hover:bg-green-700', 'hover:text-white', 'md:mx-[1%]');
+            new_Actor_RemoveButton.classList.add('bg-red-500', 'text-white', 'rounded', 'p-1','px-5','hover:bg-red-700', 'hover:text-white');
 
             new_Actor_div.dataset.id = staffForAdminListing.getId().toString();
             new_Actor_FullName.innerHTML = staffForAdminListing.getFullName();
+            new_Actor_FullNameMobile.innerHTML = 'Isim';
             new_Actor_Department.innerHTML = staffForAdminListing.getDepartment();
+            new_Actor_DepartmentMobile.innerHTML = 'Bolum';
             new_Actor_Role.innerHTML = staffForAdminListing.getRole();
+            new_Actor_RoleMobile.innerHTML = 'Rol';
+            new_Actor_RoleMobile.outerHTML = new_Actor_Role.innerHTML;
             move_up_button.innerHTML = '&#8593;'; 
             move_down_button.innerHTML = '&#8595;'; 
+            new_Actor_RemoveButton.innerHTML = '&#215';
 
-            new_Actor_RemoveButton.innerHTML = 'Remove';
-
+            new_Actor_FullName.appendChild(new_Actor_FullNameMobile);
+            new_Actor_Department.appendChild(new_Actor_DepartmentMobile);
+            new_Actor_Role.appendChild(new_Actor_RoleMobile);
             new_Actor_div.appendChild(new_Actor_FullName);
             new_Actor_div.appendChild(new_Actor_Department);
             new_Actor_div.appendChild(new_Actor_Role);
-            new_Actor_div.appendChild(move_up_button);
-            new_Actor_div.appendChild(move_down_button);
-            new_Actor_div.appendChild(new_Actor_RemoveButton);
+            buttonContainer.appendChild(move_up_button);
+            buttonContainer.appendChild(move_down_button);
+            buttonContainer.appendChild(new_Actor_RemoveButton);
+            new_Actor_div.appendChild(buttonContainer);
 
             actors_wrapper_div?.appendChild(new_Actor_div);
         };
