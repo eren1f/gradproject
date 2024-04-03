@@ -15,17 +15,17 @@
         <div class="requirements-wrapper-div">
           <div class="flex flex-col"> 
             <div>
-              <label for="pretext-of-req" class="text-black">Pretext</label>
+              <label for="pretext-of-req" class="text-black">Hazır Metin</label>
               <input id="pretext-of-req" v-model="newPretext" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
             </div>
             <div>
-              <label for="name-of-req" class="text-black">Name</label>
+              <label for="name-of-req" class="text-black">Isim &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
               <input id="name-of-req" v-model="newName" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
             </div>  
           </div>
           
           <div class="flex items-center mt-3">
-              <label for="multi-select-button" class="text-black">Multi-Select</label>
+              <label for="multi-select-button" class="text-black">Çoklu Seçim</label>
               <input id="multi-select-button" v-model="newMultiSelect"type="checkbox" class="border border-black mt-1 ml-2 form-checkbox h-4 w-4 text-indigo-600">
           </div>
           <div class="flex justify-between mt-4 space-x-4">
@@ -42,21 +42,21 @@
     <div v-if="editPopupVisible" class="fixed inset-0 flex justify-center items-center z-50" @click="editPopupVisible = false">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
       <div class="relative bg-white rounded-lg shadow-xl p-4 md:w-1/4 md:h-3/10  w-[80%] text-black" @click.stop> <!-- Apply text-black class -->
-        <h2 class="text-lg font-bold mb-2 text-center">Yeni Gereksinim</h2>
+        <h2 class="text-lg font-bold mb-2 text-center">Gereksinim Düzenle</h2>
         <div class="requirements-wrapper-div">
           <div class="flex flex-col"> 
             <div>
-              <label for="pretext-of-req" class="text-black">Pretext</label>
+              <label for="pretext-of-req" class="text-black">Hazır Metin</label>
               <input id="pretext-of-req" v-model="editPretext" type="text" class="border rounded-md p-2 mt-2 ml-2 text-black bg-gray-100 w-40 h-8 border-black">
             </div>
             <div>
-              <label for="name-of-req" class="text-black">Name</label>
+              <label for="name-of-req" class="text-black">Isim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
               <input id="name-of-req" v-model="editName" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
             </div>  
           </div>
           
           <div class="flex items-center mt-3">
-              <label for="multi-select-button" class="text-black">Multi-Select</label>
+              <label for="multi-select-button" class="text-black">Çoklu Seçim</label>
               <input id="multi-select-button" v-model="editMultiSelect"type="checkbox" class="border border-black mt-1 ml-2 form-checkbox h-4 w-4 text-indigo-600">
           </div>
           <div class="flex justify-between mt-4 space-x-4">
@@ -91,11 +91,11 @@
                                 </th>
                                 <th scope="col"  
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
-                                    Name  
+                                    Isim  
                                 </th>
                                 <th scope="col"   
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
-                                    Department
+                                    Bölüm
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
@@ -103,7 +103,7 @@
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('role')">
-                                    Role     
+                                    Rol     
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -201,19 +201,19 @@
                     <thead class="bg-gray-50 hidden md:table-header-group">
                       <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('id')"><!--sortByColumn-->
-                            RequestTypeID
+                            Talep Türü ID
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('name')">
-                            Name
+                            Isim
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('department')">
-                            Pretext
+                            Hazır Metin
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('email')">
-                            Type
+                            Tür
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('role')">
-                            Index
+                            Sıra
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           </th>
@@ -239,8 +239,8 @@
                         <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                           <button @click="goUp(requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&uarr;</button>
                           <button @click="goDown(requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&darr;</button>
-                          <button @click="editPopup(requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700" >Edit</button>
-                          <button @click="deleteRequirement(requirement.requestTypeId,requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-red-500 text-white rounded hover:bg-red-700" v-if="!showEditStaffModal">Sil</button>
+                          <button @click="editPopup(requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700" >✏️</button>
+                          <button @click="deleteRequirement(requirement.requestTypeId,requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-red-500 text-white rounded hover:bg-red-700" v-if="!showEditStaffModal">&#215;</button>
                         </td>
                       </tr>
                     </tbody>
@@ -257,19 +257,19 @@
                     <thead class="bg-gray-50 hidden md:table-header-group">
                       <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('id')"><!--sortByColumn-->
-                            RequestTypeID
+                            Talep Türü ID
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('name')">
-                            StaffID
+                            Birim ID
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('department')">
-                            Name
+                            Isim
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('email')">
-                            Role
+                            Rol
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('role')">
-                            Index
+                            Sıra
                           </th>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           </th>
@@ -295,7 +295,7 @@
                         <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                           <button @click="goUpActor(actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&uarr;</button>
                           <button @click="goDownActor(actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&darr;</button>                          
-                          <button @click="deleteActor(actor.requestTypeId,actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-red-500 text-white rounded hover:bg-red-700" v-if="!showEditStaffModal">Sil</button>
+                          <button @click="deleteActor(actor.requestTypeId,actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-red-500 text-white rounded hover:bg-red-700" v-if="!showEditStaffModal">&#215;</button>
                         </td>
                       </tr>
                     </tbody>

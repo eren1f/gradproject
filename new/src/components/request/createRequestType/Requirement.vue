@@ -19,7 +19,7 @@
         <div class="flex flex-col justify-center items-center requirements-wrapper-div">
                 <button @click="handleMoveUp" class="text-white bg-blue-500 hover:bg-blue-700 p-2 rounded-md "> &uarr;</button>
                 <button @click="handleMoveDown" class="text-white bg-blue-500  hover:bg-blue-700 p-2 rounded-md my-[40%]"> &darr;</button>
-                <button @click="handleDeleteButton" class="text-white bg-red-500 hover:bg-red-700 p-2 rounded-md"> &#215</button>
+                <button @click="handleDeleteButton" class="text-white bg-red-500 hover:bg-red-700 p-2 rounded-md"> &#215;</button>
         </div>
     </div> 
     <hr class="my-[2%] border-white">
