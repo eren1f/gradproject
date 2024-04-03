@@ -73,7 +73,7 @@
     <div>
       <div v-if="showEditPopup" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
         <div class="bg-white p-8 rounded-lg">
-          <h2 class="text-xl font-bold mb-4">Birim Ekle</h2>
+          <h2 class="text-xl font-bold mb-4">Birim Düzenle</h2>
           <!-- Add Staff Form -->
           <div class="flex flex-row space-x-4">
             <div class="flex flex-col space-y-4">
@@ -145,16 +145,16 @@
                     ID
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
-                    Name
+                    Isim
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
-                    Department
+                    Bölüm
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
                     E-Mail
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('role')">
-                    Role
+                    Rol
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   </th>
@@ -184,7 +184,7 @@
                 </td>
                 <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
                   <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700">
-                    Düzenle</button>
+                    ✏️</button>
                 </td>
               </tr>
             </tbody>
