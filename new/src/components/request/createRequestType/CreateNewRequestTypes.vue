@@ -9,7 +9,7 @@
                     <CreateNewRequirement class="text-black" />
                 </div>
                 <div>
-               
+                    <h1 class="flex text-2xl font-bold mb-[1%] text-white">Talep Türü Birimleri</h1>
                 <div class="mt-5" style="width: 170%;">
                     <table >
                         <thead class="bg-gray-50">

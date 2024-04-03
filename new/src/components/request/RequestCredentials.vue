@@ -1,9 +1,9 @@
 <template>
-    <div class="faculty-wrapper-div mt-5 w-1/2 flex ">
-        <label for="faculty" class="text-white mr-11">Faculty Name</label>
-        <div class="relative inline-block">
+    <div class="faculty-wrapper-div flex md:w-1/4 md:flex-row flex-col items-center md:justify-between justify-center md:my-[1%] md:px-[1%]">
+        <label for="faculty" class="text-white font-semibold m-[1%]">Fakülte</label>
+        <div class="relative">
             <select name="faculty" id="faculty" v-model="selectedFaculty"
-                class="flex appearance-none w-40 bg-white border border-gray-300 text-black py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:ring">
+                class="flex appearance-none w-52 bg-white border border-gray-300 text-black py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:ring">
                 <option v-for="faculty in faculties" :key="faculty.getFacultyId()" :value="faculty">{{
                     faculty.getFacultyName() }}</option>
             </select>
@@ -15,11 +15,11 @@
             </div>
         </div>
     </div>
-    <div class="department-wrapper-div mt-5 w-1/2 flex ">
-        <label for="department" class="text-white mr-3">Department Name</label>
-        <div class="relative inline-block">
+    <div class="department-wrapper-div flex md:w-1/4 md:flex-row flex-col items-center md:justify-between justify-center md:my-[1%] md:px-[1%]">
+        <label for="department" class="text-white font-semibold m-[1%]">Bölüm</label>
+        <div class="relative">
             <select name="department" id="department" v-model="selectedDepartment"
-                class="flex appearance-none w-40 bg-white border border-gray-300 text-black py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:ring">
+                class="flex appearance-none w-52 bg-white border border-gray-300 text-black py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 focus:ring">
                 <option v-for="department in departments" :key="department.getDepartmentId()" :value="department">{{
                     department.getDepartmentName() }}</option>
             </select>

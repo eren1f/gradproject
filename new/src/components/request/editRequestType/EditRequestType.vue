@@ -1,14 +1,13 @@
 <template>
   <div>
-      <div class="w-1/2 flex justify-between space-x-20">
+      <div class="my-[2%]">
           <div v-if="!edit">
           <RequestCredentials :selectedDepartment ="selectedDepartment"
           @update:selectedDepartment="handleDepartmentChange"/>
           
           </div>
       </div>
-    <!--temporarily here-->
-      
+    <!--temporarily here--> 
   <div>
     <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-50">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
@@ -74,8 +73,7 @@
   <div>
     <div v-if="ActorPopupVisible" class="fixed inset-0 flex justify-center items-center z-50">
       <!--table-->
-      <div class="absolute inset-0 bg-gray-800 opacity-50">
-        
+      <div class="absolute inset-0 bg-gray-800 opacity-50">  
       </div>
       <div class="relative bg-white rounded-lg shadow-xl p-4 w-2/3/5 h-1/2 text-black"> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Aktör</h2>
@@ -88,35 +86,25 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50 sticky top-0 z-10">
                             <tr>
-                                <th scope="col"
-                                    
+                                <th scope="col"  
                                     class="px-6 py-3 text-left text-xs font-medium  text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
                                     ID 
-                                    
                                 </th>
-                                <th scope="col"
-                                    
+                                <th scope="col"  
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
-                                    Name
-                                    
+                                    Name  
                                 </th>
-                                <th scope="col"
-                                    
+                                <th scope="col"   
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
                                     Department
-                                    
                                 </th>
                                 <th scope="col"
-                                    
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('email')">
                                     E-Mail
-                                    
                                 </th>
                                 <th scope="col"
-                                    
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('role')">
-                                    Role
-                                    
+                                    Role     
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -154,59 +142,57 @@
   <!--temporarily here-->
       
 
-
+    
       <div v-if="requestTypes.length && !edit"class="flex flex-col">
-        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        ID
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Talep Ismi
-                      </th>
-                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class=" bg-white divide-y divide-gray-200">
-                    <tr class="table-tr" v-for="request in requestTypes" :key="request.getId()" :data-id="request.getId()">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          {{ request.getId() }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          {{ request.getName() }}
-                        </td>
-                        <td class="pr-6 py-4 whitespace-nowrap text-right text-sm font-medium">  
-                            <button @click=" editRequest(request.getId(), request.getName())" class="text-indigo-600 hover:text-indigo-900">Duzenle&nbsp;&nbsp;&nbsp;</button>
-                            <button class="text-red-600 hover:text-red-900" @click="deleteRequestType(request.getId())"> Sil</button> <!---->                         
-                        </td>
-                    </tr>
-                  </tbody>
-                </table>
+        <div class="px-[1%]">
+          <div class="md:inline-block w-full md:min-w-full">
+            <div class="shadow overflow-hidden rounded-lg">
+              <table class="w-full md:min-w-full">
+                <thead class="bg-gray-50 hidden md:table-header-group">
+                  <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Talep Ismi
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> 
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-gray-50">
+                  <tr class="border border-gray-400" v-for="request in requestTypes" :key="request.getId()" :data-id="request.getId()">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Talep Numarası</span>{{ request.getId() }}
+                    </td>
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Talep İsmi</span>{{ request.getName() }}
+                    </td>
+                    <td class="px-6 py-3 md:whitespace-nowrap text-gray-500 block text-center md:table-cell">  
+                        <button @click=" editRequest(request.getId(), request.getName())" class="text-indigo-600 hover:text-indigo-900">Duzenle&nbsp;&nbsp;&nbsp;</button>
+                        <button class="text-red-600 hover:text-red-900" @click="deleteRequestType(request.getId())">Sil</button> <!---->                         
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               </div>
             </div>
           </div>
       </div>
-
-      <div v-if="edit" >
-        <div class=" p-8 rounded-lg">
-            <h1 class="flex w-1/2 text-2xl font-bold mb-5 text-white">Talep Türünü Düzenle</h1>
-            <div class="mb-4 flex items-center w-1/2">
-              <label for="Talep İsmi" class="inline-blockrounded-full px-3 py-1 text-sm font-semibold text-white mr-2"> Talep Ismi</label>
-              <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-full px-3 py-1 text-md font-semibold text-white mr-2"> {{requestOnEdit.getName()}}</label>
+    
+      <div v-if="edit" class="flex justify-center">
+        <div class="container">
+            <h1 class="flex text-2xl font-bold mb-[1%] text-white">Talep Türünü Düzenle</h1>
+            <div class="mb-[1%] flex items-center">
+              <label for="Talep İsmi" class="inline-block rounded-full text-md font-semibold text-white mr-[1%]">Düzenlenen Talep İsmi</label>
+              <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-md px-[1%] text-md font-semibold text-white"> {{requestOnEdit.getName()}}</label>
               <!--<input type="text" :placeholder="requestOnEdit.getName()" class="w-[50%] md:w-[25%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />-->
             </div>
             <!--Request requirement table-->
-            <div class="flex justify-between -my-2  sm:-mx-6 lg:-mx-8 ">
-              <div class="py-2 align-middle inline-block  sm:px-6 lg:px-8">
-                <div class="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
-                  <table class="table-auto min-w-full divide-y divide-gray-200">
-                    <thead class="sticky top-0 bg-gray-50">
+              <div class="useless">
+                <div class="overflow-x-auto rounded-lg">
+                  <table class="table-auto min-w-full divide-y divide-gray-200  ">
+                    <thead class="bg-gray-50 hidden md:table-header-group">
                       <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('id')"><!--sortByColumn-->
                             RequestTypeID
@@ -228,57 +214,23 @@
                         </tr>
                     </thead>
                     <tbody class=" bg-white divide-y divide-gray-200 w-1/2 overflow-y-auto max-h-80">
-                      <tr tr v-for="requirement in requestRequirements"   > <!-- -->  
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            {{requestOnEdit.getId()}}
-                          </template>
-                          <template v-else>
-                            <!-- Render RequestTypeID -->
-                            {{requestOnEdit.getId()}}
-                          </template>
+                      <tr tr v-for="requirement in requestRequirements"> 
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Talep Türü ID</span>{{requestOnEdit.getId()}}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input v-model.lazy="requirement.name"  type="text" class="p-1 border rounded">
-                          </template>
-                          
-                            <!-- Render requirement name -->
-                            {{ requirement.name }}
-                          
+                        <td class="px-6 py-3 md:whitespace-nowrap md:max-w-[200px] md:overflow-hidden text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Talep Gereksinimi</span>  {{ requirement.name }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input v-model.lazy="requirement.pretext"  type="text" class="p-1 border rounded">
-                          </template>
-                          <template v-else>
-                            <!-- Render  Pretext -->
-                            {{ requirement.pretext }}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap md:max-w-[200px] md:overflow-hidden text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Gereksinim Hazir Metni</span>{{ requirement.pretext }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input v-model.lazy="requirement.type"  type="text" class="p-1 border rounded">
-                          </template>
-                          <template v-else>
-                            <!-- Render Type -->
-                            {{ requirement.type }}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Gereksinim Kosulu</span>{{ requirement.type }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            {{ requirement.index }}
-                          </template>
-                          <template v-else>
-                            <!-- Render Index -->
-                            {{ requirement.index }}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Gereksinim Indeksi</span>{{ requirement.index }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                           <button @click="goUp(requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&uarr;</button>
                           <button @click="goDown(requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&darr;</button>
                           <button @click="editPopup(requirement.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700" >Edit</button>
@@ -287,16 +239,16 @@
                       </tr>
                     </tbody>
                   </table>
-                  
-        </div>
-            <button class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup()">Yeni Gereksinim Ekle</button>     
-      </div>
+                </div>   
+                <button class="px-4 py-1 mt-2 mb-2 mx-1 relative right-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup()">
+                  Yeni Gereksinim Ekle</button>       
+              </div>                
 
       <!--Actor Table-->
-      <div class="py-2 align-middle inline-block  sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+      <div class="container">
+                <div class="shadow overflow-hidden border-b border-gray-200 rounded-lg sm:rounded-lg ">
                   <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                    <thead class="bg-gray-50 hidden md:table-header-group">
                       <tr>
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('id')"><!--sortByColumn-->
                             RequestTypeID
@@ -319,81 +271,41 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 w-1/2">
                       <tr tr v-for="actor in requestActors" > <!--:key="requirement.index" -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input  type="text" class="p-1 border rounded" readonly>
-                          </template>
-                          <template v-else>
-                            <!-- Render actor RequestTypeID -->
-                            {{actor.requestTypeId}}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Talep Turu ID</span>{{actor.requestTypeId}}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input  type="text" class="p-1 border rounded">
-                          </template>
-                          <template v-else>
-                            <!-- Render actor StaffID -->
-                            {{actor.staffId}}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Birim ID</span>{{actor.staffId}}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input  type="text" class="p-1 border rounded">
-                          </template>
-                          <template v-else>
-                            <!-- Render actor name -->
-                            {{actor.name}}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Birim ismi</span>{{actor.name}}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input  type="text" class="p-1 border rounded">
-                          </template>
-                          <template v-else>
-                            <!-- Render actor role -->
-                            {{actor.role}}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Rolu</span>{{actor.role}}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                          <template v-if="showEditStaffModal">
-                            <!-- Render input boxes for editing -->
-                            <input  type="text" class="p-1 border rounded">
-                          </template>
-                          <template v-else>
-                            <!-- Render actor index -->
-                            {{actor.index}}
-                          </template>
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                          <span class="table-cell font-bold md:hidden">Indeksi</span>{{actor.index}}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                           <button @click="goUpActor(actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&uarr;</button>
                           <button @click="goDownActor(actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" v-if="!showEditStaffModal">&darr;</button>                          
                           <button @click="deleteActor(actor.requestTypeId,actor.index)" class="px-4 py-1 mt-2 mb-2 mx-1 bg-red-500 text-white rounded hover:bg-red-700" v-if="!showEditStaffModal">Sil</button>
-                          
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <button class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Aktör Ekle</button>
-                
+                <button class="px-4 py-1 mt-2 mb-2 mx-1 relative right-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Aktör Ekle</button>
               </div>
-              
+                <div class="flex justify-between">
+                  <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">
+                    İptal</button>
+                  <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded hover:bg-green-700" @click="updateAll(requestRequirements as RequestRequirement[], requestActors as RequestActor[])">
+                    Kaydet</button>
+                </div>
             </div>
-
             </div>
-       
-
-          <div class="flex p-8">
-            <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">İptal</button>
-            <button class="px-4 py-1 mt-2 mb-2 bg-green-500 text-white rounded hover:bg-green-700 mx-auto" @click="updateAll(requestRequirements as RequestRequirement[], requestActors as RequestActor[])">Kaydet</button>
-          </div> 
-      </div>
-  </div>
+      </div> 
 
   
 </template>
@@ -415,7 +327,7 @@ import { StaffForAdminListing } from '@/Models/StaffForAdminListing'
 import type { RequestActor } from '@/Models/RequestActor';
 import { group } from 'console';
 import { request } from 'http';
-
+import type { ActorUpdateType } from '@/Models/ActorUpdateType';
 
 
 export default defineComponent({
@@ -449,6 +361,7 @@ data() {
    //const requirementToAdd = new RequestRequirement(1,1,'','','');
    const staffs = ref<StaffForAdminListing[]>([]);
    const filteredStaffs = ref<StaffForAdminListing[]>([]);
+   let matchStaff = ref<StaffForAdminListing[]>([]);
    const requirementToUpdate = new RequestRequirement(1,1,'','','');
    const requestTypes = ref<ListRequestTypes[]>([]);
    let requestOnEdit = new ListRequestTypes(1,' ');
@@ -465,7 +378,7 @@ data() {
       const editName = ref('');
       const editMultiSelect = ref(false); 
       const editIndex = ref(1);
-       
+      
      // const newRequirementMultiSelect = ref(false);
 
      
@@ -734,21 +647,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       const editPopupClose= () => {  
        editPopupVisible.value = !editPopupVisible.value;
       }
-      const ActorPopup= () => {
-        filteredStaffs.value = [];
-        let staffIds = [];
-          requestActors.value.forEach(function (actor)  {
-            staffIds.push(actor.staffId);
-          });
-          
-          staffs.value.forEach(function (staff) {
-              if (!staffIds.includes(staff.getId())) {
-                  
-                  filteredStaffs.value.push(staff);
-                  
-              }
-          });
-        
+      const ActorPopup= () => {  
         ActorPopupVisible.value = !ActorPopupVisible.value;
       }
 
@@ -779,9 +678,17 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
         }
     
       const updateAll = async (requirements :RequestRequirement[], actors :RequestActor[]) => {
+          let actorUpdates: ActorUpdateType[] =actors.map((actor)=>{
+            return  {
+              staffId : actor.staffId, 
+              requestTypeId : actor.requestTypeId,
+              index : actor.index 
+            }
+          })
+          console.log(actorUpdates);
           await handler.updateRequestRequirement(requirements);
           console.log(actors);
-          await handler.updateRequestActor(actors);
+          await handler.updateRequestActor(actorUpdates);
           alert('Request type edited successfully');
           edit.value = false;
       }
@@ -802,13 +709,35 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
           requestOnEdit.setName(name);
           
           requestRequirements.value = await handler.getRequestRequirementsByRequestTypeId(id);
-          //requestRequirements.value.sort((a, b) => a.index - b.index);
-          
-          
           
           requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
           
+          filteredStaffs.value = [];
+          let staffIds: number[] = [];
+          requestActors.value.forEach(function (actor)  {
+            staffIds.push(actor.staffId);
+          });
+          
+          staffs.value.forEach(function (staff) {
+              if (!staffIds.includes(staff.getId())) {
+                  
+                  filteredStaffs.value.push(staff);
+                  
+              }
+              else
+              {
+                matchStaff.value.push(staff);
+              }
+          });
         }
+        requestActors.value.forEach(function (actor) {
+          matchStaff.value.forEach(function (matchActor) {
+            if(matchActor.getId() == actor.staffId)
+             actor.name = matchActor.getFullName();
+             actor.role = matchActor.getRole();
+           });
+
+         });
         edit.value = true; 
     }
       
@@ -853,6 +782,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       staffs,
       filteredStaffs,
       sortByColumn,
+      matchStaff
       
       
     };
