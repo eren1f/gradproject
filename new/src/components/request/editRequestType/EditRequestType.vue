@@ -361,6 +361,7 @@ data() {
    //const requirementToAdd = new RequestRequirement(1,1,'','','');
    const staffs = ref<StaffForAdminListing[]>([]);
    const filteredStaffs = ref<StaffForAdminListing[]>([]);
+   let matchStaff = ref<StaffForAdminListing[]>([]);
    const requirementToUpdate = new RequestRequirement(1,1,'','','');
    const requestTypes = ref<ListRequestTypes[]>([]);
    let requestOnEdit = new ListRequestTypes(1,' ');
@@ -646,21 +647,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       const editPopupClose= () => {  
        editPopupVisible.value = !editPopupVisible.value;
       }
-      const ActorPopup= () => {
-        filteredStaffs.value = [];
-        let staffIds = [];
-          requestActors.value.forEach(function (actor)  {
-            staffIds.push(actor.staffId);
-          });
-          
-          staffs.value.forEach(function (staff) {
-              if (!staffIds.includes(staff.getId())) {
-                  
-                  filteredStaffs.value.push(staff);
-                  
-              }
-          });
-        
+      const ActorPopup= () => {  
         ActorPopupVisible.value = !ActorPopupVisible.value;
       }
 
@@ -722,13 +709,35 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
           requestOnEdit.setName(name);
           
           requestRequirements.value = await handler.getRequestRequirementsByRequestTypeId(id);
-          //requestRequirements.value.sort((a, b) => a.index - b.index);
-          
-          
           
           requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
           
+          filteredStaffs.value = [];
+          let staffIds: number[] = [];
+          requestActors.value.forEach(function (actor)  {
+            staffIds.push(actor.staffId);
+          });
+          
+          staffs.value.forEach(function (staff) {
+              if (!staffIds.includes(staff.getId())) {
+                  
+                  filteredStaffs.value.push(staff);
+                  
+              }
+              else
+              {
+                matchStaff.value.push(staff);
+              }
+          });
         }
+        requestActors.value.forEach(function (actor) {
+          matchStaff.value.forEach(function (matchActor) {
+            if(matchActor.getId() == actor.staffId)
+             actor.name = matchActor.getFullName();
+             actor.role = matchActor.getRole();
+           });
+
+         });
         edit.value = true; 
     }
       
@@ -773,6 +782,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       staffs,
       filteredStaffs,
       sortByColumn,
+      matchStaff
       
       
     };
