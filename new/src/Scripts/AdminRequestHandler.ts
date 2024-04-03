@@ -5,6 +5,9 @@ import { ListRequestTypes } from "@/Models/ListRequestTypes";
 import { apiRoute } from "../Api_Routes/apiRoute" ;
 import type { RequestActor } from "@/Models/RequestActor";
 import type { RequestRequirement } from "@/Models/RequestRequirements";
+import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
+import type { ActorUpdateType } from "@/Models/ActorUpdateType";
+import type { TeachingStaff } from "@/Models/TeachingStaff";
 
 export class AdminRequestHandler {
     
@@ -343,7 +346,7 @@ export class AdminRequestHandler {
     } */
 
     async updateRequestRequirement(requirements: RequestRequirement[]): Promise <any>{
-        const url = apiRoute + "updateRequirements/"
+        const url = apiRoute + "updateRequirements"
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -363,8 +366,8 @@ export class AdminRequestHandler {
         }
     }
 
-    async updateRequestActor ( actors: RequestActor[]): Promise <any>{
-        const url = apiRoute + "updateActors/" ;
+    async updateRequestActor ( actors: ActorUpdateType[]): Promise <any>{
+        const url = apiRoute + "updateActors" ;
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -372,7 +375,7 @@ export class AdminRequestHandler {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify(actors),
+                body: JSON.stringify(actors)
             });
 
             if (!response.ok) {
@@ -453,7 +456,8 @@ export class AdminRequestHandler {
         }
     
     }
-    async getRequestActorsByRequestTypeId(requestTypeId: number): Promise<RequestActor[]> {
+    
+    async getRequestActorsByRequestTypeId(requestTypeId: number): Promise<RequestActor[]> { 
         const url= apiRoute + "GetRequestActors/" + requestTypeId;
         let actors: RequestActor[] = [];
         try{
@@ -480,6 +484,47 @@ export class AdminRequestHandler {
 
     
     }
-    
-    
+
+    async updateStaff ( staff: TeachingStaff): Promise <any>{
+        const url = apiRoute + "updateStaff" ;
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(staff),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
+    }
+
+    async addStaff ( staff: TeachingStaff): Promise <any>{
+        const url = apiRoute + "addStaff" ;
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(staff),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }catch (error) {
+            return null;
+        }
+    }
+   
 }

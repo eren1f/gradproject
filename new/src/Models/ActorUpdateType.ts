@@ -1,7 +1,5 @@
-export type RequestActor = {
+export type ActorUpdateType = {
     requestTypeId: number;
     staffId: number;
-    role?: string;
-    name?: string;
     index: number;
 }

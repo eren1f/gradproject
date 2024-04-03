@@ -9,16 +9,16 @@
                     <CreateNewRequirement class="text-black" />
                 </div>
                 <div>
-               
+                    <h1 class="flex text-2xl font-bold mb-[1%] text-white">Talep Türü Birimleri</h1>
                 <div class="mt-5" style="width: 170%;">
                     <table >
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="w-full py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th scope="col" class="w-full py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded">
                                     <span class="table-row" >
                                         <span class="gap1">Name</span>
                                         <span class="gap2">Department</span>
-                                        <span style="padding-right: 300px;" >Role</span>
+                                        <span style="padding-right: 440px;" >Role</span>
                                     </span>
                                     
                                 </th>   
@@ -143,6 +143,7 @@
             const handleDataChange = (data: any) => {
                 departmentId.value = data;
             }
+            
 
             return {
                 departmentId,
@@ -162,10 +163,10 @@
     }
 
     .gap1 {
-        margin-right: 225px; /* Adjust the first gap size */
+        margin-right: 235px; /* Adjust the first gap size */
     }
 
     .gap2 {
-        margin-right: 170px; /* Adjust the second gap size */
+        margin-right: 190px; /* Adjust the second gap size */
     }
 </style>
