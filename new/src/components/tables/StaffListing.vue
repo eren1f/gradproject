@@ -5,7 +5,7 @@
     <div class="flex justify-between my-[1%]">
       <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-[1%] border rounded">
       <div class="w-1/4 md:w-[1/2]"></div>
-      <button @click="showAddStaffModal = true" class="p-[1%] bg-blue-500 hover:bg-blue-700 text-white rounded">
+      <button @click="toggleModal()" class="p-[1%] bg-blue-500 hover:bg-blue-700 text-white rounded">
         Birim Ekle
       </button>
     </div>
@@ -17,11 +17,11 @@
           <div class="flex flex-row space-x-4">
             <div class="flex flex-col space-y-4">
               <input v-model="addStaff2.name" type="text" placeholder="İsim" class="p-2 border rounded"> <!--v-model="addStaff.Name"--><!--placeholder="İsim"-->
+              <input v-model="addStaff2.surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
               <input v-model="addStaff2.email" type="text" placeholder="Email" class="p-2 border rounded"><!--v-model="addStaff.surname"--><!--placeholder="Soyisim"-->
-              <input v-model="addStaff2.department" type="email" placeholder="Bölüm" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
-              <input v-model="addStaff2.role" type="text" placeholder="Rol" class="p-2 border rounded"><!--v-model="addStaff.password"--><!--placeholder="Şifre"-->
+              <input v-model="addStaff2.password" type="email" placeholder="Şifre" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
             </div>
-           <!--
+           
             <div class="flex flex-col space-y-4">
               <button @click="toggleRoleDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
               Rol -> {{ selectedRoleOption }}
@@ -32,12 +32,12 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
-          --> 
+          
              <!-- Role Dropdown menu -->
-             <!--
+             
               <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-                <div v-for="option in roleDropdownOptions" :key="option.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
-                  <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option.value; isRoleOpen = false">{{ option.label }}</a>
+                <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option; isRoleOpen = false">{{ option }}</a>
                 </div>
               </div>
               <button @click="toggleDepartmentDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
@@ -49,22 +49,22 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
-            -->
+            
                 <!-- Faculty Dropdown menu -->
-            <!--    
+                
             <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-              <div v-for="department in departments" :depKey="department.getDepartmentId()" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
-                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.getDepartmentName(); selectedDepartmentId=department.getDepartmentId(); isDepartmentOpen = false">{{ department.getDepartmentName() }}</a>
+              <div v-for="department in departmentDropdownOptions" :depKey="department.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.label; selectedDepartmentId=department.value; isDepartmentOpen = false">{{ department.label }}</a>
               </div>
             </div>
             </div>
-            -->
+            
           </div>
           <div class="flex justify-end mt-4">
             <button @click="showAddStaffModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="saveAddedStaff(addStaff2.name,addStaff2.department,addStaff2.email,addStaff2.role)" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString())" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
@@ -72,37 +72,68 @@
     </div>
     <!--Edit Popup-->
     <div>
-    <div v-if="showEditPopup" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75" @click="showEditPopup = false">
-      <div class="bg-white p-[5%] m-[1%] rounded-lg shadow-lg" @click.stop>
-        <h2 class="text-lg font-bold text-center">Düzenlenecek Birim</h2>
-        <div class="requirements-wrapper-div">
-          <div class="flex flex-col"> 
-            <div class="flex justify-between mt-2">
-              <label for="pretext-of-req" class="self-center text-black">İsim&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <input id="pretext-of-req" v-model="editedStaff.name" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
+      <div v-if="showEditPopup" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+        <div class="bg-white p-8 rounded-lg">
+          <h2 class="text-xl font-bold mb-4">Birim Ekle</h2>
+          <!-- Add Staff Form -->
+          <div class="flex flex-row space-x-4">
+            <div class="flex flex-col space-y-4">
+              <input v-model="editedStaff.name" type="text" placeholder="İsim" class="p-2 border rounded"> <!--v-model="addStaff.Name"--><!--placeholder="İsim"-->
+              <input v-model="editedStaff.surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
+              <input v-model="editedStaff.email" type="text" placeholder="Email" class="p-2 border rounded"><!--v-model="addStaff.surname"--><!--placeholder="Soyisim"-->
+              <input v-model="editedStaff.password" type="email" placeholder="Şifre" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
             </div>
-            <div class="flex justify-between mt-2">
-              <label for="name-of-req" class="self-center text-black">Bölüm</label>
-              <input id="name-of-req" v-model="editedStaff.department" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
+           
+            <div class="flex flex-col space-y-4">
+              <button @click="toggleRoleDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+              Rol -> {{ selectedRoleOption }}
+              <svg v-if="isRoleOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+              </svg>
+              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
+              </svg>
+            </button>
+          
+             <!-- Role Dropdown menu -->
+             
+              <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
+                <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option; isRoleOpen = false">{{ option }}</a>
+                </div>
+              </div>
+              <button @click="toggleDepartmentDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+              Departman -> {{ selectedDepartmentOption }}
+              <svg v-if="isDepartmentOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+              </svg>
+              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
+              </svg>
+            </button>
+            
+                <!-- Faculty Dropdown menu -->
+                
+            <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
+              <div v-for="department in departmentDropdownOptions" :depKey="department.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.label; selectedDepartmentId=department.value; isDepartmentOpen = false">{{ department.label }}</a>
+              </div>
             </div>
-            <div class="flex justify-between mt-2">
-              <label for="pretext-of-req" class="self-center text-black">E-mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <input id="pretext-of-req" v-model="editedStaff.email" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
             </div>
-            <div class="flex justify-between mt-2">
-              <label for="name-of-req" class="self-center text-black">Rolü&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-              <input id="name-of-req" v-model="editedStaff.role" type="text" class="border rounded-md text-black bg-gray-100 w-40 h-8 border-black">
-            </div>    
+            
           </div>
-          <div class="flex justify-between mt-4 space-x-4">
-    <button @click="toggleEditClose" class="bg-gray-400 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
-    <button @click="editStaff(editedStaff.name, editedStaff.department, editedStaff.email, editedStaff.role )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Düzenle</button>
+          <div class="flex justify-end mt-4">
+            <button @click="toggleEditClose" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
+              İptal
+            </button>
+            <button @click="editStaff(editedStaff.name,editedStaff.surname,editedStaff.email,editedStaff.password,selectedRoleOption,selectedDepartmentId.toString())" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+              Kaydet
+            </button>
           </div>
-
         </div>
-      </div>
     </div>
   </div>
+  
   
     <!-- Table Content -->
     <div class="">
@@ -185,7 +216,7 @@
 
 </template>
 <script lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted,  } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { ListDepartments } from '@/Models/ListDepartments';
 import { TeachingStaff } from '@/Models/TeachingStaff';
@@ -253,9 +284,12 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           isRoleOpen: false,
           selectedRoleOption: '',
           roleDropdownOptions: [
-            { label: 'Danisman', value: 'Danisman' },
-            { label: 'Bolum', value: 'Bolum' },
-            { label: 'Dekanlik', value: 'Dekanlik' },
+             'Bolum',
+             'Danisman',
+             'Dekan'
+          ],
+          departmentDropdownOptions: [
+            { label: '', value: 0 }
           ],
           isDepartmentOpen: false,
           selectedDepartmentOption: '',
@@ -270,16 +304,20 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           addStaff2: {
             id: 0,
             name: '',
-            department: '',
+            surname:'',
             email: '',
+            password: '',
             role: '',
+            departmentId: '',
           },
           editedStaff: {
             id: 0,
             name: '',
-            department: '',
+            surname:'',
             email: '',
+            password: '',
             role: '',
+            departmentId: '',
           },
           idToEdit: 0,
           indexToEdit: 0,
@@ -287,6 +325,17 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         };
       },
       methods: {
+        toggleModal() {
+          
+          this.departments.forEach(department => {
+            this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
+          });
+          this.departmentDropdownOptions.shift();
+          console.log(this.departmentDropdownOptions);
+          console.log(this.roleDropdownOptions);
+          
+          this.showAddStaffModal = !this.showAddStaffModal; // Toggle the dropdown state
+        },
         toggleRoleDropdown() {
           this.isRoleOpen = !this.isRoleOpen; // Toggle the dropdown state
         },
@@ -294,6 +343,11 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           this.isDepartmentOpen = !this.isDepartmentOpen; // Toggle the dropdown state
         },
         toggleEdit(staffIndex: number, staffId: number) {
+          this.departments.forEach(department => {
+            this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
+          });
+          this.departmentDropdownOptions.shift();
+
           this.idToEdit = staffId; // Toggle
           this.indexToEdit = staffIndex; // Toggle
           this.showEditPopup = !this.showEditPopup; // Toggle the edit modal
@@ -311,38 +365,60 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             this.currentPage++;
           }
         },
+         searchLabelByValue(value: number, options: {label: string, value: number}[]) {
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].value === value) {
+                    return options[i].label;
+                }
+            }
+            // Return null if value is not found
+            return '';
+        },
         saveStaff(event: any){
           event.preventDefault();
           saveStaff(this.addStaff.Name, this.addStaff.surname, this.addStaff.email, this.addStaff.password, this.selectedRoleOption, this.selectedDepartmentId);
           this.showAddStaffModal = false;
         },
-        editStaff(name: string, department: string, email: string, role: string)
-        {     const staffToEdit = new StaffForAdminListing(this.idToEdit,name,email,department,role);
-              paginatedStaffs.value.splice(this.indexToEdit,1,staffToEdit);
-               
-            console.log(name, department, email, role);
+        async editStaff(name: string, surname: string, email: string, password: string,  role: string,  departmentId: string)
+        {     const staffToEdit = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
+              staffToEdit.setId(this.idToEdit);
+              const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
+              const staffToAdd = new StaffForAdminListing(this.idToEdit ,name + ' ' + surname,email,departmentToPass,role);
+              paginatedStaffs.value.splice(this.indexToEdit,1,staffToAdd);
+            
+            await handler.updateStaff(staffToEdit);
+            //rol statik unutma
             this.toggleEditClose();
         },
-        async saveAddedStaff(name: string, department: string, email: string, role: string){
-          let val = 0;
-            const staffToAdd = new StaffForAdminListing(filteredStaffs.value.length ,name,email,department,role);
-            filteredStaffs.value.forEach(function (staff) {
-        
-                  if(staff.getId() === filteredStaffs.value.length )
-                  {
-                    val++;
-                    
-                  }
-            })
-
-            if(val === 0)
-            {
+        async saveAddedStaff(  name: string, surname: string, email: string, password: string,  role: string,  departmentId: string){
+          if (allStaffs.value.length === 0)
+          {const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
+            const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
+            const staffToAdd = new StaffForAdminListing(1,name + ' ' + surname,email,departmentToPass,role);
+            newStaff.setId(1);
             filteredStaffs.value.splice(filteredStaffs.value.length,1,staffToAdd);
-            }
             this.showAddStaffModal = false;
 
             
-           handler.addStaff(staffToAdd);
+            console.log(allStaffs);
+           await handler.addStaff(newStaff);
+           //rol statik unutma
+          }
+          else
+          {
+            const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
+            const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
+            const staffToAdd = new StaffForAdminListing(allStaffs.value[0].getId() + 1,name + ' ' + surname,email,departmentToPass,role);
+            newStaff.setId(allStaffs.value[0].getId() + 1);
+            filteredStaffs.value.splice(filteredStaffs.value.length,1,staffToAdd);
+            this.showAddStaffModal = false;
+
+            
+            console.log(allStaffs);
+           await handler.addStaff(newStaff);
+           //rol statik unutma
+          }
+          
         },
         setCurrentPage(page: number){
           this.currentPage = page;
@@ -373,6 +449,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         },
 
       },
+      
       setup(){
         onMounted(async () => {
           const url = apiRoute + "getStaffInfoForAdmin";
@@ -384,7 +461,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
               credentials: 'include',
           })
           const data = await response.json();
-
+          
           allStaffs.value = [];
 
           for (let i = 0; i < data.length; i++) {
@@ -406,7 +483,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           allDepartments.value = [];
 
           for (let i = 0; i < data2.length; i++) {
-              const department = new ListDepartments(data2[i].id, data2[i].departmentName);
+              const department = new ListDepartments(data2[i].id, data2[i].departmentName);           
               console.log(department);
               allDepartments.value.push(department);
           }
