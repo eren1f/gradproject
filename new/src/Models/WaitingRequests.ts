@@ -11,10 +11,12 @@ export class WaitingRequests {
     public studentName:string;
     public studentMail:string;
     public studentDepartment:number;
+    public adviserName: string|undefined;
+    public adviserId: number|undefined;
 
 
     constructor(studentId: number,studentName:string, studentMail:string, studentDepartment:number,
-         requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, addition:string, whenCreated: Date, currentActorId: number, status:string) {
+         requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, addition:string, whenCreated: Date, currentActorId: number, status:string, adviserName?: string, adviserId?: number) {
         this.studentId = studentId;
         this.requestTypeIds = requestTypeIds;
         this.requestTypeName = requestTypeName;
@@ -27,6 +29,8 @@ export class WaitingRequests {
         this.studentDepartment=studentDepartment;
         this.status=status;
         this.addition=addition;
+        this.adviserName = adviserName;
+        this.adviserId = adviserId;
     }
 
     public getAddition(): string {
@@ -124,4 +128,21 @@ export class WaitingRequests {
     public setCurrentActorId(currentActorId: number): void {
         this.currentActorId = currentActorId;
     }
+
+    public getAdviserName(): string | undefined {
+        return this.adviserName;
+    }
+
+    public setAdviserName(adviserName: string | undefined): void {
+        this.adviserName = adviserName;
+    }
+
+    public getAdviserId(): number | undefined {
+        return this.adviserId;
+    }
+
+    public setAdviserId(adviserId: number | undefined): void {
+        this.adviserId = adviserId;
+    }
+    
 }

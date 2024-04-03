@@ -43,7 +43,7 @@
                       <span class="table-cell font-bold md:hidden">Öğrenci</span>{{ request.getStudentName() }}
                     </td> 
                     <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
-                      <span class="table-cell font-bold md:hidden">Danışman</span>{ advisorname }
+                      <span class="table-cell font-bold md:hidden">Danışman</span>{{ request.getAdviserName() }}
                     </td> 
                     <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Bölüm</span>{ departmentUsername }

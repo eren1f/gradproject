@@ -42,7 +42,9 @@ export class TeachingStaffRequestHandler {
                 item.addition,
                 new Date(item.whenCreated),
                 item.currentActorId,
-                item.status
+                item.status,
+                item.adviserName,
+                item.adviserId
             ));
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);
