@@ -3,24 +3,27 @@
   <div class="flex flex-col">
     <!-- SearchBar -->
     <AdvisorPopup :request="selectedRequest"></AdvisorPopup>
-    <div class="mb-2 mt-2 flex justify-between">
-      <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
-    </div>
+    <div class="px-[1%] my-[1%] flex self-center sm:self-start">
+        <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
+      </div>
     <!-- Table Content -->
-    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-        <div class="shadow overflow-hidden rounded-lg border-b border-gray-200 sm:rounded-lg">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
+    <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
+        <div class="md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
+          <div class="shadow overflow-hidden rounded-lg">
+            <table class="w-full md:min-w-full">
+              <thead class="bg-gray-50 hidden md:table-header-group">
               <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('name')">
                     Öğrencİ Adi
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('department')">
-                    Bölüm
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
                     Talep Türü
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('byTime')">
+                    Gönderilen Tarih
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('byStatus')">
+                    Durum
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   </th>
@@ -34,23 +37,18 @@
                     {{ request.studentName }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <!-- Render staff department -->
-                    {{ request.studentDepartment }}
-                  </td>
-
-                  <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
                     {{ request.getRequestTypeName() }}
                   </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    {{ formatDate(request.getWhenCreated()) }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
+                  </td>
+                  
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <!-- Toggle button to show/hide additional information -->
-<!--                   <div> 
-                    <AdvisorPopup /> 
-                  </div> -->
-                   
-                      <!-- Toggle button to show additional information -->
-                      <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
-                    
+                      <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button> 
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
@@ -61,23 +59,25 @@
       </div>
     </div>
     <!-- Pagination -->
-    <div class="my-4">
-        <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+    <div class="px-[1%]">
+        <nav class="flex items-center flex-col md:flex-row justify-center md:justify-between pt-1" aria-label="Table navigation">
+          <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 md:inline md:w-auto">
         Toplam {{ totalEntries }} sonuç içerisinden {{ currentPage * itemsPerPage - itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage, totalEntries) }} görmektesiniz.</span>
         <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
-          <li>
-            <a href="#" @click.prevent="prevPage" :disabled="currentPage === 1" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-              Önceki</a>
-          </li>
-          <li v-for="page in totalPages" :key="page">
-            <a href="#" @click.prevent="setCurrentPage(page)" :class="{ 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === currentPage, 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white': page !== currentPage }" class="flex items-center justify-center px-3 h-8 leading-tight">{{ page }}</a>
-          </li>
-          <li>
-            <a href="#" @click.prevent="nextPage" :disabled="currentPage === totalPages" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-              Sonraki</a>
-          </li>
-        </ul>
+            <li>
+              <button @click="prevPage" :disabled="currentPage === 1" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                <span class="material-icons">chevron_left</span>
+              </button>
+            </li>
+            <li v-for="(page, index) in totalPages" :key="index">
+              <button @click="setCurrentPage(page)" :class="{ 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === currentPage, 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white': page !== currentPage }" class="flex items-center justify-center px-3 h-8 leading-tight">{{ page }}</button>
+            </li>
+            <li>
+              <button @click="nextPage" :disabled="currentPage === totalPages" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <span class="material-icons">chevron_right</span>
+              </button>
+              </li>
+            </ul>
         </nav>
     </div>
   </div>
@@ -124,10 +124,21 @@ const paginatedStudents = computed(() => {
   const endIndex = startIndex + itemsPerPage;
   return filteredStudents.value.slice(startIndex, endIndex);
 })
-/* const staffInfo = computed(() => {
-  staffId = TeachingStaff.getStaffId();
-  return staffId;
-}); */
+function statusColored(status: string){
+    if (status === 'ACCEPTED') return 'text-green-600';
+    if (status === 'WAITING') return 'text-yellow-600';
+    if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
+    if (status === 'REJECTED') return 'text-red-600';
+    return 'bg-gray-100 text-gray-800';
+    }
+
+function translateStatus(status: string){
+        if (status === 'ACCEPTED') return 'Kabul Edildi';
+        if (status === 'WAITING') return 'Beklemede';
+        if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
+        if (status === 'REJECTED') return 'Reddedildi';
+        return 'Bilinmeyen';
+    }
 function formatDate(dateString: Date): string {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -151,6 +162,8 @@ function formatDate(dateString: Date): string {
           paginatedStudents,
           allRequests,
           formatDate,
+          translateStatus,
+          statusColored,
           totalRequests,
           selectedRequest,
         };

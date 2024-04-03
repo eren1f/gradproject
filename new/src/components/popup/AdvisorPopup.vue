@@ -65,7 +65,7 @@ import { WaitingRequests } from '@/Models/WaitingRequests';
 
 function statusColored(status: string){
   if (status === 'ACCEPTED') return 'text-green-600';
-  if (status === 'waiting') return 'text-yellow-600';
+  if (status === 'WAITING') return 'text-yellow-600';
   if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
   if (status === 'REJECTED') return 'text-red-600';
   return 'bg-gray-100 text-gray-800';

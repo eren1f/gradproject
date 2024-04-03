@@ -1,26 +1,28 @@
 <template>
-    <div class="requirements-wrapper-div">
-        <div>
-            <label for="pretext-of-req" class="text-white">Pretext </label>
-            <input id="pretext-of-req" type="text" v-model="pretext" @input="emitChange" class="border rounded-md p-2 mt-2 ml-5 text-black bg-gray-100 w-40 h-8" >
+    <hr class="my-[2%] border-white">
+    <div class="flex justify-center p-[1%]">
+        <div class="flex flex-col p-[1%] requirements-wrapper-div">
+            <div class="flex flex-col items-center ">
+                <label for="pretext-of-req" class="text-white font-semibold m-[1%]">Hazır Metin</label>
+                <input id="pretext-of-req" type="text" v-model="pretext" @input="emitChange" class="border rounded-md p-2 my-[2%] text-black bg-gray-100 w-40 h-8" >
+            </div>
+            <div class="flex flex-col items-center">
+                <label for="name-of-req" class="text-white font-semibold m-[1%]">Gereksinim İsmi </label>
+                <input id="name-of-req" type="text" v-model="name" @input="emitChange" class="border rounded-md p-2 my-[2%] text-black bg-gray-100 w-40 h-8" >
+            </div>
+            <div class="flex flex-row items-center justify-between">
+                <label for="multi-select-button" class="text-white font-semibold m-[1%]">Çoklu Seçim</label>
+                <input id="multi-select-button" type="checkbox" v-model="multiSelect" @change="emitChange" class="w-10 my-[2%]">
+            </div>
+        </div> 
+        <div class="flex w-[5%]"></div>
+        <div class="flex flex-col justify-center items-center requirements-wrapper-div">
+                <button @click="handleMoveUp" class="text-white bg-blue-500 hover:bg-blue-700 p-2 rounded-md "> &uarr;</button>
+                <button @click="handleMoveDown" class="text-white bg-blue-500  hover:bg-blue-700 p-2 rounded-md my-[40%]"> &darr;</button>
+                <button @click="handleDeleteButton" class="text-white bg-red-500 hover:bg-red-700 p-2 rounded-md"> &#215</button>
         </div>
-        <div class="mt-2">
-            <label for="name-of-req" class="text-white mr-2">Name </label>
-            <input id="name-of-req" type="text" v-model="name" @input="emitChange" class="border rounded-md p-2 mt-2 ml-5 text-black bg-gray-100 w-40 h-8" >
-        </div>
-        <div>
-            <label for="multi-select-button" class="text-white">Multi-Select </label>
-            <input id="multi-select-button" type="checkbox" v-model="multiSelect" @change="emitChange" class="mt-3 mb-3" style="margin-left: 16%;" >
-        </div>
-        <div class="flex justify-between">
-            <button @click="handleMoveUp" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-md mb-4 w-12 h-10"> &uarr;</button>
-            <button @click="handleMoveDown" class="text-white bg-blue-500 hover:bg-blue-700 ml-10 px-4 py-2 rounded-md w-12 h-10"> &darr;</button>
-        </div>
-        <div>
-            <button @click="handleDeleteButton" class="text-white bg-red-500 hover:bg-red-700 px-4 py-2 rounded-md mb-2">Delete requirement</button>
-            <hr class="mt-2 mb-2 border-gray-500">
-        </div>
-    </div>
+    </div> 
+    <hr class="my-[2%] border-white">
 </template>
 
 <script lang="ts">

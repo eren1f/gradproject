@@ -1,14 +1,15 @@
 <template>
-    <div>
-        <button @click="handleCreateNewReqClick" class="bg-green-500 hover:bg-blue-700 text-white mt-5 mb-5 py-2 px-4 rounded">
-            Create new requirement
-        </button>
-        <div class="overflow-auto max-h-80">
+            <div class="md:overflow-auto md:max-h-80">
         <Requirement v-for="req in requirements" :key="req.id" :id="req.id" :pretext="req.pretext" :name="req.name" :multiSelect="req.multiSelect"
             @delete="handleDeleteRequirement(req.id)" @move="handleMoveRequirement(req.id, $event)"
             @change="handleChange(req.id, $event)" />
         </div>
+    <div class="flex items-center justify-center md:justify-between p-[1%]">
+        <button @click="handleCreateNewReqClick" class="bg-green-500 hover:bg-blue-700 text-white mt-5 mb-5 py-2 p-[1%] rounded">
+                Yeni Gereksinim Ekle
+        </button>
     </div>
+
 </template>
 
 <script lang="ts">

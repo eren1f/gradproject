@@ -1,17 +1,16 @@
 <template>
   <div>
-      <div class="my-[2%]">
+      <div class="md:w-1/2 my-[2%]">
           <div v-if="!edit">
           <RequestCredentials :selectedDepartment ="selectedDepartment"
           @update:selectedDepartment="handleDepartmentChange"/>
-          
           </div>
       </div>
     <!--temporarily here--> 
   <div>
-    <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-50">
+    <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-50" @click="popupVisible = false">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-3/10 text-black"> <!-- Apply text-black class -->
+      <div class="relative bg-white rounded-lg shadow-xl p-4 md:w-1/4 md:h-3/10 w-[80%] text-black" @click.stop> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Gereksinim</h2>
         <div class="requirements-wrapper-div">
           <div class="flex flex-col"> 
@@ -40,9 +39,9 @@
   </div>
 
   <div>
-    <div v-if="editPopupVisible" class="fixed inset-0 flex justify-center items-center z-50">
+    <div v-if="editPopupVisible" class="fixed inset-0 flex justify-center items-center z-50" @click="editPopupVisible = false">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-1/4 h-3/10 text-black"> <!-- Apply text-black class -->
+      <div class="relative bg-white rounded-lg shadow-xl p-4 md:w-1/4 md:h-3/10  w-[80%] text-black" @click.stop> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Yeni Gereksinim</h2>
         <div class="requirements-wrapper-div">
           <div class="flex flex-col"> 
@@ -75,16 +74,16 @@
       <!--table-->
       <div class="absolute inset-0 bg-gray-800 opacity-50">  
       </div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-2/3/5 h-1/2 text-black"> <!-- Apply text-black class -->
-        <h2 class="text-lg font-bold mb-2 text-center">Yeni Aktör</h2>
+      <div class="relative bg-white rounded-lg shadow-xl p-4 md:h-1/2 w-[90%] h-[90%] text-black"> <!-- Apply text-black class -->
+        <h2 class="text-lg font-bold mb-2 text-center">Tüm Aktörler</h2>
         <div class="requirements-wrapper-div">
-          <div class="flex items-center">
-            <div class="-my-2  sm:-mx-6 lg:-mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                   <div class="overflow-y-auto max-h-80 " >
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50 sticky top-0 z-10">
+          <div class="flex items-center justify-center">
+            <div class="px-[1%]">
+            <div class="md:inline-block w-full md:min-w-full">
+                <div class="shadow overflow-hidden rounded-lg">
+                   <div class="overflow-y-auto  max-h-96">
+                    <table class="md:min-w-full w-full">
+                        <thead class="bg-gray-50 hidden md:sticky md:top-0 z-10 md:table-header-group">
                             <tr>
                                 <th scope="col"  
                                     class="px-6 py-3 text-left text-xs font-medium  text-gray-500 uppercase tracking-wider" @click="sortByColumn('id')">
@@ -111,17 +110,24 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <tr tr v-for="staff in filteredStaffs" :key="staff.getId()">
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getId() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getFullName() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getDepartment() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getEmail() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ staff.getRole() }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">     
+                        <tbody class="bg-gray-50">
+                            <template v-for="staff in filteredStaffs" :key="staff.getId()">
+                              <tr>
+                                <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                  <span class="table-cell font-bold md:hidden">ID</span>{{ staff.getId() }}</td>
+                                <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                  <span class="table-cell font-bold md:hidden">İsim</span>{{ staff.getFullName() }}</td>
+                                <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                  <span class="table-cell font-bold md:hidden">Bölüm</span>{{ staff.getDepartment() }}</td>
+                                <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                  <span class="table-cell font-bold md:hidden">E-mail</span>{{ staff.getEmail() }}</td>
+                                <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                                  <span class="table-cell font-bold md:hidden">Rol</span>{{ staff.getRole() }}</td>
+                                <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">     
                                   <button @click="addActor(staff as StaffForAdminListing)" class="text-indigo-600 hover:text-indigo-900">Ekle</button>
                                 </td>
                             </tr>
+                            </template>
                         </tbody>
                     </table>
                   </div>
@@ -129,7 +135,7 @@
             </div>
         </div>
           </div>
-          <div class="flex justify-between mt-4 space-x-4">
+          <div class="flex justify-center">
             <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-1/4">İptal</button>
             
           </div>
@@ -351,9 +357,6 @@ data() {
     
     
   },
-  
-
-
 
   setup() {
    const requestActors = ref<RequestActor[]>([]);
@@ -361,6 +364,7 @@ data() {
    //const requirementToAdd = new RequestRequirement(1,1,'','','');
    const staffs = ref<StaffForAdminListing[]>([]);
    const filteredStaffs = ref<StaffForAdminListing[]>([]);
+   let matchStaff = ref<StaffForAdminListing[]>([]);
    const requirementToUpdate = new RequestRequirement(1,1,'','','');
    const requestTypes = ref<ListRequestTypes[]>([]);
    let requestOnEdit = new ListRequestTypes(1,' ');
@@ -646,21 +650,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       const editPopupClose= () => {  
        editPopupVisible.value = !editPopupVisible.value;
       }
-      const ActorPopup= () => {
-        filteredStaffs.value = [];
-        let staffIds = [];
-          requestActors.value.forEach(function (actor)  {
-            staffIds.push(actor.staffId);
-          });
-          
-          staffs.value.forEach(function (staff) {
-              if (!staffIds.includes(staff.getId())) {
-                  
-                  filteredStaffs.value.push(staff);
-                  
-              }
-          });
-        
+      const ActorPopup= () => {  
         ActorPopupVisible.value = !ActorPopupVisible.value;
       }
 
@@ -722,13 +712,35 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
           requestOnEdit.setName(name);
           
           requestRequirements.value = await handler.getRequestRequirementsByRequestTypeId(id);
-          //requestRequirements.value.sort((a, b) => a.index - b.index);
-          
-          
           
           requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
           
+          filteredStaffs.value = [];
+          let staffIds: number[] = [];
+          requestActors.value.forEach(function (actor)  {
+            staffIds.push(actor.staffId);
+          });
+          
+          staffs.value.forEach(function (staff) {
+              if (!staffIds.includes(staff.getId())) {
+                  
+                  filteredStaffs.value.push(staff);
+                  
+              }
+              else
+              {
+                matchStaff.value.push(staff);
+              }
+          });
         }
+        requestActors.value.forEach(function (actor) {
+          matchStaff.value.forEach(function (matchActor) {
+            if(matchActor.getId() == actor.staffId)
+             actor.name = matchActor.getFullName();
+             actor.role = matchActor.getRole();
+           });
+
+         });
         edit.value = true; 
     }
       
@@ -773,6 +785,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       staffs,
       filteredStaffs,
       sortByColumn,
+      matchStaff
       
       
     };

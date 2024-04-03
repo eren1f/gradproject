@@ -1,6 +1,6 @@
 <template>
     <div class="box-border mx-[1%] my-[25%] md:mx-[1%] p-[2%] md:my-[8%] xl:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md">
-		<div class="md:flex flex-row">
+		<div class="md:flex flex-row mb-[1%]">
 			<ul class="flex flex-col  sm:flex-row text-sm font-medium text-center text-gray-500 dark:text-gray-400">
 				<li>
 					<a href="#" @click="showTalepOlustur" :class="{ 'selected-tab': activeTab === 'TalepOlustur' }"

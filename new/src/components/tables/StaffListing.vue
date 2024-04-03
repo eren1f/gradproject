@@ -34,7 +34,6 @@
             </button>
           
              <!-- Role Dropdown menu -->
-             
               <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
                 <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
                   <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option; isRoleOpen = false">{{ option }}</a>
