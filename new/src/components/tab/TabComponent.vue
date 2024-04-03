@@ -26,9 +26,9 @@
 			<StaffListing />
 		</div>
 	</div>
-	<div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" v-if="activeTab === 'TalepOlustur'">
+<!-- 	<div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" v-if="activeTab === 'TalepOlustur'">
 		<StaffListingForCreatingNewRequestTypes @update:selectedStaffs="updateSelectedStaffs" />
-	</div>
+	</div> -->
 </template>
 
 <script setup lang="ts">
@@ -41,10 +41,10 @@ import EditRequestType from '../request/editRequestType/EditRequestType.vue';
 const activeTab = ref('TalepOlustur');
 const selectedStaffs = ref([]);
 
-const updateSelectedStaffs = (newVal: any) => {
+/* const updateSelectedStaffs = (newVal: any) => {
 	selectedStaffs.value = newVal;
 };
-
+ */
 const showTalepOlustur = () => {
 	activeTab.value = 'TalepOlustur'
 }

@@ -114,6 +114,12 @@ import { apiRoute } from '../../Api_Routes/apiRoute';
 
 export default defineComponent({
     name: 'StaffListingForCreatingNewRequestType',
+    props: {
+        selectedStaffs: {
+            type: Array,
+            default: () => []
+        }
+    },
     setup(props, context) {
         const searchQuery = ref('');
         const itemsPerPage = 10; // default
@@ -135,6 +141,8 @@ export default defineComponent({
 
         const addNewActorToList = (staff: any) => {
             const staffForAdminListing: StaffForAdminListing = staff;
+            console.log(staffForAdminListing);
+            context.emit('update:selectedStaffs', staffForAdminListing);
             const actors_wrapper_div = document.getElementById('fillActors-wrapper');
 
             const new_Actor_div = document.createElement('tr');

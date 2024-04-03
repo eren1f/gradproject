@@ -694,6 +694,8 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
           await handler.updateRequestActor(actorUpdates);
           alert('Request type edited successfully');
           edit.value = false;
+          
+          window.location.href = window.location.href;
       }
    
     const handleDepartmentChange = async ( newDepartment: ListDepartments ) => {
@@ -747,6 +749,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
       
     // Return reactive variables and methods
     return {
+      componentKey: 0,
       togglePopup,
       editPopup,
       editPopupClose,

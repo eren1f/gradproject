@@ -360,7 +360,7 @@ export class AdminRequestHandler {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.json();
+            return response;
         }catch (error) {
             return null;
         }
@@ -381,7 +381,7 @@ export class AdminRequestHandler {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.json();
+            return response;
         }catch (error) {
             return null;
         }
@@ -408,7 +408,7 @@ export class AdminRequestHandler {
         }
     } */
 
-    async updateRequestType(request: RequestTypes): Promise<RequestTypes | null> {
+    async updateRequestType(request: RequestTypes): Promise<RequestTypes | null| String> {
         const url = apiRoute + "updateRequestType";
         try {
             const response = await fetch(url, {

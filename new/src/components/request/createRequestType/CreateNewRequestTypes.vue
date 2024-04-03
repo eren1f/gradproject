@@ -37,11 +37,20 @@
                     </div> 
                 </div>   
             </div>
+            <div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" >
+		    <StaffListingForCreatingNewRequestTypes @update:selectedStaffs="handleUpdate" />
+	    </div>
         </div>
         <div class="flex items-center justify-center">
                     <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 my-[3%] rounded"
                         @click="addNewRequestType()">Talep Türünü Kaydet</button>
         </div>
+
+        <div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" >
+		    <StaffListingForCreatingNewRequestTypes @update:selectedStaffs="handleUpdate" />
+	    </div>
+
+        
 </template>
 
 
@@ -62,18 +71,22 @@
             CreateNewRequirement,
             AddNewActor,
         },
-        props: {
-            selectedStaffs: {
-                type: Array,
-                required: true
+        methods:{
+            handleUpdate(updatedStaffs: Array<any>) {
+                console.log(updatedStaffs);
             }
         },
         setup(props) {
             const departmentId = ref(0);
             const selectedDepartment = ref(null);
 
+            const selectedStaffs = ref([]);
+
+             
+
             const addNewRequestType = async() => {
                 const allActors = document.querySelectorAll('#fillActors-wrapper div[data-id]');
+                console.log(allActors);
                 const actorIds = Array.from(allActors).map(actor => actor.getAttribute('data-id'));
                 const allRequirements = document.querySelectorAll('.requirements-wrapper-div');
                 const requestName = document.querySelector('#requestName') as HTMLInputElement;
@@ -88,18 +101,28 @@
                     alert('Please fill in the request name');
                     return;
                 }
-                const requirementsData = Array.from(allRequirements).map((requirementDiv) => {
-                    const pretextInput = requirementDiv.querySelector('#pretext-of-req') as HTMLInputElement;
-                    const nameInput = requirementDiv.querySelector('#name-of-req') as HTMLInputElement;
-                    const checkboxInput = requirementDiv.querySelector('input[type="checkbox"]') as HTMLInputElement;
-                    return {
-                        pretext: pretextInput ? pretextInput.value : '',
-                        name: nameInput ? nameInput.value : '',
-                        isMultiSelect: checkboxInput ? checkboxInput.checked : false
-                    };
+                const tempRequirementsData = Array.from(allRequirements).map((requirementDiv) => {
+                    if(requirementDiv !== null){
+                        const pretextInput = requirementDiv.querySelector('#pretext-of-req') as HTMLInputElement;
+                        const nameInput = requirementDiv.querySelector('#name-of-req') as HTMLInputElement;
+                        const checkboxInput = requirementDiv.querySelector('input[type="checkbox"]') as HTMLInputElement;
+                        return {
+                            pretext: pretextInput ? pretextInput.value : '',
+                            name: nameInput ? nameInput.value : '',
+                            isMultiSelect: checkboxInput ? checkboxInput.checked : false
+                        };
+                    }
                 });
 
-                const isAnyNameEmpty = requirementsData.some(requirement => requirement.name === '');
+                let requirementsData = [];
+                for(let i = 0; i < tempRequirementsData.length; i++) {
+                    if(tempRequirementsData[i]?.name !== ''){
+                        requirementsData.push(tempRequirementsData[i]);
+                    }
+                }
+
+
+                const isAnyNameEmpty = requirementsData.some(requirement => requirement!.name === '');
                 if (isAnyNameEmpty) {
                     alert('Please fill in all the requirements');
                     return;
@@ -107,22 +130,26 @@
 
                 const AdminRequestHandlerInstance = new AdminRequestHandler();
                 const newReqType = new RequestTypes(0, requestName.value, departmentId, " ");
-                console.log(departmentId);
-                const res = await AdminRequestHandlerInstance.addNewRequestType(newReqType);
+/*                 console.log(departmentId);
+                console.log(newReqType); */
+/*                 const res = await AdminRequestHandlerInstance.addNewRequestType(newReqType);
                 if (res === 0) {
                     alert('error occurred when trying to create new request type');
                     return;
-                }
+                } */
+                console.log(actorIds);
                 const actorObjects = actorIds.map((actorId, index) => {
+                    console.log(index);
                     return {
-                        requestTypeId: res,
+                        requestTypeId: 0,
                         staffId: actorId,
                         index: index + 1
                     };
                 });
+                
                 const requirementsObjects = requirementsData.map((requirement, index) => {
                     return {
-                        requestTypeId: res,
+                        requestTypeId: 0,
                         index: index + 1,
                         pretext: requirement?.pretext,
                         name: requirement?.name,
@@ -130,11 +157,13 @@
                         
                     };
                 });
-                await AdminRequestHandlerInstance.addNewRequestTypesActors(actorObjects);
-                await AdminRequestHandlerInstance.addNewRequestTypesRequirements(requirementsObjects);
+                console.log(actorObjects);
+                console.log(requirementsObjects);
+/*                 await AdminRequestHandlerInstance.addNewRequestTypesActors(actorObjects);
+                await AdminRequestHandlerInstance.addNewRequestTypesRequirements(requirementsObjects); */
 
-                alert('Request type added successfully');
-                location.reload();
+/*                 alert('Request type added successfully');
+                location.reload(); */
             }
 
             const handleSelectedDepartment = (newDepartment: any) => {
@@ -151,7 +180,8 @@
                 addNewRequestType,
                 handleDataChange,
                 handleSelectedDepartment,
-                selectedDepartment
+                selectedDepartment,
+                
             }
         }
     });
