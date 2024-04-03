@@ -207,7 +207,6 @@ export default defineComponent({
             new_Actor_DepartmentMobile.innerHTML = 'Bolum';
             new_Actor_Role.innerHTML = staffForAdminListing.getRole();
             new_Actor_RoleMobile.innerHTML = 'Rol';
-            new_Actor_RoleMobile.outerHTML = new_Actor_Role.innerHTML;
             move_up_button.innerHTML = '&#8593;'; 
             move_down_button.innerHTML = '&#8595;'; 
             new_Actor_RemoveButton.innerHTML = '&#215';
