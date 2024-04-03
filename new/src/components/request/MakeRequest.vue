@@ -55,6 +55,7 @@ export default{
         const requirementValues = ref<Record<string, unknown>>({});
         const requirementValuesMulti = ref<Record<string, unknown>>({});
         const requestInfo = ref('');
+        const requirementIndices = ref<Record<string, number>>({});
         const showRequirements = () => {
             if (selectedRequest.value?.getRequestTypeId() == 0 || selectedRequest.value == null) {
                 console.log("False: " + selectedRequest.value?.getRequestTypeId()); //debug
@@ -74,10 +75,15 @@ export default{
         }
         const updateRequestInfo = () => {
             console.log(requirementValues.value);
-            requestInfo.value = `${userInfo!.value?.getId()} numaralı öğrencinizim. `+  Object.entries(requirementValues.value).reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
-            Object.entries(requirementValuesMulti.value).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '');
-            console.log(requestInfo.value)
-        }
+            requestInfo.value = `${userInfo!.value?.getId()} numaralı öğrencinizim. ` +  
+            Object.entries(requirementValues.value)
+                .sort(([keyA], [keyB]) => requirementIndices.value[keyA] - requirementIndices.value[keyB])
+                .reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
+            Object.entries(requirementValuesMulti.value)
+                .sort(([keyA], [keyB]) => requirementIndices.value[keyA] - requirementIndices.value[keyB])
+                .reduce((a, [key, value]) => a + value + ' ' + key + ' ', '');
+            }
+            console.log("Request Info: " + requestInfo.value);
         watch(requirementValues, updateRequestInfo, { deep: true });
         watch(requirementValuesMulti, updateRequestInfo, { deep: true });
         watch(selectedRequest, async (newVal, oldVal) => {
@@ -86,6 +92,7 @@ export default{
             requestRequirements.value = [];
             requirementValues.value = {};
             requirementValuesMulti.value = {};
+            requirementIndices.value = {};
             if (newVal !== null) {
                 const url2 = `http://localhost:8080/requestRequirements/${newVal!.getRequestTypeId()}`;
                 const response2 = await fetch(url2, {
@@ -101,6 +108,7 @@ export default{
                 for (let i = 0; i < data2.length; i++) {
                     const requestRequirement = new RequestRequirement(data2[i].id, data2[i].index, data2[i].name, data2[i].type, data2[i].pretext);
                     requestRequirements.value.push(requestRequirement);
+                    requirementIndices.value[requestRequirement.getPretext()] = data2[i].index; // Store the index with the requirement key
                 }
             }
         })
