@@ -37,18 +37,12 @@
                     </div> 
                 </div>   
             </div>
-            <div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" >
-		    <StaffListingForCreatingNewRequestTypes @update:selectedStaffs="handleUpdate" />
-	    </div>
         </div>
         <div class="flex items-center justify-center">
                     <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 my-[3%] rounded"
                         @click="addNewRequestType()">Talep Türünü Kaydet</button>
         </div>
 
-        <div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" >
-		    <StaffListingForCreatingNewRequestTypes @update:selectedStaffs="handleUpdate" />
-	    </div>
 
         
 </template>
@@ -62,6 +56,7 @@
     import AddNewActor from './AddNewActor.vue';
     import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
     import { RequestTypes } from '../../../Models/RequestTypes';
+    import StaffListingForCreatingNewRequestType from '@/components/tables/StaffListingForCreatingNewRequestType.vue';
 
     export default defineComponent({
         name: 'CreateNewRequestTypes',
@@ -71,22 +66,41 @@
             CreateNewRequirement,
             AddNewActor,
         },
-        methods:{
-            handleUpdate(updatedStaffs: Array<any>) {
-                console.log(updatedStaffs);
+        props: {
+            selectedStaff: {
+                type: null as any,
+                required: true
             }
         },
+        data(){
+            return{
+                selectedStaffs : Array<any>()
+            }
+        },
+/*         watch:{
+            selectedStaff: {
+                handler(newVal, oldVal) {
+                    console.log('selectedStaffs changed:', newVal);
+                    this.selectedStaffs.push(newVal);
+                },
+                deep: true
+            }
+        }, */
+
         setup(props) {
             const departmentId = ref(0);
             const selectedDepartment = ref(null);
 
-            const selectedStaffs = ref([]);
+            const staffs = ref<any[]>([]);
 
+            watch(() => props.selectedStaff, (newVal) => {
+                console.log('selectedStaffs changed:', newVal);
+                staffs.value.push(newVal);
+            });
              
 
             const addNewRequestType = async() => {
                 const allActors = document.querySelectorAll('#fillActors-wrapper div[data-id]');
-                console.log(allActors);
                 const actorIds = Array.from(allActors).map(actor => actor.getAttribute('data-id'));
                 const allRequirements = document.querySelectorAll('.requirements-wrapper-div');
                 const requestName = document.querySelector('#requestName') as HTMLInputElement;
@@ -132,24 +146,26 @@
                 const newReqType = new RequestTypes(0, requestName.value, departmentId, " ");
 /*                 console.log(departmentId);
                 console.log(newReqType); */
-/*                 const res = await AdminRequestHandlerInstance.addNewRequestType(newReqType);
+                const res = await AdminRequestHandlerInstance.addNewRequestType(newReqType);
                 if (res === 0) {
                     alert('error occurred when trying to create new request type');
                     return;
-                } */
-                console.log(actorIds);
-                const actorObjects = actorIds.map((actorId, index) => {
+                }
+/*                 const actorObjects = actorIds.map((actorId, index) => {
                     console.log(index);
                     return {
                         requestTypeId: 0,
                         staffId: actorId,
                         index: index + 1
                     };
-                });
+                }); */
+                const actorObjects = staffs.value.map((actor,index) => {
+                    console.log(actor);
+                    return {requestTypeId: res, staffId: actor.id, index: index + 1}});
                 
                 const requirementsObjects = requirementsData.map((requirement, index) => {
                     return {
-                        requestTypeId: 0,
+                        requestTypeId: res,
                         index: index + 1,
                         pretext: requirement?.pretext,
                         name: requirement?.name,
@@ -159,11 +175,11 @@
                 });
                 console.log(actorObjects);
                 console.log(requirementsObjects);
-/*                 await AdminRequestHandlerInstance.addNewRequestTypesActors(actorObjects);
-                await AdminRequestHandlerInstance.addNewRequestTypesRequirements(requirementsObjects); */
+                await AdminRequestHandlerInstance.addNewRequestTypesActors(actorObjects);
+                await AdminRequestHandlerInstance.addNewRequestTypesRequirements(requirementsObjects);
 
-/*                 alert('Request type added successfully');
-                location.reload(); */
+                alert('Request type added successfully');
+                location.reload();
             }
 
             const handleSelectedDepartment = (newDepartment: any) => {
