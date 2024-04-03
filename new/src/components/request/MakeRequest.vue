@@ -73,7 +73,8 @@ export default{
             console.log(request);
         }
         const updateRequestInfo = () => {
-            requestInfo.value = `${userInfo!.value?.getId()} numaralı öğrencinizim. `+  Object.entries(requirementValues.value).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
+            console.log(requirementValues.value);
+            requestInfo.value = `${userInfo!.value?.getId()} numaralı öğrencinizim. `+  Object.entries(requirementValues.value).reduce((a, [key, value]) => a + value + ' ' + key + ' ', '') + 
             Object.entries(requirementValuesMulti.value).sort().reduce((a, [key, value]) => a + value + ' ' + key + ' ', '');
             console.log(requestInfo.value)
         }
