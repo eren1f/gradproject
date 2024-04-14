@@ -42,7 +42,8 @@ import { RequestRequirement } from '@/Models/RequestRequirements';
 import { StudentRequestHandler } from '@/Scripts/StudentRequestHandler';
 import { Request } from '@/Models/Request';
 import { StudentSideBarInfo } from '@/Models/StudentSideBarInfo';
-
+import ConfirmationPopUp from '@/components/popup/ConfirmationPopUp.vue';
+//TODO CONFIRMATION POPUP
 export default{
     setup(){
         const selectedRequest = ref<RequestTypes>();

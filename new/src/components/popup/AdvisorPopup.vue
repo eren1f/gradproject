@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-50">
+    <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-40">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
       <div class="relative bg-white rounded-lg shadow-xl p-4 w-3/4 h-5/7 text-black">
         <h2 class="text-lg font-bold mb-2 flex justify-between items-center">Talep Detayları
@@ -32,7 +32,6 @@
                 <strong class="text-gray-700">Öğrenci Numarası:</strong> {{ request.getStudentId() }}<br>
                 <strong class="text-gray-700">Öğrenci Adı:</strong> {{ request.getStudentName() }}<br>
                 <strong class="text-gray-700">Talep Türü:</strong> {{ request.getRequestTypeName() }}<br>
-                
                 <strong class="text-gray-700">Öğrenci E-posta:</strong> {{ request.getStudentMail() }}<br>
                 <strong class="text-gray-700">Oluşturulan Tarih:</strong> {{ formatDate(request.getWhenCreated()) }}<br>
                 <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{ request.getAddition() }} <br>
@@ -50,18 +49,21 @@
 
         
         <div class="flex flex-col sm:flex-row justify-between mt-4 overflow-x-auto">
-            <button @click="rejectRequest" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0 w-full sm:w-auto">Reddet</button>
-            <button @click="acceptRequest" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Onayla</button>
+            <button @click="showConfirmationPopUp('reject')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0 w-full sm:w-auto">Reddet</button>
+            <button @click="showConfirmationPopUp('accept')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Onayla</button>
         </div>
-
       </div>
     </div>
   </div>
+  <ConfirmationPopUp v-if="toggleConfirmationPopup" :type="confirmationType" :changes="changes"
+  @cancel="toggleConfirmationPopup = false" @confirm-accept="acceptRequest"
+                                          @confirm-reject="rejectRequest" />
 </template>
 
 <script lang="ts">
 import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 import { WaitingRequests } from '@/Models/WaitingRequests';
+import ConfirmationPopUp from '@/components/popup/ConfirmationPopUp.vue';
 
 function statusColored(status: string){
   if (status === 'ACCEPTED') return 'text-green-600';
@@ -89,6 +91,9 @@ function formatDate(dateString: Date): string {
 }
 
 export default {
+  components:{
+    ConfirmationPopUp
+  },
   props: {
     request: {
       type: WaitingRequests,
@@ -102,24 +107,29 @@ export default {
       formatDate,
       statusColored,
       translateStatus,
-      id: ""
+      id: "",
+      toggleConfirmationPopup: false,
+      confirmationType: "noType",
+      changes: ""
     };
   },
   methods: {
     togglePopup() {
       this.popupVisible = !this.popupVisible;
     },
+    showConfirmationPopUp(type: string){
+      this.confirmationType = type;
+      this.changes = this.confirmationType;
+      this.toggleConfirmationPopup = true;
+    },
     acceptRequest() {
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
       requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
       alert("Talep kabul edildi.");
-
       //reload page
-
       window.location.reload();
     },
-
     rejectRequest(){
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
@@ -135,7 +145,7 @@ export default {
         this.popupVisible = true;
         console.log(this.request);
       }
-    }
+    },
   }
 };
 </script>
