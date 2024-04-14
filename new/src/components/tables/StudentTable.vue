@@ -18,8 +18,17 @@
                 </div>
             </div>
             <div class="flex justify-end mt-4">
-                <button @click="showModal = false" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                    Geri Dön
+                <button @click="showModal = false" class="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                  title="Geri Dön">
+                  <span class="material-symbols-outlined ">
+                  arrow_back_ios_new
+                  </span>
+                </button>
+                <button @click:href="selectedRequest.getPDF()" class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded ml-2"
+                  title="PDF'i indir">
+                  <span class="material-symbols-outlined">
+                  picture_as_pdf
+                  </span>
                 </button>
             </div>
         </div>
