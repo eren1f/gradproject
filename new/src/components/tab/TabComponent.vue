@@ -17,7 +17,7 @@
 			</ul>
 		</div>	
 		<div v-if="activeTab === 'TalepOlustur'">
-			<CreateNewRequestTypes :selected-staff="selectedStaffs" />
+			<CreateNewRequestTypes :selected-staff="selectedStaffs" :remove-staff="removeStaffFromSelectedStaffs"/>
 		</div>
 		<div v-if="activeTab === 'TalepDuzenle'">
 			<EditRequestType />
@@ -27,7 +27,7 @@
 		</div>
 	</div>
 	<div class="box-border p-3 m-3 md:p-6 md:my-[5%] bg-white dark:bg-gray-800 rounded-lg shadow-md md:m-5" v-if="activeTab === 'TalepOlustur'">
-		<StaffListingForCreatingNewRequestTypes @update:selectedStaffs="updateSelectedStaffs" />
+		<StaffListingForCreatingNewRequestTypes @update:selectedStaffs="updateSelectedStaffs" @remove:selectedStaffs="removeStaff"/>
 	</div>
 </template>
 
@@ -40,10 +40,14 @@ import EditRequestType from '../request/editRequestType/EditRequestType.vue';
 
 const activeTab = ref('TalepOlustur');
 const selectedStaffs = ref([]);
+const removeStaffFromSelectedStaffs = ref([]);
 
 const updateSelectedStaffs = (newVal: any) => {
 	selectedStaffs.value = newVal;
-	console.log(selectedStaffs.value);
+};
+
+const removeStaff= (newVal: any) => {
+	removeStaffFromSelectedStaffs.value = newVal;
 };
 
 const showTalepOlustur = () => {

@@ -3,7 +3,7 @@
             <div class="md:w-1/2">
                     <h1 class="flex text-2xl font-bold mb-[1%] text-white justify-center md:justify-between">
                     Talep Türü Gereksinimleri</h1>
-                    <RequestCredentials :departmentId="departmentId" @update:selectedDepartment="handleSelectedDepartment" @dataChanged="handleDataChange" />
+                    <RequestCredentials  @update:selectedDepartment="handleSelectedDepartment" @dataChanged="handleDataChange" />
                     <RequestName />
                     <CreateNewRequirement class="text-black" />
             </div>
@@ -70,6 +70,10 @@
             selectedStaff: {
                 type: null as any,
                 required: true
+            },
+            removeStaff: {
+                type: null as any,
+                required: true
             }
         },
         data(){
@@ -96,6 +100,12 @@
             watch(() => props.selectedStaff, (newVal) => {
                 console.log('selectedStaffs changed:', newVal);
                 staffs.value.push(newVal);
+            });
+
+            watch(() => props.removeStaff, (newVal) => {
+                
+                staffs.value = staffs.value.filter(staff => staff.id !== newVal.id);
+                
             });
              
 

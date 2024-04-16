@@ -194,6 +194,7 @@ export default defineComponent({
 
             new_Actor_RemoveButton.addEventListener('click', () => {
                 new_Actor_div.remove();
+                context.emit('remove:selectedStaffs', staffForAdminListing);
             });
             
             new_Actor_div.classList.add('border', 'border-gray-400', 'bg-gray-50');

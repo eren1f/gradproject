@@ -53,6 +53,7 @@ export default defineComponent({
             this.$emit('update:selectedDepartment', newVal);
         }
     },
+    emits: ['dataChanged', 'update:selectedFaculty', 'update:selectedDepartment',],
     setup(props, { emit }) {
         const faculties = ref([] as ListFaculties[]);
         const departments = ref([] as ListDepartments[]);
