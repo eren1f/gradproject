@@ -6,7 +6,7 @@
         <h2 class="text-lg font-bold mb-2 flex justify-between items-center">Talep Detayları
           <div class="flex items-center ml-6">
             <p class="mr-2">Talep Durumu:</p>
-            <span :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
+            <span  :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
           </div>
           <div class="sm:flex sm:items-start">
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -94,6 +94,7 @@ export default {
   components:{
     ConfirmationPopUp
   },
+  emits: ['clearRequest'],
   props: {
     request: {
       type: WaitingRequests,
@@ -116,6 +117,7 @@ export default {
   methods: {
     togglePopup() {
       this.popupVisible = !this.popupVisible;
+      this.$emit('clearRequest');
     },
     showConfirmationPopUp(type: string){
       this.confirmationType = type;
@@ -141,7 +143,7 @@ export default {
   },
   watch: {
     request(newVal) {
-      if (newVal !== null) {
+      if (newVal != undefined) {
         this.popupVisible = true;
         console.log(this.request);
       }
