@@ -55,7 +55,7 @@
       </div>
     </div>
   </div>
-  <ConfirmationPopUp v-if="toggleConfirmationPopup" :type="confirmationType" :changes="changes"
+  <ConfirmationPopUp v-if="toggleConfirmationPopup" :confirmationType="confirmationType" :changes="changes"
   @cancel="toggleConfirmationPopup = false" @confirm-accept="acceptRequest"
                                           @confirm-reject="rejectRequest" />
 </template>
@@ -121,7 +121,6 @@ export default {
     },
     showConfirmationPopUp(type: string){
       this.confirmationType = type;
-      this.changes = this.confirmationType;
       this.toggleConfirmationPopup = true;
     },
     acceptRequest() {
