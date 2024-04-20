@@ -18,10 +18,10 @@ To convert your existing Vue 2 code to use the Composition API in Vue 3, you'll 
       <div v-for="(requirement, index) in requestRequirements" :key="index" class="flex flex-col text-center md:flex-row py-2 text-white">
         <p>{{ requirement.getName() }}</p>
         <div v-if="requirement.getType() === 'single'" class="md:ml-auto">
-          <input :id="'singleReq-' + index" type="text" v-model="requirementValues[requirement.getPretext()]" class="w-32 p-2 mt-4 md:mt-0 border rounded bg-gray-600" placeholder="Doldur." />
+          <input :id="'singleReq-' + requirement.getIndex()" type="text" v-model="requirementValues[requirement.getPretext()]" class="w-32 p-2 mt-4 md:mt-0 border rounded bg-gray-600" placeholder="Doldur." />
         </div>
         <div v-if="requirement.getType() === 'multi'" class="md:ml-auto">
-          <input :id="'multiReq-' + index" type="text" v-model="requirementValuesMulti[requirement.getPretext()]" class="w-32 p-2 mt-4 md:mt-0 border rounded bg-gray-600" placeholder="Doldur." />
+          <input :id="'multiReq-' + requirement.getIndex()" type="text" v-model="requirementValuesMulti[requirement.getPretext()]" class="w-32 p-2 mt-4 md:mt-0 border rounded bg-gray-600" placeholder="Doldur." />
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@ To convert your existing Vue 2 code to use the Composition API in Vue 3, you'll 
       <button @click="showConfirmationPopUp(requestInfo)" class="w-[36%] md:w-[50%] p-2 border rounded bg-gray-600 hover:bg-blue-500">Gönder</button>
     </div>
   </div>
-  <ConfirmationPopUp v-if="toggleConfirmationPopup" :changes="change" @cancel="toggleConfirmationPopup = false" @confirm="submitRequest" />
+  <ConfirmationPopUp v-if="toggleConfirmationPopup" :changes="change" @cancel="toggleConfirmationPopup = false" @confirm-makeRequest="submitRequest" />
 </template>
 
 <script lang="ts">
@@ -71,6 +71,7 @@ export default {
       const request = new Request(userInfo.value!.getId(), selectedRequest.value!.getRequestTypeId(), selectedRequest.value!.getRequestName(), requestInfo.value, 1, 'studentComment');
       const studentRequestHandler = new StudentRequestHandler();
       studentRequestHandler.makeRequest(request);
+      toggleConfirmationPopup.value = false;
     };
 
     const updateRequestInfo = () => {

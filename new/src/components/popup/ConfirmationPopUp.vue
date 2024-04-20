@@ -24,7 +24,7 @@ function translateConfirmationType(cType: any): string { // for staff
     switch (cType) {
         case 'accept': return 'Talebi onaylıyorsunuz.';
         case 'reject': return 'Talebi reddediyorsunuz.';
-        default: return '';
+        default: return 'makeRequest';
     }
 }
 
@@ -45,7 +45,8 @@ export default {
         }
     },
     methods: {
-        confirm() { this.$emit(`confirm-${this.confirmationType}`); },
+        //confirm() { this.$emit('confirm'); }, // TODO: add confirmationType to emit(
+        confirm() { this.confirmationType! ?  this.$emit(`confirm-${this.confirmationType}`) : this.$emit('confirm-makeRequest'); },
         cancel() { this.$emit('cancel'); }
     },
     data() {

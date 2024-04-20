@@ -87,6 +87,7 @@
   import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
   import { WaitingRequests } from '@/Models/WaitingRequests';
   import AdvisorPopup from '../popup/AdvisorPopup.vue';
+  //import { Client } from '@stomp/stompjs';
   
   const searchQuery = ref('');
   const allRequests = ref<WaitingRequests[]>([]);

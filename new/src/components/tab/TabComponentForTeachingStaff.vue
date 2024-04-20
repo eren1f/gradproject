@@ -14,10 +14,10 @@
     </div>
     <div>
       <div v-if="activeTab === 'BekleyenTalepler'">
-        <component :is="currentRoleComponent"></component>  
+        <component :is="currentRoleComponent" :key="componentKey" ></component>  
       </div>
       <div v-if="activeTab === 'TumTalepler'">
-        <component :is="currentRoleComponentForSecondTab"></component>  
+        <component :is="currentRoleComponentForSecondTab" :key="componentKey"></component>  
       </div>
     </div>
   </div>
@@ -33,9 +33,11 @@ import DepartmentTable from '@/components/tables/DepartmentTable.vue'
 import DepartmentTable2Tab from '@/components/tables/DepartmentTable2Tab.vue'
 import DeanTable from '@/components/tables/DeanTable.vue'
 import DeanTable2Tab from '@/components/tables/DeanTable2Tab.vue'
+import { Client } from '@stomp/stompjs';
 
 const userInfo = ref<UserInfo>();
 const activeTab = ref('BekleyenTalepler');
+const componentKey = ref(0);
 
 const showBekleyenTalepler = () => {
   activeTab.value = 'BekleyenTalepler'
@@ -66,6 +68,31 @@ onMounted(async() => {
   const UserInfos = new UserInfo(data.id, data.name, data.surname, data.email, data.departmentId, data.adviserId, data.password, data.role, data.fullName, data.firstname, data.lastname, data.advisorId);
   if (UserInfos.getRole() == null) { UserInfos.setRole('Undefined Role'); }
   userInfo.value = UserInfos;
+
+
+  const client = new Client({
+            brokerURL: 'ws://localhost:8080/ws',
+            connectHeaders:{
+                'Content-Type': 'application/json',
+            }
+          });
+
+          client.activate();
+          
+          client.onConnect = () => {
+                console.log('connected')
+                client.subscribe('/user/queue/newRequest', (message) => {
+                  console.log('message', message.body);
+                  if(message.body==='refresh'){
+                    console.log('refresh');
+                    componentKey.value++;
+                  }
+                });
+                client.onStompError = (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+                };
+            };
 });
 </script>
 

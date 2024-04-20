@@ -85,6 +85,9 @@ export default{
 
             client.value = new Client({
                 brokerURL: 'ws://localhost:8080/ws',
+                connectHeaders:{
+                    'Content-Type': 'application/json',
+                }
             });
 
             client.value.activate();
@@ -95,13 +98,18 @@ export default{
             };
 
             client.value.onConnect = () => {
-                console.log('Connected to the server');
-                client.value!.subscribe('/request/notification/'+userInfo.value?.getId(), (message) => {
+                console.log('connected topbar')
+                client.value!.subscribe('/user/queue/created', (message) => {
                     console.log('subscribed');
+                    console.log(message.body);
                     const notification = JSON.parse(message.body);
                     console.log(notification);
                     notifications.value.push(notification);
                 });
+                client.value!.onStompError = (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+                };
             };
 
             

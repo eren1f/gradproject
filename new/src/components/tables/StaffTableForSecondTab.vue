@@ -93,6 +93,7 @@ import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
 import AdvisorPopup from '../popup/AdvisorPopup.vue';
+//import { Client } from '@stomp/stompjs';
 
 const allRequests = ref <WaitingRequests[]>([]);
 const totalRequests = ref(0);
