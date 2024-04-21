@@ -4,11 +4,11 @@
       <ul class="flex flex-col md:flex-row text-sm font-medium text-center md:pl-[1%] text-gray-500 dark:text-gray-400">
         <li class="me-2 ">
           <a href="#" @click="showBekleyenTalepler" :class="{ 'selected-tab': activeTab === 'BekleyenTalepler' }"
-            class="flex flex-col md:inline-block px-3 py-3 rounded-lg">Bekleyen Talepler</a>
+            class="flex flex-col md:inline-block px-3 py-3 rounded-lg">Yeni Talepler</a>
         </li>
         <li class="me-2">
           <a href="#" @click="showTumTalepler" :class="{ 'selected-tab': activeTab === 'TumTalepler' }"
-            class="flex flex-col md:inline-block px-4 py-3 rounded-lg">Tüm Talepler</a>
+            class="flex flex-col md:inline-block px-4 py-3 rounded-lg">Bekleyen Talepler</a>
         </li>
       </ul>
     </div>

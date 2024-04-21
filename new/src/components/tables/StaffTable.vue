@@ -86,7 +86,7 @@ import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
 import AdvisorPopup from '../popup/AdvisorPopup.vue';
-import { Client } from '@stomp/stompjs';
+
 
 
 
@@ -200,26 +200,10 @@ function formatDate(dateString: Date): string {
           console.log(response);
           totalRequests.value = response.length;
           allRequests.value = response;
-          var componentKey = 0;
+          
 
-          const client = new Client({
-            brokerURL: 'ws://localhost:8080/ws',
-            connectHeaders:{
-                'Content-Type': 'application/json',
-            }
-          });
 
-          client.onConnect = () => {
-                client.subscribe('/user/queue/newRequest', (message) => {
-                  if(message.body==='refresh'){
-                    componentKey+=1;
-                  }
-                });
-                client.onStompError = (frame) => {
-                console.error('Broker reported error: ' + frame.headers['message']);
-                console.error('Additional details: ' + frame.body);
-                };
-            };
+
 
         });
       }
