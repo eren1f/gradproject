@@ -6,20 +6,20 @@
         <h2 class="text-lg font-bold mb-2 flex justify-between items-center">Talep Detayları
           <div class="flex items-center ml-6">
             <p class="mr-2">Talep Durumu:</p>
-            <span  :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
+            <span :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
           </div>
           <div class="sm:flex sm:items-start">
-                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <div class="mt-2">
-          <button @click="togglePopup" class="absolute top-2 right-2 bg-transparent border-none">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="#1C274C" stroke-width="1.5"/>
-            <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </button>
-        </div>
-                </div>
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <div class="mt-2">
+                <button @click="togglePopup" class="absolute top-2 right-2 bg-transparent border-none">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="#1C274C" stroke-width="1.5"/>
+                    <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
             </div>
+          </div>
         </h2>
         <div class="border-b border-gray-300 mb-2"></div>
         <div class="overflow-y-scroll h-24 pr-4">
@@ -29,33 +29,37 @@
           <template v-else>
             <div>
               <p>
+                <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{ request.getAddition() }} <br>
                 <strong class="text-gray-700">Öğrenci Numarası:</strong> {{ request.getStudentId() }}<br>
                 <strong class="text-gray-700">Öğrenci Adı:</strong> {{ request.getStudentName() }}<br>
                 <strong class="text-gray-700">Talep Türü:</strong> {{ request.getRequestTypeName() }}<br>
                 <strong class="text-gray-700">Öğrenci E-posta:</strong> {{ request.getStudentMail() }}<br>
                 <strong class="text-gray-700">Oluşturulan Tarih:</strong> {{ formatDate(request.getWhenCreated()) }}<br>
-                <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{ request.getAddition() }} <br>
               </p>
             </div>
           </template>
         </div>
         <div class="border-b border-gray-300 mb-2"></div>
         <div class="mt-4">
-          <label for="geribildirim" class="block text-sm font-medium text-gray-700">Öğrenciye Geribildirim</label>
-          <textarea id="geribildirim" name="geribildirim" rows="4" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
-          <label for="degerlendirme-yorumu" class="block text-sm font-medium text-gray-700">Değerlendirme Yorumu</label>
-          <textarea id="degerlendirme-yorumu" name="degerlendirme-yorumu" rows="4" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
+          <div class="flex">
+            <div class="w-1/2 mr-4">
+              <label for="geribildirim" class="block text-sm font-medium text-gray-700">Öğrenciye Geribildirim</label>
+              <textarea id="geribildirim" name="geribildirim" rows="3" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
+            </div>
+            <div class="w-1/2">
+              <label for="degerlendirme-yorumu" class="block text-sm font-medium text-gray-700">Değerlendirme Yorumu</label>
+              <textarea id="degerlendirme-yorumu" name="degerlendirme-yorumu" rows="3" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
+            </div>
+          </div>
         </div>
-
-        
         <div class="flex flex-col sm:flex-row justify-between mt-4 overflow-x-auto">
-            <button @click="showConfirmationPopUp('reject')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0 w-full sm:w-auto">Reddet</button>
-            <button @click="showConfirmationPopUp('accept')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Onayla</button>
+          <button @click="showConfirmationPopUp('reject')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0 w-full sm:w-auto">Reddet</button>
+          <button @click="showConfirmationPopUp('accept')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Onayla</button>
         </div>
       </div>
     </div>
   </div>
-  <ConfirmationPopUp v-if="toggleConfirmationPopup" :confirmationType="confirmationType" :changes="changes"
+  <ConfirmationPopUp v-if="toggleConfirmationPopup" :type="confirmationType" :changes="changes"
   @cancel="toggleConfirmationPopup = false" @confirm-accept="acceptRequest"
                                           @confirm-reject="rejectRequest" />
 </template>
@@ -121,6 +125,7 @@ export default {
     },
     showConfirmationPopUp(type: string){
       this.confirmationType = type;
+      this.changes = this.confirmationType;
       this.toggleConfirmationPopup = true;
     },
     acceptRequest() {

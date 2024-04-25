@@ -1,7 +1,7 @@
 <template>
     <!--Dean Request Tracking Table-->
     <div class="flex flex-col">
-      <AdvisorPopup :request="selectedRequest"></AdvisorPopup>
+      <AdvisorPopup :request="selectedRequest" @clearRequest="selectedRequest = undefined"></AdvisorPopup>
       <!--SearchBar-->
       <div class="px-[1%] my-[1%] flex self-center sm:self-start">
         <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">

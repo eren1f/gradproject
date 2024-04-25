@@ -79,22 +79,21 @@
 <script lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { TeachingStaffRequestHandler } from '../../Scripts/TeachingStaffRequestHandler';
-//import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
 import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
 import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
 import AdvisorPopup from '../popup/AdvisorPopup.vue';
-
+import type { request } from 'http';
 
 
 
 const searchQuery = ref('');
-const allRequests = ref<WaitingRequests[]>([]);
-const totalRequests = ref(0);
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
+const allRequests = ref<WaitingRequests[]>([]);
+const totalRequests = ref(0);
 const students = ref<StudentForTeachingStaffListing[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
@@ -102,14 +101,15 @@ const selectedRequest = ref<WaitingRequests>();
 
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  if(!query) return students.value;
-  // Search by name or surname (fixed)
-  return students.value.filter(student =>
-    student.getFullName().toLowerCase().includes(query) ||
-    student.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-  )
+  let result = students.value;
+  if(query) {
+    result = result.filter(student =>
+      student.getFullName().toLowerCase().includes(query) ||
+      student.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+    )
+  }
+  return result;
 })
-
 const totalPages = computed(() => {
   totalEntries.value = filteredStudents.value.length;
     return Math.ceil(totalEntries.value / itemsPerPage);
@@ -144,6 +144,7 @@ function formatDate(dateString: Date): string {
           allRequests,
           formatDate,
           selectedRequest, // WaitingRequests or null
+          filteredStudents,
           searchQuery
         };
       },
@@ -201,10 +202,6 @@ function formatDate(dateString: Date): string {
           totalRequests.value = response.length;
           allRequests.value = response;
           
-
-
-
-
         });
       }
   };
