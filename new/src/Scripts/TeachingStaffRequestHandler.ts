@@ -92,6 +92,41 @@ export class TeachingStaffRequestHandler {
         }
     }
 
+    async getConcludedForTeachingStaff(): Promise<WaitingRequests[]> {
+        const url = apiRoute + "concludedRequests";
+        try{
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            if(!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            let requests: WaitingRequests[] = [];
+            return data.map((item:any) => new WaitingRequests(
+                item.studentId,
+                item.studentName,
+                item.studentMail,
+                item.studentDepartment,
+                item.requestTypeId,
+                item.requestTypeName,
+                item.current_index,
+                item.information,
+                item.addition,
+                new Date(item.whenCreated),
+                item.currentActorId,
+                item.status
+            ));
+        }catch(error){
+            throw new Error(`HTTP error! status: ${error}`);
+        }
+    }
+
     async acceptRequest(studentId:number,requestTypeId:number,when:string,currentIndex:number): Promise<any>{
         const url= apiRoute + "acceptRequest";
         try {

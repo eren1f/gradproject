@@ -99,12 +99,12 @@ export default{
 
             client.value.onConnect = () => {
                 console.log('connected topbar')
-                client.value!.subscribe('/user/queue/created', (message) => {
-                    console.log('subscribed');
-                    console.log(message.body);
-                    const notification = JSON.parse(message.body);
-                    console.log(notification);
-                    notifications.value.push(notification);
+                client.value!.subscribe('/user/queue/notification', (message) => {
+                    console.log('message :', message.body);
+                    //TODO: whenever refresh message comes, increment counter at the bell icon
+                    if(message.body==='refresh'){
+                        console.log('refresh, topbar')
+                    }
                 });
                 client.value!.onStompError = (frame) => {
                 console.error('Broker reported error: ' + frame.headers['message']);

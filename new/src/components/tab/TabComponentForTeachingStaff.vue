@@ -80,12 +80,9 @@ onMounted(async() => {
           client.activate();
           
           client.onConnect = () => {
-                console.log('connected')
                 client.subscribe('/user/queue/newRequest', (message) => {
-                  console.log('message', message.body);
                   if(message.body==='refresh'){
-                    console.log('refresh');
-                    componentKey.value++;
+                    //componentKey.value++;
                   }
                 });
                 client.onStompError = (frame) => {
