@@ -46,7 +46,9 @@ export default {
     },
     methods: {
         //confirm() { this.$emit('confirm'); }, // TODO: add confirmationType to emit(
-        confirm() { this.confirmationType! ?  this.$emit(`confirm-${this.confirmationType}`) : this.$emit('confirm-makeRequest'); },
+        confirm() {
+            console.log(this.confirmationType); 
+            this.confirmationType! ?  this.$emit(`confirm-${this.confirmationType}`) : this.$emit('confirm-makeRequest'); },
         cancel() { this.$emit('cancel'); }
     },
     data() {

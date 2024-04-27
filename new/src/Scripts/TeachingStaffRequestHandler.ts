@@ -127,7 +127,7 @@ export class TeachingStaffRequestHandler {
         }
     }
 
-    async acceptRequest(studentId:number,requestTypeId:number,when:string,currentIndex:number): Promise<any>{
+    async acceptRequest(studentId:number,requestTypeId:number,when:string,currentIndex:number,status:string): Promise<any>{
         const url= apiRoute + "acceptRequest";
         try {
             const response = await fetch(url, {
@@ -140,7 +140,8 @@ export class TeachingStaffRequestHandler {
                     studentId: studentId,
                     requestTypeId: requestTypeId,
                     when: when,
-                    currentIndex: currentIndex
+                    currentIndex: currentIndex,
+                    status: status
                 })
             });
             if (!response.ok) {
@@ -154,7 +155,7 @@ export class TeachingStaffRequestHandler {
         }
     }
 
-    async rejectRequest(studentId:number, requestTypeId:number, when:string, currentIndex:number): Promise<any>{
+    async rejectRequest(studentId:number, requestTypeId:number, when:string, currentIndex:number,status:string): Promise<any>{
         const url= apiRoute + "rejectRequest";
         try {
             const response = await fetch(url, {
@@ -167,7 +168,8 @@ export class TeachingStaffRequestHandler {
                     studentId: studentId,
                     requestTypeId: requestTypeId,
                     when: when,
-                    currentIndex: currentIndex
+                    currentIndex: currentIndex,
+                    status: status
                 })
             });
             if (!response.ok) {

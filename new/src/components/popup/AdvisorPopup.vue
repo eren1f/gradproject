@@ -59,7 +59,7 @@
       </div>
     </div>
   </div>
-  <ConfirmationPopUp v-if="toggleConfirmationPopup" :type="confirmationType" :changes="changes"
+  <ConfirmationPopUp v-if="toggleConfirmationPopup" :confirmationType="confirmationType" :changes="changes"
   @cancel="toggleConfirmationPopup = false" @confirm-accept="acceptRequest"
                                           @confirm-reject="rejectRequest" />
 </template>
@@ -125,13 +125,16 @@ export default {
     },
     showConfirmationPopUp(type: string){
       this.confirmationType = type;
+      console.log(this.confirmationType)
       this.changes = this.confirmationType;
       this.toggleConfirmationPopup = true;
     },
     acceptRequest() {
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
-      requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+      console.log("method called")
+      requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex(),
+    this.request.getStatus());
       alert("Talep kabul edildi.");
       //reload page
       window.location.reload();
@@ -139,7 +142,9 @@ export default {
     rejectRequest(){
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
-      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex(),
+      this.request.getStatus());
+      
       alert("Talep reddedildi.");
       //reload page
       window.location.reload();
