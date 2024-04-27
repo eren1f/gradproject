@@ -26,8 +26,13 @@
                 </div>
                 <!-- Lower part -->
                 <div class="overflow-y-scroll h-32">
-                    <div v-for="notification in notifications" >
+                    <!-- <div v-for="notification in notifications" >
                         <button class="m-[1%] text-white break-words hover:bg-blue-800">{{ notification.whenCreated }}</button>
+                    </div> -->
+                    <div>
+                        <button v-if="newUnreadRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newUnreadRequest }} yeni talebiniz bulunmakta</button>
+                        <button v-if="newWaitingRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newWaitingRequest }} talebiniz onay beklemektedir</button>
+                        <button v-if="concludedRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ concludedRequest }} talebiniz sonuçlandı</button>
                     </div>
                 </div>
             </div>
@@ -51,6 +56,11 @@ import { Client } from '@stomp/stompjs';
 import type { Notification} from '../../Models/Notifitcation';
 export default{
     name: 'Topbar',
+    methods: {
+        refreshPage(){
+            window.location.reload();
+        }
+    },
     setup() {
         const route = useRoute();
         const socket = ref<WebSocket>();
@@ -58,6 +68,9 @@ export default{
         const userInfo = ref<UserInfo>();
         const showNotifications = ref(false);
         const notifications = ref<Notification[]>([]);
+        const newUnreadRequest = ref(0);
+        const newWaitingRequest = ref(0);
+        const concludedRequest = ref(0);
         const handleClick = async() => {
             const authHandler =  Auth.getInstance();
             const res = await authHandler.logoutTokenDeleter();
@@ -102,8 +115,13 @@ export default{
                 client.value!.subscribe('/user/queue/notification', (message) => {
                     console.log('message :', message.body);
                     //TODO: whenever refresh message comes, increment counter at the bell icon
-                    if(message.body==='refresh'){
-                        console.log('refresh, topbar')
+                    if(message.body==='new request'){
+                        newUnreadRequest.value+=1;
+                    }else if(message.body==='need approval'){
+                        newWaitingRequest.value+=1;
+                    }
+                    else if(message.body==='concluded'){
+                        concludedRequest.value+=1;
                     }
                 });
                 client.value!.onStompError = (frame) => {
@@ -115,13 +133,15 @@ export default{
             
             
         });
-
         return {
             handleClick,
             showNotifications,
             notifications,
             userInfo,
             socket,
+            newWaitingRequest,
+            newUnreadRequest,
+            concludedRequest
         };
     }
 };
