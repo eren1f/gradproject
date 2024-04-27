@@ -30,9 +30,9 @@
                         <button class="m-[1%] text-white break-words hover:bg-blue-800">{{ notification.whenCreated }}</button>
                     </div> -->
                     <div>
-                        <button v-if="newUnreadRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newUnreadRequest }} yeni talebiniz bulunmakta</button>
-                        <button v-if="newWaitingRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newWaitingRequest }} talebiniz onay beklemektedir</button>
-                        <button v-if="concludedRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ concludedRequest }} talebiniz sonuçlandı</button>
+                        <button v-if="newUnreadRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newUnreadRequest }} yeni talebiniz bulunmakta. Sayfayı yenilemek için tıklayın.</button>
+                        <button v-if="newWaitingRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newWaitingRequest }} talebiniz onay beklemektedir. Sayfayı yenilemek için tıklayın.</button>
+                        <button v-if="concludedRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ concludedRequest }} talebiniz sonuçlandı. Sayfayı yenilemek için tıklayın.</button>
                     </div>
                 </div>
             </div>
