@@ -165,9 +165,9 @@ export class TeachingStaffRequestHandler {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    studentId: studentId,
+                    requestStudentId: studentId,
                     requestTypeId: requestTypeId,
-                    when: when,
+                    requestWhenCreated: when,
                     currentIndex: currentIndex,
                     status: status
                 })
