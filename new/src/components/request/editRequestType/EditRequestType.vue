@@ -717,6 +717,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
           
           requestActors.value = await handler.getRequestActorsByRequestTypeId(id);
           
+
           filteredStaffs.value = [];
           let staffIds: number[] = [];
           requestActors.value.forEach(function (actor)  {
@@ -730,7 +731,7 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
                   
               }
               else
-              {
+              { 
                 matchStaff.value.push(staff);
               }
           });
@@ -740,6 +741,14 @@ const addActor = async (staffToAdd: StaffForAdminListing ) => {
             if(matchActor.getId() == actor.staffId)
              actor.name = matchActor.getFullName();
              actor.role = matchActor.getRole();
+           });
+
+         });
+
+         requestActors.value.forEach(function (actor) {
+          staffs.value.forEach(function (staff) {
+            if(staff.getId() == actor.staffId)
+             actor.role = staff.role ;
            });
 
          });
