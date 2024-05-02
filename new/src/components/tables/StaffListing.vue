@@ -384,12 +384,32 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
               const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
               const staffToAdd = new StaffForAdminListing(this.idToEdit ,name + ' ' + surname,email,departmentToPass,role);
               paginatedStaffs.value.splice(this.indexToEdit,1,staffToAdd);
+              
             
             await handler.updateStaff(staffToEdit);
             //rol statik unutma
             this.toggleEditClose();
+            
         },
         async saveAddedStaff(  name: string, surname: string, email: string, password: string,  role: string,  departmentId: string){
+          const url = apiRoute + "getStaffInfoForAdmin";
+          const response = await fetch(url, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+          })
+          const data = await response.json();
+          
+          allStaffs.value = [];
+
+          for (let i = 0; i < data.length; i++) {
+              const staff = new StaffForAdminListing(data[i].id, data[i].fullName, data[i].email, data[i].department, data[i].role);
+              allStaffs.value.push(staff);
+          }
+          staffs.value = allStaffs.value; 
+
           let maxid = 0;
                 allStaffs.value.forEach(function (bigid)  {
                 if(bigid.getId() > maxid)
@@ -426,7 +446,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
            await handler.addStaff(newStaff);
            //rol statik unutma
           }
-          
+          sortByColumn('id');
         },
         setCurrentPage(page: number){
           this.currentPage = page;
