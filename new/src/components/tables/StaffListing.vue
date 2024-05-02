@@ -390,6 +390,13 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             this.toggleEditClose();
         },
         async saveAddedStaff(  name: string, surname: string, email: string, password: string,  role: string,  departmentId: string){
+          let maxid = 0;
+                allStaffs.value.forEach(function (bigid)  {
+                if(bigid.getId() > maxid)
+                {
+                  maxid = bigid.getId();
+                }
+              });
           if (allStaffs.value.length === 0)
           {const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
             const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
@@ -399,21 +406,23 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             this.showAddStaffModal = false;
 
             
-            console.log(allStaffs);
+            console.log(allStaffs.value);
            await handler.addStaff(newStaff);
            //rol statik unutma
           }
           else
-          {
+          {     
+
             const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
             const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
-            const staffToAdd = new StaffForAdminListing(allStaffs.value[0].getId() + 1,name + ' ' + surname,email,departmentToPass,role);
-            newStaff.setId(allStaffs.value[0].getId() + 1);
+            //get biggest id
+            const staffToAdd = new StaffForAdminListing(maxid + 1,name + ' ' + surname,email,departmentToPass,role);
+            newStaff.setId(maxid + 1);
             filteredStaffs.value.splice(filteredStaffs.value.length,1,staffToAdd);
             this.showAddStaffModal = false;
-
             
-            console.log(allStaffs);
+            
+            console.log(allStaffs.value);
            await handler.addStaff(newStaff);
            //rol statik unutma
           }
