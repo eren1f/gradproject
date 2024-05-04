@@ -26,12 +26,11 @@
                   </th>
                 </tr>
             </thead>
-            <tbody class="bg-gray-50">
-              <template v-for="(request) in allRequests"  :key ="request.getWhenCreated()">
-                <tr>
+            <tbody class="bg-gray-50"> 
+                <tr v-for="(request, index) in paginatedStudents"  :key ="request.getWhenCreated()">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
-                    {{ request.studentName }}
+                    {{ request.getStudentName() }}
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff Request -->
@@ -45,7 +44,6 @@
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
-              </template>
             </tbody>
           </table>
         </div>
@@ -62,7 +60,7 @@
                 <span class="material-icons">chevron_left</span>
               </button>
             </li>
-            <li v-for="(page, index) in totalPages" :key="index">
+            <li v-for="page in totalPages" :key="page">
               <button @click="setCurrentPage(page)" :class="{ 'text-blue-600 border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white': page === currentPage, 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white': page !== currentPage }" class="flex items-center justify-center px-3 h-8 leading-tight">{{ page }}</button>
             </li>
             <li>
@@ -74,6 +72,8 @@
         </nav>
     </div>
   </div>
+
+    
 
 </template>
 <script lang="ts">
@@ -98,27 +98,29 @@ const totalEntries = ref(0);
 const staffId = ref(0);
 const selectedRequest = ref<WaitingRequests>();
 
+
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  let result = students.value;
-  if(query) {
-    result = result.filter(student =>
-      student.getFullName().toLowerCase().includes(query) ||
-      student.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-    )
-  }
-  return result;
+  if(!query) return allRequests.value;
+  // Search by name or surname (fixed)
+  return allRequests.value.filter(staff =>
+    staff.getStudentName().toLowerCase().includes(query) ||
+    staff.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+  )
 })
+
 const totalPages = computed(() => {
   totalEntries.value = filteredStudents.value.length;
     return Math.ceil(totalEntries.value / itemsPerPage);
   })
+
 
 const paginatedStudents = computed(() => {
   const startIndex = (currentPage.value - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   return filteredStudents.value.slice(startIndex, endIndex);
 })
+
 
 function formatDate(dateString: Date): string {
   const date = new Date(dateString);

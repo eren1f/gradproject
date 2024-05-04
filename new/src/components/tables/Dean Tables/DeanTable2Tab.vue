@@ -36,7 +36,7 @@
                  </tr>
               </thead>
               <tbody class="bg-gray-50">
-                <template v-for="(request) in allRequests" :key ="request.getWhenCreated()">
+                <template v-for="(request) in paginatedRequests" :key ="request.getWhenCreated()">
                   <!-- Table Row -->
                   <tr class="border border-gray-400">
                     <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
@@ -112,11 +112,11 @@
     
     const filteredRequests = computed(() => {
       const query = searchQuery.value.trim().toLowerCase();
-      if(!query) return students.value;
+      if(!query) return allRequests.value;
       // Search by name or surname (fixed)
-      return students.value.filter(student =>
-        student.getFullName().toLowerCase().includes(query) ||
-        student.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+      return allRequests.value.filter(student =>
+        student.getAdviserName().toLowerCase().includes(query) ||
+        student.getAdviserName().toLowerCase().split(' ').reverse().join(' ').includes(query)
       )
     })
     const totalPages = computed(() => {

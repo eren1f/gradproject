@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-              <template v-for="(request) in allRequests"  :key ="request.getWhenCreated()">
+              <template v-for="(request) in paginatedStudents"  :key ="request.getWhenCreated()">
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
@@ -105,11 +105,11 @@ const selectedRequest = ref<WaitingRequests>();
 
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  if(!query) return students.value;
+  if(!query) return allRequests.value;
   // Search by name or surname (fixed)
-  return students.value.filter(student =>
-    student.getFullName().toLowerCase().includes(query) ||
-    student.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+  return allRequests.value.filter(student =>
+    student.getStudentName().toLowerCase().includes(query) ||
+    student.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
   )
 })
 
