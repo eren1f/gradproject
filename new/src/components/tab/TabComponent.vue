@@ -74,7 +74,7 @@ const showAktorListele = () => {
 	color: white;
 }
 
-ul li:not(:last-child) a:hover {
+ul a:hover {
 	color: #4b5563;
 }
 </style>

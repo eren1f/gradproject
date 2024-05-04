@@ -39,8 +39,8 @@
             </div>
         </div>
         <div class="flex items-center justify-center">
-                    <button class="text-white bg-green-500 hover:bg-blue-700 py-2 px-4 my-[3%] rounded"
-                        @click="addNewRequestType()">Talep Türünü Kaydet</button>
+            <button class="text-white bg-green-500 hover:bg-green-700 py-2 px-4 my-[3%] rounded"
+                @click="addNewRequestType()">Talep Türünü Kaydet</button>
         </div>
 
 

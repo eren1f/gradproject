@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <Topbar />
+  <div class="mt-[8%]">
+    <Topbar/>
     <TabComponent/>
   </div>
 </template>

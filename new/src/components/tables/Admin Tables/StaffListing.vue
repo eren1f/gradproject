@@ -26,37 +26,33 @@
               <button @click="toggleRoleDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
               Rol -> {{ selectedRoleOption }}
               <svg v-if="isRoleOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-              </svg>
-              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
           
              <!-- Role Dropdown menu -->
               <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-                <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
-                  <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option; isRoleOpen = false">{{ option }}</a>
+                <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
+                  <a href="#" class=" block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option; isRoleOpen = false">{{ option }}</a>
                 </div>
               </div>
               <button @click="toggleDepartmentDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
               Departman -> {{ selectedDepartmentOption }}
               <svg v-if="isDepartmentOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-              </svg>
-              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
+
             </button>
             
                 <!-- Faculty Dropdown menu -->
                 
             <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-              <div v-for="department in departmentDropdownOptions" :depKey="department.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+              <div v-for="department in departmentDropdownOptions" :depKey="department.value" class="py-2 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
                 <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.label; selectedDepartmentId=department.value; isDepartmentOpen = false">{{ department.label }}</a>
               </div>
             </div>
             </div>
+
             
           </div>
           <div class="flex justify-end mt-4">
@@ -87,9 +83,6 @@
               <button @click="toggleRoleDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
               Rol -> {{ selectedRoleOption }}
               <svg v-if="isRoleOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-              </svg>
-              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
@@ -97,16 +90,13 @@
              <!-- Role Dropdown menu -->
              
               <div v-if="isRoleOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-                <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <div v-for="option in roleDropdownOptions" :key="option" class="py-2 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
                   <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedRoleOption = option; isRoleOpen = false">{{ option }}</a>
                 </div>
               </div>
               <button @click="toggleDepartmentDropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
               Departman -> {{ selectedDepartmentOption }}
               <svg v-if="isDepartmentOpen" class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-              </svg>
-              <svg v-else class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5-4-4-4 4"/>
               </svg>
             </button>
@@ -114,7 +104,7 @@
                 <!-- Faculty Dropdown menu -->
                 
             <div v-if="isDepartmentOpen" class="z-10 bg-white rounded-lg shadow w-60 dark:bg-gray-700">
-              <div v-for="department in departmentDropdownOptions" :depKey="department.value" class="py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600">
+              <div v-for="department in departmentDropdownOptions" :depKey="department.value" class="py-2 px-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600">
                 <a href="#" class="block text-sm text-gray-700 dark:text-gray-200" @click="selectedDepartmentOption = department.label; selectedDepartmentId=department.value; isDepartmentOpen = false">{{ department.label }}</a>
               </div>
             </div>
@@ -132,6 +122,7 @@
         </div>
     </div>
   </div>
+
   
   
     <!-- Table Content -->
@@ -183,7 +174,7 @@
                     {{ staff.getRole() }}
                 </td>
                 <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
-                  <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-orange-500 text-white rounded hover:bg-orange-700">
+                  <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                     ✏️</button>
                 </td>
               </tr>

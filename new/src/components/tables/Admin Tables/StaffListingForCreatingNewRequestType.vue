@@ -4,6 +4,7 @@
         <!-- Table Content -->
         <div class="px-[1%]">
             <div class="md:inline-block w-full md:min-w-full">
+                <h2 class=" font-bold text-2xl text-white mb-10">Birim Ekle</h2>
                 <div class="shadow overflow-hidden rounded-lg">
                     <table class="w-full md:min-w-full">
                         <thead class="bg-gray-50 hidden md:table-header-group">
@@ -12,35 +13,35 @@
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     ID
                                     <div id="idFilter">
-                                        <input type="text" placeholder="filter" v-model="idFilter">
+                                        <input type="text" placeholder="filtrele" v-model="idFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Name
+                                    Isim
                                     <div id="nameFilter">
-                                        <input type="text" placeholder="filter" v-model="nameFilter">
+                                        <input type="text" placeholder="filtrele" v-model="nameFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Department
+                                    Departman
                                     <div id="departmentFilter">
-                                        <input type="text" placeholder="filter" v-model="departmentFilter">
+                                        <input type="text" placeholder="filtrele" v-model="departmentFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     E-Mail
                                     <div id="emailFilter">
-                                        <input type="text" placeholder="filter" v-model="emailFilter">
+                                        <input type="text" placeholder="filtrele" v-model="emailFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Role
+                                    Rol
                                     <div id="roleFilter">
-                                        <input type="text" placeholder="filter" v-model="roleFilter">
+                                        <input type="text" placeholder="filtrele" v-model="roleFilter">
                                     </div>
                                 </th>
                                 <th scope="col"
@@ -67,8 +68,8 @@
                                         <span class="table-cell font-bold md:hidden">Rol</span>{{ staff.getRole() }}
                                     </td>
                                     <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">     
-                                        <button class="text-indigo-600 hover:text-indigo-900"
-                                            @click="addNewActorToList(staff)">Add</button>
+                                        <button class="text-blue-500 hover:text-blue-700"
+                                            @click="addNewActorToList(staff)">Ekle</button>
                                     </td>
                                 </tr>
                             </template>
@@ -89,7 +90,7 @@
                     <li>
                         <a href="#" @click.prevent="prevPage" :disabled="currentPage === 1"
                             class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                            Previous</a>
+                            Önceki</a>
                     </li>
                     <li v-for="page in totalPages" :key="page">
                         <a href="#" @click.prevent="setCurrentPage(page)"
@@ -98,7 +99,7 @@
                     </li>
                     <li>
                         <a href="#" @click.prevent="nextPage" :disabled="currentPage === totalPages"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Sonraki</a>
                     </li>
                 </ul>
             </nav>
@@ -205,8 +206,8 @@ export default defineComponent({
             new_Actor_Role.classList.add('px-6','py-3','bg-white','md:whitespace-nowrap' ,'text-sm','text-black','block','text-left', 'md:table-cell');
             new_Actor_RoleMobile.classList.add('table-cell','font-bold','md:hidden')
             buttonContainer.classList.add('flex', 'items-start', 'justify-center', 'table-cell', );
-            move_up_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1', 'px-5', 'hover:bg-green-700', 'hover:text-white');
-            move_down_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1','px-5', 'hover:bg-green-700', 'hover:text-white', 'md:mx-[1%]');
+            move_up_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1', 'px-5', 'hover:bg-blue-700', 'hover:text-white');
+            move_down_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1','px-5', 'hover:bg-blue-700', 'hover:text-white', 'md:mx-[1%]');
             new_Actor_RemoveButton.classList.add('bg-red-500', 'text-white', 'rounded', 'p-1','px-5','hover:bg-red-700', 'hover:text-white');
 
             new_Actor_div.dataset.id = staffForAdminListing.getId().toString();
