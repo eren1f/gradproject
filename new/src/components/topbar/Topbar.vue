@@ -1,15 +1,15 @@
 <template>
 <div class="fixed top-0 left-0 w-full h-[10%] bg-gray-800 z-50 flex px-4">
     <div class="flex self-center w-1/3">
-        <span class="material-symbols-outlined ml-[1%] text-white" style="font-size: 200%">account_circle</span>
-        <div class="flex flex-col ml-[1%]" style="font-size: 50%">
-            <div class="flex flex-row">
-                <p class="font-bold m-[2%] text-white">{{ userInfo?.getFirstname() }}</p>
-                <p class="font-bold m-[2%] text-white">{{ userInfo?.getLastname() }}</p>
-            </div>
-            <p class="font-thin m-[2%] text-white">{{ userInfo?.getRole() }}</p>
+    <span class="material-symbols-outlined ml-[1%] text-white" style="font-size: 200%">account_circle</span>
+    <div class="flex flex-col ml-[1%]" style="font-size: 50%">
+        <div class="flex flex-row" style="max-width: 200%">
+            <p class="font-bold m-[2%] text-white" style="white-space: nowrap;">{{ userInfo?.getFirstname() }} {{ userInfo?.getLastname() }}</p>
         </div>
+        <p class="font-thin m-[2%] text-white">{{ userInfo?.getRole() }}</p>
     </div>
+</div>
+
     <div class="flex justify-center w-1/3">
         <h6 class="font-extrabold text-white self-center" style="font-size: 150%;">EDUFLOW</h6>
     </div>
