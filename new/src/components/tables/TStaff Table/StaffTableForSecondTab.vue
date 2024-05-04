@@ -8,25 +8,28 @@
       </div>
     <!-- Table Content -->
     <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
-      <div class="md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
-        <div class="shadow overflow-hidden rounded-lg">
-          <table class="w-full md:min-w-full">
-            <thead class="bg-gray-50 hidden md:table-header-group">
+        <div class="md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
+          <div class="shadow overflow-hidden rounded-lg">
+            <table class="w-full md:min-w-full">
+              <thead class="bg-gray-50 hidden md:table-header-group">
               <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('name')">
-                    Öğrenci Adi
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('name')">
+                    Öğrencİ Adi
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
                     Talep Türü
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byTime')">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('byTime')">
                     Gönderilen Tarih
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('byStatus')">
+                    Durum
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   </th>
                 </tr>
             </thead>
-            <tbody class="bg-gray-50">
+            <tbody class="bg-white divide-y divide-gray-200">
               <template v-for="(request) in allRequests"  :key ="request.getWhenCreated()">
                 <tr>
                   <td class="px-6 py-4 whitespace-nowrap">
@@ -40,8 +43,11 @@
                   <td class="px-6 py-4 whitespace-nowrap">
                     {{ formatDate(request.getWhenCreated()) }}
                   </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
+                  </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                      <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
+                    <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button> 
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
@@ -78,22 +84,20 @@
 </template>
 <script lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { TeachingStaffRequestHandler } from '../../Scripts/TeachingStaffRequestHandler';
+//import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
+import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 import { RequestDetails } from '@/Models/RequestDetails';
 import { TeachingStaff } from '@/Models/TeachingStaff';
-import { apiRoute } from '../../Api_Routes/apiRoute';
 import { WaitingRequests } from '@/Models/WaitingRequests';
-import AdvisorPopup from '../popup/AdvisorPopup.vue';
-import type { request } from 'http';
+import AdvisorPopup from '@/components/popup/AdvisorPopup.vue';
+//import { Client } from '@stomp/stompjs';
 
-
-
+const allRequests = ref <WaitingRequests[]>([]);
+const totalRequests = ref(0);
 const searchQuery = ref('');
 const itemsPerPage = 10; // default
 const currentPage = ref(1);
-const allRequests = ref<WaitingRequests[]>([]);
-const totalRequests = ref(0);
 const students = ref<StudentForTeachingStaffListing[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
@@ -101,15 +105,14 @@ const selectedRequest = ref<WaitingRequests>();
 
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  let result = students.value;
-  if(query) {
-    result = result.filter(student =>
-      student.getFullName().toLowerCase().includes(query) ||
-      student.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-    )
-  }
-  return result;
+  if(!query) return students.value;
+  // Search by name or surname (fixed)
+  return students.value.filter(student =>
+    student.getFullName().toLowerCase().includes(query) ||
+    student.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+  )
 })
+
 const totalPages = computed(() => {
   totalEntries.value = filteredStudents.value.length;
     return Math.ceil(totalEntries.value / itemsPerPage);
@@ -120,7 +123,21 @@ const paginatedStudents = computed(() => {
   const endIndex = startIndex + itemsPerPage;
   return filteredStudents.value.slice(startIndex, endIndex);
 })
+function statusColored(status: string){
+    if (status === 'ACCEPTED') return 'text-green-600';
+    if (status === 'WAITING') return 'text-yellow-600';
+    if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
+    if (status === 'REJECTED') return 'text-red-600';
+    return 'bg-gray-100 text-gray-800';
+    }
 
+function translateStatus(status: string){
+        if (status === 'ACCEPTED') return 'Kabul Edildi';
+        if (status === 'WAITING') return 'Beklemede';
+        if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
+        if (status === 'REJECTED') return 'Reddedildi';
+        return 'Bilinmeyen';
+    }
 function formatDate(dateString: Date): string {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -140,12 +157,14 @@ function formatDate(dateString: Date): string {
           itemsPerPage,
           totalPages,
           totalEntries,
-          totalRequests,
+          searchQuery,
+          paginatedStudents,
           allRequests,
           formatDate,
-          selectedRequest, // WaitingRequests or null
-          filteredStudents,
-          searchQuery
+          translateStatus,
+          statusColored,
+          totalRequests,
+          selectedRequest,
         };
       },
       methods: {
@@ -192,17 +211,16 @@ function formatDate(dateString: Date): string {
           this.selectedRequest = request;
           //console.log(request);
           
-        }
+        },
       },
       setup(){
         onMounted(async () => {
-          const requestHandler = TeachingStaffRequestHandler.getInstance();
-          const response = await requestHandler.getWaitingRequestsForTeachingStaff();
+          const requestHandler =  TeachingStaffRequestHandler.getInstance();
+          const response = await requestHandler.getAllRequestsForTeachingStaff();
           console.log(response);
           totalRequests.value = response.length;
           allRequests.value = response;
-          
         });
       }
-  };
+  }
 </script>

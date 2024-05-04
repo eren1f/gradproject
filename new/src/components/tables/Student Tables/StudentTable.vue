@@ -111,8 +111,8 @@
 </template>
 <script lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { StudentRequestHandler } from '../../Scripts/StudentRequestHandler';
-import { StudentRequests } from '../../Models/StudentRequests';
+import { StudentRequestHandler } from '@/Scripts/StudentRequestHandler';
+import { StudentRequests } from '@/Models/StudentRequests';
 
 const searchQuery = ref('');
 const itemsPerPage = 10; // default for student

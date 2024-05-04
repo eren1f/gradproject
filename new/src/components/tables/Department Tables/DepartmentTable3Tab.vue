@@ -89,10 +89,10 @@
   </template>
   <script lang="ts">
     import { ref, computed, onMounted } from 'vue';
-    import { TeachingStaffRequestHandler } from '../../Scripts/TeachingStaffRequestHandler';
+    import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
     import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
     import { WaitingRequests } from '@/Models/WaitingRequests';
-    import AdvisorPopup from '../popup/AdvisorPopup.vue';
+    import AdvisorPopup from '@/components/popup/AdvisorPopup.vue';
     //import { Client } from '@stomp/stompjs';
     
     const searchQuery = ref('');
@@ -205,7 +205,7 @@
       setup(){
         onMounted(async () => {
           const requestHandler = TeachingStaffRequestHandler.getInstance();
-          const response = await requestHandler.getAllRequestsForTeachingStaff();
+          const response = await requestHandler.getConcludedForTeachingStaff();
           console.log(response);
           totalRequests.value = response.length;
           allRequests.value = response;

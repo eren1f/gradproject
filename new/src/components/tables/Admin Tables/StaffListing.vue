@@ -219,8 +219,9 @@ import { ref, computed, onMounted,  } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
 import { ListDepartments } from '@/Models/ListDepartments';
 import { TeachingStaff } from '@/Models/TeachingStaff';
-import { apiRoute } from '../../Api_Routes/apiRoute';
+import { apiRoute } from '@/Api_Routes/apiRoute';
 import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
+
 const searchQuery = ref('');
 const itemsPerPage = 10; // default
 const currentPage = ref(1);

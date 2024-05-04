@@ -1,34 +1,37 @@
 <template>
-    <!--Student Request Table-->
+    <!--Dean Request Tracking Table-->
     <div class="flex flex-col">
       <AdvisorPopup :request="selectedRequest" @clearRequest="selectedRequest = undefined"></AdvisorPopup>
-      <!-- SearchBar-->
+      <!--SearchBar-->
       <div class="px-[1%] my-[1%] flex self-center sm:self-start">
         <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
       </div>
-      <!-- Table Content -->
+      <!--Table Content -->
       <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
-        <div class="py-2 md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
+        <div class="md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
           <div class="shadow overflow-hidden rounded-lg">
             <table class="w-full md:min-w-full">
               <thead class="bg-gray-50 hidden md:table-header-group">
                 <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byStudentName')">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-normal" @click="sortByColumn('byStudentName')">
                     ÖĞRENCİ
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byAdvName')">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-normal" @click="sortByColumn('byAdvName')">
                     DANIŞMAN
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byAdvName')">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-normal" @click="sortByColumn('byDeptName')">
                     BÖLÜM
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byRequestName')">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-normal" @click="sortByColumn('byRequestName')">
                     TALEP TÜRÜ
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byTime')">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-normal" @click="sortByColumn('byTime')">
                     TARİH
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-normal" @click="sortByColumn('byStatus')">
+                    DURUM
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-normal">
                   </th>
                  </tr>
               </thead>
@@ -36,17 +39,23 @@
                 <template v-for="(request) in allRequests" :key ="request.getWhenCreated()">
                   <!-- Table Row -->
                   <tr class="border border-gray-400">
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Öğrenci</span>{{ request.getStudentName() }}
                     </td> 
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Danışman</span>{{ request.getAdviserName() }}
                     </td> 
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Bölüm</span>{ departmentUsername }
+                    </td> 
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-black text-left md:table-cell">
                       <span class="table-cell font-bold text-gray-500 md:hidden">Talep Türü</span>{{ request.getInformation() }}
                     </td>
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
+                    </td>
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell" :class="statusColored(request.getStatus())">
+                      <span class="table-cell font-bold text-gray-500 md:hidden">Talep Durumu</span>{{ translateStatus(request.getStatus()) }}
                     </td>
                     <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
                       <!-- Toggle button to show additional information -->
@@ -86,10 +95,10 @@
   </template>
   <script lang="ts">
     import { ref, computed, onMounted } from 'vue';
-    import { TeachingStaffRequestHandler } from '../../Scripts/TeachingStaffRequestHandler';
+    import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
     import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
     import { WaitingRequests } from '@/Models/WaitingRequests';
-    import AdvisorPopup from '../popup/AdvisorPopup.vue';
+    import AdvisorPopup from '@/components/popup/AdvisorPopup.vue';
     //import { Client } from '@stomp/stompjs';
     
     const searchQuery = ref('');
@@ -119,6 +128,20 @@
       const endIndex = startIndex + itemsPerPage;
       return filteredRequests.value.slice(startIndex, endIndex);
     })
+    function statusColored(status: string){
+    if (status === 'ACCEPTED') return 'text-green-600';
+    if (status === 'WAITING') return 'text-yellow-600';
+    if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
+    if (status === 'REJECTED') return 'text-red-600';
+    return 'bg-gray-100 text-gray-800';
+    }
+    function translateStatus(status: string){
+        if (status === 'ACCEPTED') return 'Kabul Edildi';
+        if (status === 'WAITING') return 'Beklemede';
+        if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
+        if (status === 'REJECTED') return 'Reddedildi';
+        return 'Bilinmeyen';
+    }
     function formatDate(dateString: Date): string {
       const date = new Date(dateString);
       const day = String(date.getDate()).padStart(2, '0');
@@ -142,6 +165,8 @@
           selectedRequest,
           searchQuery,
           paginatedRequests,
+          statusColored,
+          translateStatus
         };
       },
       methods: {
@@ -186,7 +211,7 @@
       setup(){
         onMounted(async () => {
           const requestHandler = TeachingStaffRequestHandler.getInstance();
-          const response = await requestHandler.getWaitingRequestsForTeachingStaff();
+          const response = await requestHandler.getAllRequestsForTeachingStaff();
           console.log(response);
           totalRequests.value = response.length;
           allRequests.value = response;

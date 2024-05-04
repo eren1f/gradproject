@@ -110,7 +110,7 @@
 <script lang="ts">
 import { ref, computed, onMounted, defineComponent, watch } from 'vue';
 import { StaffForAdminListing } from '@/Models/StaffForAdminListing';
-import { apiRoute } from '../../Api_Routes/apiRoute';
+import { apiRoute } from '@/Api_Routes/apiRoute';
 
 export default defineComponent({
     name: 'StaffListingForCreatingNewRequestType',

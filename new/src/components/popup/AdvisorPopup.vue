@@ -2,7 +2,7 @@
   <div>
     <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-40">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-3/4 h-5/7 text-black">
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-[98%] text-black">
         <h2 class="text-lg font-bold mb-2 flex justify-between items-center">Talep Detayları
           <div class="flex items-center ml-6">
             <p class="mr-2">Talep Durumu:</p>
@@ -22,23 +22,40 @@
           </div>
         </h2>
         <div class="border-b border-gray-300 mb-2"></div>
-        <div class="overflow-y-scroll h-24 pr-4">
           <template v-if="showEditStaffModal">
             <input v-model="id" type="text" class="p-1 border rounded">
           </template>
           <template v-else>
-            <div>
-              <p>
-                <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{ request.getAddition() }} <br>
-                <strong class="text-gray-700">Öğrenci Numarası:</strong> {{ request.getStudentId() }}<br>
-                <strong class="text-gray-700">Öğrenci Adı:</strong> {{ request.getStudentName() }}<br>
-                <strong class="text-gray-700">Talep Türü:</strong> {{ request.getRequestTypeName() }}<br>
-                <strong class="text-gray-700">Öğrenci E-posta:</strong> {{ request.getStudentMail() }}<br>
-                <strong class="text-gray-700">Oluşturulan Tarih:</strong> {{ formatDate(request.getWhenCreated()) }}<br>
-              </p>
+          <div class="text-gray-700">
+            <div class="text-gray-700 justify-center flex flex-row space-x-[5%]">
+                <div class="mb-2">
+                  <strong>Numarası</strong> 
+                  <p>{{ request.getStudentId() }}</p>
+                </div>
+                <div class="mb-2">
+                  <strong>Adı</strong>
+                  <p>{{ request.getStudentName() }}</p>
+                </div>
+                <div class="mb-2">
+                  <strong>Talep Türü</strong>
+                  <p>{{ request.getRequestTypeName() }}</p>
+                </div>
+                <div class="mb-2">
+                  <strong>E-posta</strong> 
+                  <p>{{ request.getStudentMail() }}</p>
+                </div>
+                <div class="mb-2">
+                  <strong>Oluşturulan Tarih</strong> 
+                  <p>{{ formatDate(request.getWhenCreated()) }}</p>
+                </div>
+            </div> 
+            <div class="border-b border-gray-300 mb-2"></div>
+              <div class="mb-2">
+                <h2 class="text-lg font-bold">Öğrenci Açıklaması</h2>
+                <p>{{ request.getAddition() }}Ogrenci aciklamasi denemesidir.</p>
+              </div>
             </div>
           </template>
-        </div>
         <div class="border-b border-gray-300 mb-2"></div>
         <div class="mt-4">
           <div class="flex">
@@ -52,22 +69,41 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-col sm:flex-row justify-between mt-4 overflow-x-auto">
-          <button @click="showConfirmationPopUp('reject')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0 w-full sm:w-auto">Reddet</button>
-          <button @click="showConfirmationPopUp('accept')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Onayla</button>
-        </div>
+          <template v-if="activeTab === 'YeniTalepler'">
+            <div class="flex flex-col sm:flex-row justify-between mt-4 overflow-x-auto">
+            <button @click="showConfirmationPopUp('reject')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0 w-full sm:w-auto">Reddet</button>
+            <button @click="showConfirmationPopUp('accept')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Onayla</button>
+            </div>
+          </template>
+          <template v-if="activeTab === 'BekleyenTalepler'">
+            <div class="flex items-center justify-center mt-4">
+              <button @click="showConfirmationPopUp('cancel')" class="bg-slate-500 hover:bg-grey-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex">Bu talebi iptal et</button>
+            </div>
+          </template>
+          <template v-if="activeTab === 'TamamlanmisTalepler'">
+            <div class="flex items-center justify-center mt-4">
+              <p class="text-gray-700 font-bold">Talep tamamlanmıştır. Bu aşamadan sonra işlem yapılamaz!</p>
+            </div>
+          </template>
       </div>
     </div>
   </div>
-  <ConfirmationPopUp v-if="toggleConfirmationPopup" :confirmationType="confirmationType" :changes="changes"
+  <ConfirmationPopUp v-if="toggleConfirmationPopup" :confirmationType="confirmationType" :changes="''"
   @cancel="toggleConfirmationPopup = false" @confirm-accept="acceptRequest"
-                                          @confirm-reject="rejectRequest" />
+                                          @confirm-reject="rejectRequest" 
+                                          @confirm-cancel="cancelRequest"/>
 </template>
 
 <script lang="ts">
 import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 import { WaitingRequests } from '@/Models/WaitingRequests';
 import ConfirmationPopUp from '@/components/popup/ConfirmationPopUp.vue';
+import TabComponent from '../tab/TabComponent.vue';
+import TabComponentForTeachingStaff from '../tab/TabComponentForTeachingStaff.vue';
+import { ref } from 'vue';
+
+const currentTab = ref('YeniTalepler');
+const activeTab = ref(currentTab.value);
 
 function statusColored(status: string){
   if (status === 'ACCEPTED') return 'text-green-600';
@@ -96,13 +132,17 @@ function formatDate(dateString: Date): string {
 
 export default {
   components:{
-    ConfirmationPopUp
+    ConfirmationPopUp,
   },
   emits: ['clearRequest'],
   props: {
     request: {
       type: WaitingRequests,
       default: null
+    },
+    selectedTab: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -115,7 +155,8 @@ export default {
       id: "",
       toggleConfirmationPopup: false,
       confirmationType: "noType",
-      changes: ""
+      changes: "",
+      activeTab,
     };
   },
   methods: {
@@ -148,6 +189,14 @@ export default {
       alert("Talep reddedildi.");
       //reload page
       window.location.reload();
+    },
+    cancelRequest(){
+      this.popupVisible = false;
+      let requestHandler = TeachingStaffRequestHandler.getInstance();
+      requestHandler.cancelRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+      alert("Talep iptal edildi.");
+      //reload page
+      window.location.reload();
     }
   },
   watch: {
@@ -157,6 +206,12 @@ export default {
         console.log(this.request);
       }
     },
+    selectedTab(newVal, oldVal) {
+      console.log(`activeTab changed from ${oldVal} to ${newVal} in AdvisorPopup.vue`);
+      activeTab.value = newVal;
+      console.log(this.activeTab);
+    }
   }
+  
 };
 </script>

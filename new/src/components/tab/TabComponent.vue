@@ -33,8 +33,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import StaffListing from '@/components/tables/StaffListing.vue'
-import StaffListingForCreatingNewRequestTypes from '@/components/tables/StaffListingForCreatingNewRequestType.vue'
+import StaffListing from '@/components/tables/Admin Tables/StaffListing.vue'
+import StaffListingForCreatingNewRequestTypes from '@/components/tables/Admin Tables/StaffListingForCreatingNewRequestType.vue'
 import CreateNewRequestTypes from '@/components/request/createRequestType/CreateNewRequestTypes.vue'
 import EditRequestType from '../request/editRequestType/EditRequestType.vue';
 

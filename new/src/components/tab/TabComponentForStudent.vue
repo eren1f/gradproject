@@ -32,7 +32,7 @@
 import { ref } from 'vue'
 import StudentDashboardListingAdvisorInfo from '@/components/dashboard/StudentDashboardListingAdvisorInfo.vue'
 import Request from '@/views/StudentViews/Request.vue';
-import StudentTable from '@/components/tables/StudentTable.vue'
+import StudentTable from '@/components/tables/Student Tables/StudentTable.vue'
 const activeTab = ref('DanismanBilgileri');
 
 const showDanismanBilgi= () => {

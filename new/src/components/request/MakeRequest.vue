@@ -1,6 +1,3 @@
-To convert your existing Vue 2 code to use the Composition API in Vue 3, you'll need to restructure your code slightly. Here's how you can do it:
-
-```vue
 <template>
   <div class="sm:mx-auto sm:w-[50%] md:w-[70%] text-white text-left">
     <!-- Request Type DP -->

@@ -6,7 +6,7 @@
                 <h2 class="flex items-center justify-center font-bold">DEĞİŞİKLİKLERİ ONAYLIYOR MUSUNUZ?</h2>
                 <p class="flex items-center justify-center font-light">Talep onaylandığında kaydedilecektir. Bu işlem geri alınamaz.</p>
                 <p class="flex items-center justify-center font-bold">Değişiklikler</p>
-                <p v-if="confirmationType !== null" class="flex items-center justify-center text-sm \ underline"> {{ translateConfirmationType(confirmationType) }}</p>
+                <p v-if="confirmationType === 'accept' || confirmationType === 'reject'" class="flex items-center justify-center text-sm \ underline"> {{ translateConfirmationType(confirmationType) }}</p>
                 <p v-if="changes !== null" class="flex text-sm items-center md:justify-center text-justify underline"> {{ showChanges(changes) }} </p>
                 <div class="flex justify-between">
                     <button @click="cancel">VAZGEÇ</button>
