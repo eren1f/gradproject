@@ -277,7 +277,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           roleDropdownOptions: [
              'Bolum',
              'Danisman',
-             'Dekan'
+             'Dekanlik'
           ],
           departmentDropdownOptions: [
             { label: '', value: 0 }
