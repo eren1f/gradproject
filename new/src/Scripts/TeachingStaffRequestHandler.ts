@@ -155,7 +155,7 @@ export class TeachingStaffRequestHandler {
         }
     }
 
-    async rejectRequest(studentId:number, requestTypeId:number, when:string, currentIndex:number,status:string): Promise<any>{
+    async rejectRequest(studentId:number, requestTypeId:number, when:string, reason:string): Promise<any>{
         const url= apiRoute + "rejectRequest";
         try {
             const response = await fetch(url, {
@@ -168,8 +168,34 @@ export class TeachingStaffRequestHandler {
                     requestStudentId: studentId,
                     requestTypeId: requestTypeId,
                     requestWhenCreated: when,
-                    currentIndex: currentIndex,
-                    status: status
+                    rejectionReason: reason
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        }
+        catch (error) {
+            throw new Error(`HTTP error! status: ${error}`);
+        }
+
+    }
+    async cancelRequest(studentId:number, requestTypeId:number, when:string, reason:string): Promise<any>{
+        const url= apiRoute + "cancelRequest";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    requestStudentId: studentId,
+                    requestTypeId: requestTypeId,
+                    requestWhenCreated: when,
+                    cancellationReason: reason
                 })
             });
             if (!response.ok) {

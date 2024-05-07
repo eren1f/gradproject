@@ -7,8 +7,8 @@
         <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
       </div>
     <!-- Table Content -->
-    <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
-      <div class="md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
+    <div class="p-[1%] md:overflow-x-auto lg:">
+      <div class="">
         <div class="shadow overflow-hidden rounded-lg">
           <table class="w-full md:min-w-full">
             <thead class="bg-gray-50 hidden md:table-header-group">
@@ -27,12 +27,12 @@
                 </tr>
             </thead>
             <tbody class="bg-gray-50"> 
-                <tr v-for="(request, index) in paginatedStudents"  :key ="request.getWhenCreated()">
+                <tr v-for="(request, index) in paginatedStudents">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
                     {{ request.getStudentName() }}
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="px-6 py-4 whitespace-nowrap text-wrap md:text-balance">
                     <!-- Render staff Request -->
                     {{ request.getRequestTypeName() }}
                   </td>
@@ -40,7 +40,7 @@
                     {{ formatDate(request.getWhenCreated()) }}
                   </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                      <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
+                    <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
@@ -72,19 +72,13 @@
         </nav>
     </div>
   </div>
-
-    
-
 </template>
 <script lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
-import { RequestDetails } from '@/Models/RequestDetails';
-import { TeachingStaff } from '@/Models/TeachingStaff';
 import { WaitingRequests } from '@/Models/WaitingRequests';
 import AdvisorPopup from '@/components/popup/AdvisorPopup.vue';
-import type { request } from 'http';
 
 
 

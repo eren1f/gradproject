@@ -2,7 +2,7 @@
   <div>
     <div v-if="popupVisible" class="fixed inset-0 flex justify-center items-center z-40">
       <div class="absolute inset-0 bg-gray-800 opacity-50"></div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 w-[98%] text-black">
+      <div class="relative bg-white rounded-lg shadow-xl p-4 w-[90%]  text-black">
         <h2 class="text-lg font-bold mb-2 flex justify-between items-center">Talep Detayları
           <div class="flex items-center ml-6">
             <p class="mr-2">Talep Durumu:</p>
@@ -52,34 +52,70 @@
             <div class="border-b border-gray-300 mb-2"></div>
               <div class="mb-2">
                 <h2 class="text-lg font-bold">Öğrenci Açıklaması</h2>
-                <p>{{ request.getAddition() }}Ogrenci aciklamasi denemesidir.</p>
+                <p>{{ request.getAddition() }}</p>
               </div>
             </div>
           </template>
         <div class="border-b border-gray-300 mb-2"></div>
-        <div class="mt-4">
-          <div class="flex">
-            <div class="w-1/2 mr-4">
-              <label for="geribildirim" class="block text-sm font-medium text-gray-700">Öğrenciye Geribildirim</label>
-              <textarea id="geribildirim" name="geribildirim" rows="3" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
-            </div>
-            <div class="w-1/2">
-              <label for="degerlendirme-yorumu" class="block text-sm font-medium text-gray-700">Değerlendirme Yorumu</label>
-              <textarea id="degerlendirme-yorumu" name="degerlendirme-yorumu" rows="3" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
-            </div>
-          </div>
-        </div>
+        <div class="mt-4"></div>
+          <!-- 1. Tab -->
           <template v-if="activeTab === 'YeniTalepler'">
-            <div class="flex flex-col sm:flex-row justify-between mt-4 overflow-x-auto">
-            <button @click="showConfirmationPopUp('reject')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mb-2 sm:mb-0 w-full sm:w-auto">Reddet</button>
-            <button @click="showConfirmationPopUp('accept')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">Onayla</button>
+            <!-- Toggle & Comment -->
+            <div class="flex flex-col justify-center items-center w-full">
+              <div class="flex justify-center items-center w-full">
+                <div class="flex items-center cursor-pointer">
+                  <label>
+                    <input v-model="isToggleBarChecked" type="checkbox" class="sr-only peer" unchecked>
+                    <div class="relative w-11 h-6 bg-green-600 rounded-full peer peer-focus:ring-blue-300 dark:bg-green-600 peer-checked:bg-red-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600"></div> 
+                  </label>
+                </div>
+                <div v-if="isToggleBarChecked" class="ml-[3%]">
+                  <p class="text-sm font-medium text-red-800">Talebi reddediyorum.</p>
+                </div>
+                <div v-else class="ml-[3%]">
+                  <p class="text-sm font-medium text-green-800">Talebi onaylıyorum.</p>
+                </div>
+              </div>
+                <div v-if="isToggleBarChecked" class="w-full">
+                    <div class="w-full">
+                      <label class="block text-sm font-bold text-gray-700">Öğrenciye Geribildirim</label>
+                      <textarea v-model="comment" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
+                    </div>
+                </div>
+                <div v-else class="flex items-center justify-center w-full">
+                  <div class="w-full">
+                    <label class="block text-sm font-bold text-gray-700">Değerlendirme Yorumu</label>
+                    <textarea v-model="comment" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
+                  </div>
+                </div>
+            </div>
+              <div class="flex items-center justify-center mt-[2%]">
+                <!-- Alert & Button -->
+                <div v-if="isCommentNull" class="flex items-center p-[2%] my-[2%] text-sm rounded-lg bg-gray-800 text-blue-400" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                  <span class="font-medium">Uyarı!</span> Açıklamanızı yazmadan talebi gönderemezsiniz.
+                </div>
+              </div>
+              <div v-else>
+                <button @click="showConfirmationPopUp(isToggleBarB2String(isToggleBarChecked))" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex">Talebi Gönder</button>
+              </div>
             </div>
           </template>
+          <!-- 2. Tab -->
           <template v-if="activeTab === 'BekleyenTalepler'">
+            <div class="w-full">
+                      <label class="block text-sm font-bold text-gray-700">Öğrenciye Geribildirim</label>
+                      <textarea v-model="comment" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none"></textarea>
+            </div>
             <div class="flex items-center justify-center mt-4">
-              <button @click="showConfirmationPopUp('cancel')" class="bg-slate-500 hover:bg-grey-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex">Bu talebi iptal et</button>
+              <button :disabled="!comment" @click="showConfirmationPopUp('cancel')" class="bg-slate-500 hover:bg-grey-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex">Bu talebi iptal et</button>
             </div>
           </template>
+          <!-- 3. Tab -->
           <template v-if="activeTab === 'TamamlanmisTalepler'">
             <div class="flex items-center justify-center mt-4">
               <p class="text-gray-700 font-bold">Talep tamamlanmıştır. Bu aşamadan sonra işlem yapılamaz!</p>
@@ -88,7 +124,7 @@
       </div>
     </div>
   </div>
-  <ConfirmationPopUp v-if="toggleConfirmationPopup" :confirmationType="confirmationType" :changes="''"
+  <ConfirmationPopUp v-if="toggleConfirmationPopup" :confirmationType="confirmationType" :changes="comment"
   @cancel="toggleConfirmationPopup = false" @confirm-accept="acceptRequest"
                                           @confirm-reject="rejectRequest" 
                                           @confirm-cancel="cancelRequest"/>
@@ -98,27 +134,30 @@
 import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
 import { WaitingRequests } from '@/Models/WaitingRequests';
 import ConfirmationPopUp from '@/components/popup/ConfirmationPopUp.vue';
-import TabComponent from '../tab/TabComponent.vue';
-import TabComponentForTeachingStaff from '../tab/TabComponentForTeachingStaff.vue';
 import { ref } from 'vue';
 
 const currentTab = ref('YeniTalepler');
 const activeTab = ref(currentTab.value);
+const isToggleBarChecked = ref(false);
+const isCommentNull = ref(true);
 
 function statusColored(status: string){
-  if (status === 'ACCEPTED') return 'text-green-600';
-  if (status === 'WAITING') return 'text-yellow-600';
-  if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
-  if (status === 'REJECTED') return 'text-red-600';
-  return 'bg-gray-100 text-gray-800';
-}
-function translateStatus(status: string){
-  if (status === 'ACCEPTED') return 'Kabul Edildi';
-  if (status === 'WAITING') return 'Beklemede';
-  if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
-  if (status === 'REJECTED') return 'Reddedildi';
-  return 'Bilinmeyen';
-}
+      if (status === 'ACCEPTED') return 'text-green-600 font-bold';
+      if (status === 'WAITING') return 'text-yellow-600 font-bold';
+      if (status === 'NEED_AFFIRMATION') return 'text-blue-600 font-bold';
+      if (status === 'REJECTED') return 'text-red-600 font-bold';
+      if (status === 'CANCELLED') return 'text-gray-600 font-bold';
+      return 'bg-gray-100 text-gray-800 font-bold';
+      }
+  
+  function translateStatus(status: string){
+          if (status === 'ACCEPTED') return 'Kabul Edildi';
+          if (status === 'WAITING') return 'Beklemede';
+          if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
+          if (status === 'REJECTED') return 'Reddedildi';
+          if (status === 'CANCELLED') return 'İptal Edildi';
+          return 'Bilinmeyen';
+      }
 
 function formatDate(dateString: Date): string {
   const date = new Date(dateString);
@@ -142,8 +181,7 @@ export default {
     },
     selectedTab: {
       type: String,
-      default: ''
-    }
+    },
   },
   data() {
     return {
@@ -157,6 +195,11 @@ export default {
       confirmationType: "noType",
       changes: "",
       activeTab,
+      isToggleBarChecked,
+      comment : '',
+      isCommentNull,
+      geriBildirim:'',
+      degerlendirmeYorumu: '',
     };
   },
   methods: {
@@ -169,6 +212,16 @@ export default {
       console.log(this.confirmationType)
       this.changes = this.confirmationType;
       this.toggleConfirmationPopup = true;
+    },
+    isToggleBarB2String(type: boolean) {
+      return type ? 'reject' : 'accept';
+    },
+    checkComment(text: string){
+      if(text === ''){
+        isCommentNull.value = true;
+      } else {
+        isCommentNull.value = false;
+      }
     },
     acceptRequest() {
       this.popupVisible = false;
@@ -183,9 +236,7 @@ export default {
     rejectRequest(){
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
-      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex(),
-      this.request.getStatus());
-      
+      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
       alert("Talep reddedildi.");
       //reload page
       window.location.reload();
@@ -193,7 +244,7 @@ export default {
     cancelRequest(){
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
-      requestHandler.cancelRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex());
+      requestHandler.cancelRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
       alert("Talep iptal edildi.");
       //reload page
       window.location.reload();
@@ -210,7 +261,19 @@ export default {
       console.log(`activeTab changed from ${oldVal} to ${newVal} in AdvisorPopup.vue`);
       activeTab.value = newVal;
       console.log(this.activeTab);
-    }
+      //bug: activeTab is not changing when user logs in first time
+    },
+    isToggleBarChecked(newVal, oldVal) {
+      console.log(`toggleBarChecked changed from ${oldVal} to ${newVal} in AdvisorPopup.vue`);
+      isToggleBarChecked.value = newVal;
+      this.comment = '';
+      console.log(this.isToggleBarChecked);
+    },
+    comment(newVal, oldVal){
+      console.log(`Comment changed from ${oldVal} to ${newVal} in AdvisorPopup.vue`);
+      this.checkComment(newVal);
+    },
+
   }
   
 };

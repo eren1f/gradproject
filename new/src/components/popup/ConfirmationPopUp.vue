@@ -6,8 +6,13 @@
                 <h2 class="flex items-center justify-center font-bold">DEĞİŞİKLİKLERİ ONAYLIYOR MUSUNUZ?</h2>
                 <p class="flex items-center justify-center font-light">Talep onaylandığında kaydedilecektir. Bu işlem geri alınamaz.</p>
                 <p class="flex items-center justify-center font-bold">Değişiklikler</p>
-                <p v-if="confirmationType === 'accept' || confirmationType === 'reject'" class="flex items-center justify-center text-sm \ underline"> {{ translateConfirmationType(confirmationType) }}</p>
-                <p v-if="changes !== null" class="flex text-sm items-center md:justify-center text-justify underline"> {{ showChanges(changes) }} </p>
+                <div v-if="confirmationType === 'accept' || confirmationType === 'reject' || confirmationType === 'cancel'" class="flex flex-col items-center justify-center">
+                    <p class="flex items-center justify-center text-sm underline"> {{ translateConfirmationType(confirmationType) }}</p>
+                    <textarea readonly class="w-1/2 h-20 border-2 border-gray-300 rounded-lg p-2  my-[2%] resize-none"> {{ showChanges(changes) }}</textarea>
+                </div>
+                <div v-else>
+                    <p class="flex text-sm items-center md:justify-center text-justify underline"> {{ showChanges(changes) }} </p>
+                </div>
                 <div class="flex justify-between">
                     <button @click="cancel">VAZGEÇ</button>
                     <button @click="confirm">ONAYLIYORUM</button>
@@ -18,12 +23,12 @@
 </template>
 
 <script lang="ts">
-
 function translateConfirmationType(cType: any): string { // for staff
     console.log(cType);
     switch (cType) {
         case 'accept': return 'Talebi onaylıyorsunuz.';
         case 'reject': return 'Talebi reddediyorsunuz.';
+        case 'cancel': return 'Talebi iptal ediyorsunuz.';
         default: return 'makeRequest';
     }
 }
@@ -31,6 +36,7 @@ function translateConfirmationType(cType: any): string { // for staff
 function showChanges(allChanges: string): string { // mostly for student
     return allChanges;
 }
+ 
 // TODO showAdminChanges
 export default {
     name: 'ConfirmationPopUp',
@@ -54,7 +60,9 @@ export default {
     data() {
         return {
             translateConfirmationType,
-            showChanges
+            showChanges,
+            geriBildirim: '',
+            degerlendirmeYorumu: ''
         };
     }
 };

@@ -81,6 +81,9 @@ watch(() => activeTab.value, (newValue,oldValue) => {
 })
 
 onMounted(async() => {
+  // bug: activeTab is not changing when user logs in first time
+  console.log(activeTab.value);
+  selectedTab.value = 'YeniTalepler';
   console.log(activeTab.value);
   const url = "http://localhost:8080/userInformation";
   const response = await fetch(url, {

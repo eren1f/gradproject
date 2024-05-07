@@ -36,7 +36,7 @@
                       <!-- Render staff name -->
                       {{ request.studentName }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-6 py-4 whitespace-nowrap text-wrap md:text-balance">
                       <!-- Render staff Request -->
                       {{ request.getRequestTypeName() }}
                     </td>
@@ -107,7 +107,7 @@
     const query = searchQuery.value.trim().toLowerCase();
     if(!query) return allRequests.value;
     // Search by name or surname (fixed)
-    return AllRequests.value.filter(student =>
+    return allRequests.value.filter(student =>
       student.getStudentName().toLowerCase().includes(query) ||
       student.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
     )
@@ -124,12 +124,12 @@
     return filteredStudents.value.slice(startIndex, endIndex);
   })
   function statusColored(status: string){
-      if (status === 'ACCEPTED') return 'text-green-600';
-      if (status === 'WAITING') return 'text-yellow-600';
-      if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
-      if (status === 'REJECTED') return 'text-red-600';
-      if (status === 'CANCELLED') return 'text-gray-600';
-      return 'bg-gray-100 text-gray-800';
+      if (status === 'ACCEPTED') return 'text-green-600 font-bold';
+      if (status === 'WAITING') return 'text-yellow-600 font-bold';
+      if (status === 'NEED_AFFIRMATION') return 'text-blue-600 font-bold';
+      if (status === 'REJECTED') return 'text-red-600 font-bold';
+      if (status === 'CANCELLED') return 'text-gray-600 font-bold';
+      return 'bg-gray-100 text-gray-800 font-bold';
       }
   
   function translateStatus(status: string){
@@ -218,11 +218,10 @@
         setup(){
           onMounted(async () => {
             const requestHandler =  TeachingStaffRequestHandler.getInstance();
-            const response = await requestHandler.getAllRequestsForTeachingStaff();
+            const response = await requestHandler.getConcludedForTeachingStaff();
             console.log(response);
-            const completedRequests = response.filter(request => ['CANCELLED', 'ACCEPTED', 'REJECTED'].includes(request.getStatus()));
-            totalRequests.value = completedRequests.length;
-            allRequests.value = completedRequests;
+            totalRequests.value = response.length;
+            allRequests.value = response;
           });
         }
     }

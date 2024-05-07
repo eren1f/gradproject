@@ -123,19 +123,22 @@
       return filteredRequests.value.slice(startIndex, endIndex);
     })
     function statusColored(status: string){
-    if (status === 'ACCEPTED') return 'text-green-600';
-    if (status === 'WAITING') return 'text-yellow-600';
-    if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
-    if (status === 'REJECTED') return 'text-red-600';
-    return 'bg-gray-100 text-gray-800';
-    }
-    function translateStatus(status: string){
-        if (status === 'ACCEPTED') return 'Kabul Edildi';
-        if (status === 'WAITING') return 'Beklemede';
-        if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
-        if (status === 'REJECTED') return 'Reddedildi';
-        return 'Bilinmeyen';
-    }
+      if (status === 'ACCEPTED') return 'text-green-600 font-bold';
+      if (status === 'WAITING') return 'text-yellow-600 font-bold';
+      if (status === 'NEED_AFFIRMATION') return 'text-blue-600 font-bold';
+      if (status === 'REJECTED') return 'text-red-600 font-bold';
+      if (status === 'CANCELLED') return 'text-gray-600 font-bold';
+      return 'bg-gray-100 text-gray-800 font-bold';
+      }
+  
+  function translateStatus(status: string){
+          if (status === 'ACCEPTED') return 'Kabul Edildi';
+          if (status === 'WAITING') return 'Beklemede';
+          if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
+          if (status === 'REJECTED') return 'Reddedildi';
+          if (status === 'CANCELLED') return 'İptal Edildi';
+          return 'Bilinmeyen';
+      }
     function formatDate(dateString: Date): string {
       const date = new Date(dateString);
       const day = String(date.getDate()).padStart(2, '0');
