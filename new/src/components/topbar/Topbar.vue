@@ -6,7 +6,7 @@
         <div class="flex flex-row" style="max-width: 200%">
             <p class="font-bold m-[2%] text-white" style="white-space: nowrap;">{{ userInfo?.getFirstname() }} {{ userInfo?.getLastname() }}</p>
         </div>
-        <p class="font-thin m-[2%] text-white">{{ userInfo?.getRole() }}</p>
+        <p class="font-thin m-[2%] text-white">{{ userInfo?.getRole() === "Dekanlik" ? "Dekan" : userInfo?.getRole() }}</p>
     </div>
 </div>
 

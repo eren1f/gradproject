@@ -56,10 +56,10 @@
             
           </div>
           <div class="flex justify-end mt-4">
-            <button @click="showAddStaffModal = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
+            <button @click="showAddStaffModal = false; resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString())" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString()); resetForm()" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
@@ -112,10 +112,10 @@
             
           </div>
           <div class="flex justify-end mt-4">
-            <button @click="toggleEditClose" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
+            <button @click="toggleEditClose(); resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="editStaff(editedStaff.name,editedStaff.surname,editedStaff.email,editedStaff.password,selectedRoleOption,selectedDepartmentId.toString())" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+            <button @click="editStaff(editedStaff.name,editedStaff.surname,editedStaff.email,editedStaff.password,selectedRoleOption,selectedDepartmentId.toString()); resetForm()" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
@@ -170,8 +170,8 @@
                     {{ staff.getEmail() }}
                 </td>
                 <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
-                  <span class="table cell font-bold text-gray-500 md:hidden">Rol</span>
-                    {{ staff.getRole() }}
+                  <span class="table cell font-bold text-gray-500 md:hidden">Rol</span>                  
+                    {{ rolefixer(staff.getRole()) }}
                 </td>
                 <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
                   <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700">
@@ -344,6 +344,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           this.showEditPopup = !this.showEditPopup; // Toggle the edit modal
         },
         toggleEditClose() {
+          this.resetForm();
           this.showEditPopup = !this.showEditPopup; // Toggle the edit modal
         },
         prevPage (){
@@ -467,6 +468,37 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
               }
           });
         },
+
+         rolefixer(role: string) {
+            if (role === 'Dekanlik') {
+                return 'Dekan';
+            } else if (role === 'Bolum') {
+                return 'Bölüm';
+            } else if (role === 'Danisman') {
+                return 'Danışman';
+            } else {
+                // Handle other cases or return the original role if no conversion is needed
+                return role;
+            }
+          },
+
+          resetForm() {
+              this.addStaff2 = {
+                  name: '',
+                  surname: '',
+                  email: '',
+                  password: ''
+              };
+              this.editedStaff = {
+                  name: '',
+                  surname: '',
+                  email: '',
+                  password: ''
+              };
+              this.selectedRoleOption = ''; // Reset role selection
+              this.selectedDepartmentOption = ''; // Reset department selection
+          }
+
 
       },
       

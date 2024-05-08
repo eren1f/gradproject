@@ -57,6 +57,7 @@
     import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
     import { RequestTypes } from '../../../Models/RequestTypes';
     import StaffListingForCreatingNewRequestType from '@/components/tables/StaffListingForCreatingNewRequestType.vue';
+    import ConfirmationPopUp from '@/components/popup/ConfirmationPopUp.vue';
 
     export default defineComponent({
         name: 'CreateNewRequestTypes',
@@ -78,7 +79,8 @@
         },
         data(){
             return{
-                selectedStaffs : Array<any>()
+                selectedStaffs : Array<any>(),
+                confirmationPopup : false
             }
         },
 /*         watch:{

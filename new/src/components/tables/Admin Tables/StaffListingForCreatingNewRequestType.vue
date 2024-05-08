@@ -65,7 +65,7 @@
                                         <span class="table-cell font-bold md:hidden">E-Mail</span>{{ staff.getEmail() }}
                                     </td>
                                     <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
-                                        <span class="table-cell font-bold md:hidden">Rol</span>{{ staff.getRole() }}
+                                        <span class="table-cell font-bold md:hidden">Rol</span>{{ rolefixer(staff.getRole()) }}
                                     </td>
                                     <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">     
                                         <button class="text-blue-500 hover:text-blue-700"
@@ -278,6 +278,18 @@ export default defineComponent({
         const setCurrentPage = (page: number) => {
             currentPage.value = page;
         };
+        const rolefixer = (role: string) => {
+            if (role === 'Dekanlik') {
+                return 'Dekan';
+            } else if (role === 'Bolum') {
+                return 'Bölüm';
+            } else if (role === 'Danisman') {
+                return 'Danışman';
+            } else {
+                // Handle other cases or return the original role if no conversion is needed
+                return role;
+            }
+          };
 
         onMounted(async () => {
             const url = apiRoute + "getStaffInfoForAdmin";
@@ -323,6 +335,7 @@ export default defineComponent({
             prevPage,
             nextPage,
             setCurrentPage,
+            rolefixer,
         };
     }
 });

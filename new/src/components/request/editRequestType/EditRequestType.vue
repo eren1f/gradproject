@@ -74,15 +74,15 @@
       <!--table-->
       <div class="absolute inset-0 bg-gray-800 opacity-50">  
       </div>
-      <div class="relative bg-white rounded-lg shadow-xl p-4 md:h-1/2 w-[90%] h-[90%] text-black"> <!-- Apply text-black class -->
+      <div class="relative bg-white rounded-lg shadow-xl  p-4 md:h-4/6 w-[90%] h-[90%] text-black"> <!-- Apply text-black class -->
         <h2 class="text-lg font-bold mb-2 text-center">Tüm Aktörler</h2>
-        <div class="requirements-wrapper-div">
+        <div class="requirements-wrapper-div overflow-y-auto  max-h-96 ">
           <div class="flex items-center justify-center">
             <div class="px-[1%]">
             <div class="md:inline-block w-full md:min-w-full">
                 <div class="shadow overflow-hidden rounded-lg">
-                   <div class="overflow-y-auto  max-h-96">
-                    <table class="md:min-w-full w-full">
+                   <div >
+                    <table class="md:min-w-full w-full ">
                         <thead class="bg-gray-50 hidden md:sticky md:top-0 z-10 md:table-header-group">
                             <tr>
                                 <th scope="col"  
@@ -122,7 +122,7 @@
                                 <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                                   <span class="table-cell font-bold md:hidden">E-mail</span>{{ staff.getEmail() }}</td>
                                 <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
-                                  <span class="table-cell font-bold md:hidden">Rol</span>{{ staff.getRole() }}</td>
+                                  <span class="table-cell font-bold md:hidden">Rol</span>{{ rolefixer(staff.getRole()) }}</td>
                                 <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">     
                                   <button @click="addActor(staff as StaffForAdminListing)" class="text-indigo-600 hover:text-indigo-900">Ekle</button>
                                 </td>
@@ -135,12 +135,12 @@
             </div>
         </div>
           </div>
-          <div class="flex justify-center">
+        </div>
+        <div class="flex justify-center p-4">
             <button @click="ActorPopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-1/4">İptal</button>
             
           </div>
 
-        </div>
       </div>
       <!--table-->
     </div>
@@ -287,7 +287,7 @@
                           <span class="table-cell font-bold md:hidden">Birim ismi</span>{{actor.name}}
                         </td>
                         <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
-                          <span class="table-cell font-bold md:hidden">Rolu</span>{{actor.role}}
+                          <span class="table-cell font-bold md:hidden">Rolu</span>{{rolefixer(actor.role)}}
                         </td>
                         <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                           <span class="table-cell font-bold md:hidden">Indeksi</span>{{actor.index}}
@@ -353,8 +353,20 @@ data() {
   methods: {
     toggleEdit() {
       this.showEditStaffModal = !this.showEditStaffModal;
-    }
+    },
     
+    rolefixer(role: string) {
+            if (role === 'Dekanlik') {
+                return 'Dekan';
+            } else if (role === 'Bolum') {
+                return 'Bölüm';
+            } else if (role === 'Danisman') {
+                return 'Danışman';
+            } else {
+                // Handle other cases or return the original role if no conversion is needed
+                return role;
+            }
+          } 
     
   },
 
