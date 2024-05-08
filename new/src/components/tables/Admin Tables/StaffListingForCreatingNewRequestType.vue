@@ -84,8 +84,7 @@
                 aria-label="Table navigation">
                 <span
                     class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
-                    Showing {{ currentPage * itemsPerPage - itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage,
-                        totalEntries) }} of {{ totalEntries }}</span>
+                    Toplam {{ totalEntries }} sonuç içerisinden {{ currentPage * itemsPerPage - itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage, totalEntries) }} görmektesiniz.</span>
                 <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
                     <li>
                         <a href="#" @click.prevent="prevPage" :disabled="currentPage === 1"
