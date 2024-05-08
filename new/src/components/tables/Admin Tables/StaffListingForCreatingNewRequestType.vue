@@ -205,10 +205,11 @@ export default defineComponent({
             new_Actor_DepartmentMobile.classList.add('table-cell','font-bold','md:hidden')
             new_Actor_Role.classList.add('px-6','py-3','bg-white','md:whitespace-nowrap' ,'text-sm','text-black','block','text-left', 'md:table-cell');
             new_Actor_RoleMobile.classList.add('table-cell','font-bold','md:hidden')
-            buttonContainer.classList.add('flex', 'items-start', 'justify-center', 'table-cell', );
-            move_up_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1', 'px-5', 'hover:bg-blue-700', 'hover:text-white');
-            move_down_button.classList.add('bg-blue-500', 'text-white', 'rounded', 'p-1','px-5', 'hover:bg-blue-700', 'hover:text-white', 'md:mx-[1%]');
-            new_Actor_RemoveButton.classList.add('bg-red-500', 'text-white', 'rounded', 'p-1','px-5','hover:bg-red-700', 'hover:text-white');
+            buttonContainer.classList.add('flex', 'flex-row', 'items-center', 'justify-center');
+            move_up_button.classList.add('bg-blue-500', 'text-white', 'rounded-full', 'py-0', 'px-2', 'hover:bg-blue-700', 'hover:text-white', 'mr-2', 'mt-2');
+            move_down_button.classList.add('bg-blue-500', 'text-white', 'rounded-full', 'py-0','px-2', 'hover:bg-blue-700', 'hover:text-white', 'mr-2', 'mt-2');
+            new_Actor_RemoveButton.classList.add('bg-red-500', 'text-white', 'rounded-full', 'py-0','px-2','hover:bg-red-700', 'hover:text-white', 'mt-2');
+
 
             new_Actor_div.dataset.id = staffForAdminListing.getId().toString();
             new_Actor_FullName.innerHTML = staffForAdminListing.getFullName();

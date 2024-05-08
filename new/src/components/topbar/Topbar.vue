@@ -13,19 +13,19 @@
     <div class="flex justify-center w-1/3">
         <h6 class="font-extrabold text-white self-center" style="font-size: 150%;">EDUFLOW</h6>
     </div>
-    <div class="flex justify-end w-1/3">
+    <div class="flex justify-end w-1/3 relative">
         <button class="mr-[6%] xl:mr-[3%] lg:mr-[4%] md:mr-[4%]" @click="showNotifications = !showNotifications">
             <span class="material-symbols-outlined text-white" style="font-size: 200%;">
             notifications
             </span>
-            <div v-if="showNotifications" class="absolute right-0 w-96 h-52 dark:bg-gray-800 rounded-xl shadow-2xl mt-[10%] md:mt-[5%]">
+            <div v-if="showNotifications" class="absolute right-0 top-[120%] w-[100%] h-[300%] dark:bg-gray-700 rounded-xl shadow-2xl">
                 <!-- Upper part -->
                 <div class="p-[2%]">
                     <p class="font-bold text-white">Bildirimler</p>
                     <hr class="mt-2">
                 </div>
                 <!-- Lower part -->
-                <div class="overflow-y-scroll h-32">
+                <div class="overflow-y-scroll h-32 hide-scrollbar">
                     <!-- <div v-for="notification in notifications" >
                         <button class="m-[1%] text-white break-words hover:bg-blue-800">{{ notification.whenCreated }}</button>
                     </div> -->
@@ -146,3 +146,13 @@ export default{
     }
 };
 </script>
+
+<style scoped>
+.hide-scrollbar {
+  scrollbar-width: none; /* For Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+</style>

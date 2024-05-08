@@ -12,7 +12,7 @@
                     Talep Türü Birimleri</h1>
                 <div class="px-[1%]">
                     <div class="md:inline-block w-full md:min-w-full">
-                        <div class="shadow overflow-y-auto max-h-80 rounded-lg">
+                        <div class="shadow overflow-y-auto hide-scrollbar max-h-80 rounded-lg">
                             <table class="w-full md:min-w-full">
                                 <thead class="bg-gray-50 hidden md:table-header-group">
                                     <tr>
@@ -226,4 +226,12 @@
     .gap2 {
         margin-right: 190px; /* Adjust the second gap size */
     }
+    .hide-scrollbar {
+        scrollbar-width: none; /* For Firefox */
+        }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+            }
+    
 </style>
