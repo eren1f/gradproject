@@ -236,7 +236,9 @@ export default {
     rejectRequest(){
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
+      console.log(this.comment)
       requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
+      console.log(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
       alert("Talep reddedildi.");
       //reload page
       window.location.reload();
@@ -263,7 +265,7 @@ export default {
       console.log(this.activeTab);
       //bug: activeTab is not changing when user logs in first time
     },
-    isToggleBarChecked(newVal, oldVal) {
+    async isToggleBarChecked(newVal, oldVal) {
       console.log(`toggleBarChecked changed from ${oldVal} to ${newVal} in AdvisorPopup.vue`);
       isToggleBarChecked.value = newVal;
       this.comment = '';

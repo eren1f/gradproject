@@ -51,7 +51,7 @@ export class TeachingStaffRequestHandler {
         }
     }
 
-    async getAllRequestsForTeachingStaff(): Promise<WaitingRequests[]> {
+    async getAllRequestsForTeachingStaff(): Promise<WaitingRequests[]> { 
         const url = apiRoute + "requestsForStaff";
         try{
             const response = await fetch(url, {
@@ -64,30 +64,24 @@ export class TeachingStaffRequestHandler {
             if(!response.ok){
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
             const data = await response.json();
-            let requests: WaitingRequests[] = [];
-/*             return data.map((item:any) => new WaitingRequests(
+            return data.map((item: any) => new WaitingRequests(
                 item.studentId,
                 item.studentName,
-                item.studentMail,
+                item.studentEmail,
                 item.studentDepartment,
                 item.requestTypeId,
                 item.requestTypeName,
                 item.current_index,
                 item.information,
+                item.addition,
                 new Date(item.whenCreated),
-                item.currentActorId
-            )); */
-            for(let i=0; i<data.length; i++){
-                let temp = new WaitingRequests(data[i].studentId,data[i].studentName,data[i].studentMail,data[i].studentDepartment,
-                    data[i].requestTypeId,data[i].requestTypeName,data[i].current_index,data[i].information,
-                    data[i].addition,new Date(data[i].whenCreated),data[i].currentActorId, data[i].status);
-                requests.push(temp);
-                console.log(temp);
-            }
-            return requests;
-        }catch(error){
+                item.currentActorId,
+                item.status,
+                item.adviserName,
+                item.adviserId
+            ));
+        } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);
         }
     }
@@ -111,7 +105,7 @@ export class TeachingStaffRequestHandler {
             return data.map((item:any) => new WaitingRequests(
                 item.studentId,
                 item.studentName,
-                item.studentMail,
+                item.studentEmail,
                 item.studentDepartment,
                 item.requestTypeId,
                 item.requestTypeName,
@@ -168,7 +162,7 @@ export class TeachingStaffRequestHandler {
                     requestStudentId: studentId,
                     requestTypeId: requestTypeId,
                     requestWhenCreated: when,
-                    rejectionReason: reason
+                    cancellationReason: reason //allah belanizi versin
                 })
             });
             if (!response.ok) {
