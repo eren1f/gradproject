@@ -11,12 +11,12 @@ export class WaitingRequests {
     public studentName:string;
     public studentMail:string;
     public studentDepartment:number;
-    public adviserName: string|undefined;
+    public advisor: string|undefined;
     public adviserId: number|undefined;
 
 
     constructor(studentId: number,studentName:string, studentMail:string, studentDepartment:number,
-         requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, addition:string, whenCreated: Date, currentActorId: number, status:string, adviserName?: string, adviserId?: number) {
+         requestTypeIds: number, requestTypeName: string, currentIndex: number, information: string, addition:string, whenCreated: Date, currentActorId: number, status:string, advisor: string, adviserId?: number) {
         this.studentId = studentId;
         this.requestTypeIds = requestTypeIds;
         this.requestTypeName = requestTypeName;
@@ -29,7 +29,7 @@ export class WaitingRequests {
         this.studentDepartment=studentDepartment;
         this.status=status;
         this.addition=addition;
-        this.adviserName = adviserName;
+        this.advisor = advisor;
         this.adviserId = adviserId;
     }
 
@@ -130,11 +130,11 @@ export class WaitingRequests {
     }
 
     public getAdviserName(): string | undefined {
-        return this.adviserName;
+        return this.advisor;
     }
 
     public setAdviserName(adviserName: string | undefined): void {
-        this.adviserName = adviserName;
+        this.advisor = adviserName;
     }
 
     public getAdviserId(): number | undefined {
@@ -143,6 +143,9 @@ export class WaitingRequests {
 
     public setAdviserId(adviserId: number | undefined): void {
         this.adviserId = adviserId;
+    }
+    public getStudentDepartment(): number {
+        return this.studentDepartment;
     }
     
 }

@@ -46,7 +46,7 @@
                       <span class="table-cell font-bold md:hidden">Danışman</span>{{ request.getAdviserName() }}
                     </td> 
                     <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
-                      <span class="table-cell font-bold md:hidden">Bölüm</span>{ departmentUsername }
+                      <span class="table-cell font-bold md:hidden">Bölüm</span>{{ request.getStudentDepartment() }}
                     </td> 
                     <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-black text-left md:table-cell">
                       <span class="table-cell font-bold text-gray-500 md:hidden">Talep Türü</span>{{ request.getInformation() }}
@@ -129,10 +129,11 @@
       return filteredRequests.value.slice(startIndex, endIndex);
     })
     function statusColored(status: string){
-    if (status === 'ACCEPTED') return 'text-green-600';
-    if (status === 'WAITING') return 'text-yellow-600';
-    if (status === 'NEED_AFFIRMATION') return 'text-blue-600';
-    if (status === 'REJECTED') return 'text-red-600';
+    if (status === 'ACCEPTED') return 'text-green-600 font-bold';
+    if (status === 'WAITING') return 'text-yellow-600 font-bold';
+    if (status === 'NEED_AFFIRMATION') return 'text-blue-600 font-bold';
+    if (status === 'REJECTED') return 'text-red-600 font-bold';
+    if (status === 'CANCELLED') return 'text-gray-600 font-bold';
     return 'bg-gray-100 text-gray-800';
     }
     function translateStatus(status: string){
@@ -140,6 +141,7 @@
         if (status === 'WAITING') return 'Beklemede';
         if (status === 'NEED_AFFIRMATION') return 'Onay Bekliyor';
         if (status === 'REJECTED') return 'Reddedildi';
+        if (status === 'CANCELLED') return 'İptal Edildi';
         return 'Bilinmeyen';
     }
     function formatDate(dateString: Date): string {
@@ -211,7 +213,7 @@
       setup(){
         onMounted(async () => {
           const requestHandler = TeachingStaffRequestHandler.getInstance();
-          const response = await requestHandler.getAllRequestsForTeachingStaff();
+          const response = await requestHandler.getConcludedForTeachingStaff();
           console.log(response);
           totalRequests.value = response.length;
           allRequests.value = response;

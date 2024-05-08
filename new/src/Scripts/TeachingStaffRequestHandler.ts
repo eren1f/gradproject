@@ -78,7 +78,7 @@ export class TeachingStaffRequestHandler {
                 new Date(item.whenCreated),
                 item.currentActorId,
                 item.status,
-                item.adviserName,
+                item.advisor,
                 item.adviserId
             ));
         } catch (error) {
@@ -101,8 +101,7 @@ export class TeachingStaffRequestHandler {
             }
 
             const data = await response.json();
-            let requests: WaitingRequests[] = [];
-            return data.map((item:any) => new WaitingRequests(
+            return data.map((item: any) => new WaitingRequests(
                 item.studentId,
                 item.studentName,
                 item.studentEmail,
@@ -114,7 +113,9 @@ export class TeachingStaffRequestHandler {
                 item.addition,
                 new Date(item.whenCreated),
                 item.currentActorId,
-                item.status
+                item.status,
+                item.advisor,
+                item.adviserId
             ));
         }catch(error){
             throw new Error(`HTTP error! status: ${error}`);
