@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody class="bg-gray-50"> 
-                <tr v-for="(request, index) in paginatedStudents">
+                <tr v-if="paginatedStudents.length" v-for="(request, index) in paginatedStudents">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <!-- Render staff name -->
                     {{ request.getStudentName() }}
@@ -44,6 +44,14 @@
                 </td>
               </tr>
                <!-- Expandable row for each staff -->
+               <tr v-else>
+                  <td class="px-6 py-3 text-sm text-gray-500 text-center" colspan="6">
+                    <div class="p-6 mt-4 bg-yellow-100 border-4 border-yellow-500 text-yellow-700 rounded-md">
+                      <h2 class="text-lg font-semibold">Kayıt Bulunamadı!</h2>
+                      <p class="mt-1">Henüz hiçbir talep bulunmamaktadır. Lütfen daha sonra tekrar kontrol edin.</p>
+                    </div>
+                  </td>
+                </tr>
             </tbody>
           </table>
         </div>

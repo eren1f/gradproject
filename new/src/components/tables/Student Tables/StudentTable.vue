@@ -60,7 +60,7 @@
                  </tr>
               </thead>
               <tbody class="bg-gray-50">
-                <template v-for="(request, index) in paginatedRequests">
+                <template v-if="paginatedRequests.length" v-for="(request, index) in paginatedRequests">
                   <!-- Table Row -->
                   <tr class="border border-gray-400">
                     <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
@@ -78,6 +78,14 @@
                     </td>
                   </tr>
                 </template>
+                <tr v-else>
+                  <td class="px-6 py-3 text-sm text-gray-500 text-center" colspan="6">
+                    <div class="p-6 mt-4 bg-yellow-100 border-4 border-yellow-500 text-yellow-700 rounded-md">
+                      <h2 class="text-lg font-semibold">Kayıt Bulunamadı!</h2>
+                      <p class="mt-1">Henüz hiçbir talep oluşturmadınız. Lütfen talep oluşturduktan sonra tekrar kontrol edin.</p>
+                    </div>
+                  </td>
+                </tr>
             </tbody>
             </table>
           </div>
