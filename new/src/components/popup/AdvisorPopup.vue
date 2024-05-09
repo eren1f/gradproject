@@ -38,7 +38,7 @@
                 </div>
                 <div class="mb-2">
                   <strong>Talep Türü</strong>
-                  <p>{{ request.getRequestTypeName() }}</p>
+                  <p>{{ request.getInformation() }}</p>
                 </div>
                 <div class="mb-2">
                   <strong>E-posta</strong> 

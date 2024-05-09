@@ -28,22 +28,28 @@
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byTime')">
                     TARİH
                   </th>
+                  <th>
+                    <!-- Empty Column for Details Button -->
+                  </th>
                  </tr>
               </thead>
               <tbody class="bg-gray-50">
                 <template v-for="(request) in paginatedRequests " :key ="request.getWhenCreated()">
                   <!-- Table Row -->
                   <tr class="border border-gray-400">
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Öğrenci</span>{{ request.getStudentName() }}
                     </td> 
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Danışman</span>{{ request.getAdviserName() }}
                     </td> 
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell">
-                      <span class="table-cell font-bold text-gray-500 md:hidden">Talep Türü</span>{{ request.getInformation() }}
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Bölüm</span>{{ request.getStudentDepartment() }}
                     </td>
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Talep Türü</span>{{ request.getInformation() }}
+                    </td>
+                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-black block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
                     </td>
                     <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
