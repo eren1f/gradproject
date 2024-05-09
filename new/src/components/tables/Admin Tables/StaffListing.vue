@@ -174,7 +174,7 @@
                     {{ rolefixer(staff.getRole()) }}
                 </td>
                 <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
-                  <button @click="toggleEdit(index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700">
+                  <button @click="toggleEdit(staff, index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700">
                     ✏️</button>
                 </td>
               </tr>
@@ -333,7 +333,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         toggleDepartmentDropdown() {
           this.isDepartmentOpen = !this.isDepartmentOpen; // Toggle the dropdown state
         },
-        toggleEdit(staffIndex: number, staffId: number) {
+        toggleEdit(currentStaff: StaffForAdminListing , staffIndex: number, staffId: number) {
           this.departments.forEach(department => {
             this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
           });
@@ -342,6 +342,19 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           this.idToEdit = staffId; // Toggle
           this.indexToEdit = staffIndex; // Toggle
           this.showEditPopup = !this.showEditPopup; // Toggle the edit modal
+          
+
+          const words = currentStaff.getFullName().split(' ');
+          const lastWord = words[words.length - 1];
+
+              this.editedStaff = {
+                  name: currentStaff.getFullName().substring(0, currentStaff.getFullName().lastIndexOf(' ')),
+                  surname: lastWord,
+                  email: currentStaff.getEmail(),
+                  password: ''
+              };
+              this.selectedRoleOption = currentStaff.getRole(); // Reset role selection
+              this.selectedDepartmentOption = currentStaff.getDepartment(); // Reset department selection
         },
         toggleEditClose() {
           this.resetForm();
