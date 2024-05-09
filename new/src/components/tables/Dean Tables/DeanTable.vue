@@ -5,6 +5,18 @@
       <!-- SearchBar-->
       <div class="px-[1%] my-[1%] flex self-center sm:self-start">
         <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
+      <div class="flex p-4 items-center me-4">
+        <input checked id="inline-checked-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" @click="toggleRadioButton('1')">
+        <label for="inline-checked-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Öğrenciye göre</label>
+    </div>
+        <div class="flex  items-center me-4">
+        <input id="inline-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" @click="toggleRadioButton('2')">
+        <label for="inline-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Danışmana göre</label>
+    </div>
+    <div class="flex items-center me-4">
+        <input id="inline-2-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" @click="toggleRadioButton('3')">
+        <label for="inline-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Bölüme göre </label>
+    </div>
       </div>
       <!-- Table Content -->
       <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
@@ -193,7 +205,48 @@
             },
         toggleDetails(request: WaitingRequests){
           this.selectedRequest = request; //console.log(request);
+        },
+        toggleRadioButton(str) {
+          console.log(allRequests.value[0].getWhenCreated());
+          if(str == '1')
+          {
+            filteredStudents = computed(() => {
+            const query = searchQuery.value.trim().toLowerCase();
+            if (!query) return allRequests.value;
+            // Search by name or surname (fixed)
+            return allRequests.value.filter(staff =>
+              staff.getStudentName().toLowerCase().includes(query) ||
+              staff.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+            )
+          })
         }
+        else if(str == '2')
+          {
+            filteredStudents = computed(() => {
+            const query = searchQuery.value.trim().toLowerCase();
+            if (!query) return allRequests.value;
+            // Search by name or surname (fixed)
+            return allRequests.value.filter(staff =>
+              staff.getAdviserName().toLowerCase().includes(query) ||
+              staff.getAdviserName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+            )
+          })
+        }
+      
+        else if(str == '3')
+          {
+            filteredStudents = computed(() => {
+            const query = searchQuery.value.trim().toLowerCase();
+            if (!query) return allRequests.value;
+            // Search by name or surname (fixed)
+            return allRequests.value.filter(staff =>
+              staff.getStudentDepartment().toLowerCase().includes(query) ||
+              staff.getStudentDepartment().toLowerCase().split(' ').reverse().join(' ').includes(query)
+            )
+          })
+        }
+        
+       }
       },
       setup(){
         onMounted(async () => {
