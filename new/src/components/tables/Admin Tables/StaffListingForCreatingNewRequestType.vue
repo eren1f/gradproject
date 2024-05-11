@@ -132,6 +132,7 @@ export default defineComponent({
         const showAddStaffModal = ref(false);
         const isDropdownOpen = ref(false);
         const selectedOption = ref('');
+        const addedActors = ref<StaffForAdminListing[]>([]);
 
         const idFilter = ref('');
         const nameFilter = ref('');
@@ -194,7 +195,12 @@ export default defineComponent({
 
             new_Actor_RemoveButton.addEventListener('click', () => {
                 new_Actor_div.remove();
+                addedActors.value = addedActors.value.filter(actor => {
+                    // If the full name matches, exclude this actor from the filtered array
+                    return actor.getFullName() !== staffForAdminListing.getFullName();
+                });
                 context.emit('remove:selectedStaffs', staffForAdminListing);
+                console.log(addedActors.value);
             });
             
             new_Actor_div.classList.add('border', 'border-gray-400', 'bg-gray-50');
@@ -233,6 +239,9 @@ export default defineComponent({
             new_Actor_div.appendChild(buttonContainer);
 
             actors_wrapper_div?.appendChild(new_Actor_div);
+
+            addedActors.value.push(staffForAdminListing);
+            console.log(addedActors.value);
         };
 
         const filteredStaffs = computed(() => {
@@ -336,6 +345,7 @@ export default defineComponent({
             nextPage,
             setCurrentPage,
             rolefixer,
+            addedActors
         };
     }
 });
