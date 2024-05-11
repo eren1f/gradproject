@@ -229,6 +229,8 @@ export default {
       console.log("method called")
       requestHandler.acceptRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.request.getCurrentIndex(),
     this.request.getStatus());
+      requestHandler.saveComment(this.comment, this.request.getStudentId(), this.request.getWhenCreated().toISOString(), this.request.getRequestTypeIds());
+      console.log(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
       alert("Talep kabul edildi.");
       //reload page
       window.location.reload();
@@ -237,7 +239,7 @@ export default {
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
       console.log(this.comment)
-      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
+      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getWhenCreated().toISOString(),this.request.getRequestTypeIds(), this.comment);
       console.log(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
       alert("Talep reddedildi.");
       //reload page

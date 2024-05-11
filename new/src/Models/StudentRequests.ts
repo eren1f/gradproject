@@ -5,6 +5,7 @@ export class StudentRequests {
     private status: string;
     private addition: string;
     private whenCreated: Date;
+    //private reason: string;
 
     constructor(studentId: number, currentIndex: number, information: String, status: string, addition: string, whenCreated: Date) {
         this.studentId = studentId;
@@ -13,6 +14,7 @@ export class StudentRequests {
         this.status = status;
         this.addition = addition;
         this.whenCreated = whenCreated;
+        //private reason: string;
     }
 
     getStudentId(): number {

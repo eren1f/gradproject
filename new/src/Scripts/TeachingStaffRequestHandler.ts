@@ -113,7 +113,7 @@ export class TeachingStaffRequestHandler {
                 item.addition,
                 new Date(item.whenCreated),
                 item.currentActorId,
-                item.status,
+                item.status,    
                 item.advisor,
                 item.adviserId
             ));
@@ -150,7 +150,7 @@ export class TeachingStaffRequestHandler {
         }
     }
 
-    async rejectRequest(studentId:number, requestTypeId:number, when:string, reason:string): Promise<any>{
+    async rejectRequest(studentId:number, when:string, requestTypeId:number, reason:string): Promise<any>{
         const url= apiRoute + "rejectRequest";
         try {
             const response = await fetch(url, {
@@ -161,8 +161,8 @@ export class TeachingStaffRequestHandler {
                 credentials: 'include',
                 body: JSON.stringify({
                     requestStudentId: studentId,
-                    requestTypeId: requestTypeId,
                     requestWhenCreated: when,
+                    requestTypeId: requestTypeId,
                     cancellationReason: reason //allah belanizi versin
                 })
             });
@@ -177,6 +177,35 @@ export class TeachingStaffRequestHandler {
         }
 
     }
+
+    async saveComment(commentMessage:string, requestStudentId:number, requestWhenCreated:string, requestTypeId:number): Promise<any>{
+        const url= apiRoute + "saveComment";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    commentMessage: commentMessage,
+                    requestStudentId: requestStudentId,
+                    requestWhenCreated: requestWhenCreated,
+                    requestTypeId: requestTypeId
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        }
+        catch (error) {
+            throw new Error(`HTTP error! status: ${error}`);
+        }
+
+    }
+    
     async cancelRequest(studentId:number, requestTypeId:number, when:string, reason:string): Promise<any>{
         const url= apiRoute + "cancelRequest";
         try {
