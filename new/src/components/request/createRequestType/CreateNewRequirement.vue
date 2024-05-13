@@ -6,7 +6,7 @@
         </div>
     <div class="flex items-center justify-center md:justify-between p-[1%]">
         <button @click="handleCreateNewReqClick" class="bg-green-500 hover:bg-green-700 text-white mt-5 mb-5 py-2 p-[1%] rounded">
-                Yeni Gereksinim Ekle
+                 Gereksinim Ekle
         </button>
     </div>
 

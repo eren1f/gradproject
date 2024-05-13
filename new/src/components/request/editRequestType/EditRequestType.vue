@@ -190,7 +190,7 @@
         <div class="container">
             <h1 class="flex text-2xl font-bold mb-[1%] text-white">Talep Türünü Düzenle</h1>
             <div class="mb-[1%] flex items-center">
-              <label for="Talep İsmi" class="inline-block rounded-full text-md font-semibold text-white mr-[1%]">Düzenlenen Talep İsmi</label>
+              <label for="Talep İsmi" class="inline-block rounded-full text-md font-semibold text-white mr-[1%]">Düzenlenen Talep Türü</label>
               <label for="Talep İsmi" class="inline-block bg-gray-700 rounded-md px-[1%] text-md font-semibold text-white"> {{requestOnEdit.getName()}}</label>
               <!--<input type="text" :placeholder="requestOnEdit.getName()" class="w-[50%] md:w-[25%] p-2 mt-4 md:mt-0 md:self-end border rounded bg-gray-600 text-white" />-->
             </div>
@@ -247,7 +247,7 @@
                   </table>
                 </div>   
                 <button class="px-4 py-1 mt-2 mb-2 mx-1 relative right-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="togglePopup()">
-                  Yeni Gereksinim Ekle</button>       
+                 Gereksinim Ekle</button>       
               </div>                
 
       <!--Actor Table-->
@@ -301,7 +301,7 @@
                     </tbody>
                   </table>
                 </div>
-                <button class="px-4 py-1 mt-2 mb-2 mx-1 relative right-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Aktör Ekle</button>
+                <button class="px-4 py-1 mt-2 mb-2 mx-1 relative right-1 bg-blue-500 text-white rounded hover:bg-blue-700" @click="ActorPopup">Birim Ekle</button>
               </div>
                 <div class="flex justify-between">
                   <button class="px-4 py-1 mt-2 mb-2 bg-red-500 text-white rounded hover:bg-red-700" @click="cancel()">
@@ -437,10 +437,7 @@ data() {
      console.log(requestRequirements.value);
       // updateRequirements(requestRequirements.value as RequestRequirement[]);
       // await editRequest(requestOnEdit.getId(),requestOnEdit.getName());
-     
-      
-     
-     
+
      togglePopup();
    }  
 
