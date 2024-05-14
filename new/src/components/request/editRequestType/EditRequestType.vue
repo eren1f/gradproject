@@ -23,14 +23,15 @@
               <input id="name-of-req" v-model="newName" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
             </div>  
           </div>
-          
+          <!--
           <div class="flex items-center mt-3">
               <label for="multi-select-button" class="text-black">Çoklu Seçim</label>
               <input id="multi-select-button" v-model="newMultiSelect"type="checkbox" class="border border-black mt-1 ml-2 form-checkbox h-4 w-4 text-indigo-600">
           </div>
+          -->
           <div class="flex justify-between mt-4 space-x-4">
     <button @click="togglePopup" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
-    <button @click="addRequirement(requestOnEdit.getId(), newPretext, newName, newMultiSelect )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
+    <button @click="addRequirement(requestOnEdit.getId(), newPretext, newName, false )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Onayla</button>
           </div>
 
         </div>
@@ -54,14 +55,15 @@
               <input id="name-of-req" v-model="editName" type="text" class="border rounded-md p-2 mt-2 ml-4 text-black bg-gray-100 w-40 h-8 border-black">
             </div>  
           </div>
-          
+          <!--
           <div class="flex items-center mt-3">
               <label for="multi-select-button" class="text-black">Çoklu Seçim</label>
               <input id="multi-select-button" v-model="editMultiSelect"type="checkbox" class="border border-black mt-1 ml-2 form-checkbox h-4 w-4 text-indigo-600">
           </div>
+          -->
           <div class="flex justify-between mt-4 space-x-4">
     <button @click="editPopupClose" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded w-full">İptal</button>
-    <button @click="editRequirement( requestOnEdit.getId(), editPretext, editName, editMultiSelect )" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Düzenle</button>
+    <button @click="editRequirement( requestOnEdit.getId(), editPretext, editName, false)" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">Düzenle</button>
           </div>
 
         </div>
@@ -209,9 +211,11 @@
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('department')">
                             Hazır Metin
                           </th>
+                          <!--
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('email')">
                             Tür
                           </th>
+                        -->
                           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="('role')">
                             Sıra
                           </th>
@@ -230,9 +234,11 @@
                         <td class="px-6 py-3 md:whitespace-nowrap md:max-w-[200px] md:overflow-hidden text-sm text-gray-500 block text-left md:table-cell">
                           <span class="table-cell font-bold md:hidden">Gereksinim Hazir Metni</span>{{ requirement.pretext }}
                         </td>
+                        <!--
                         <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                           <span class="table-cell font-bold md:hidden">Gereksinim Kosulu</span>{{ requirement.type }}
                         </td>
+                      -->
                         <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
                           <span class="table-cell font-bold md:hidden">Gereksinim Indeksi</span>{{ requirement.index }}
                         </td>

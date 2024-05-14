@@ -10,10 +10,12 @@
                 <label for="name-of-req" class="text-white font-semibold m-[1%]">Gereksinim İsmi </label>
                 <input id="name-of-req" type="text" v-model="name" @input="emitChange" class="border rounded-md p-2 my-[2%] text-black bg-gray-100 w-40 h-8" >
             </div>
+            <!--
             <div class="flex flex-row items-center justify-between">
                 <label for="multi-select-button" class="text-white font-semibold m-[1%]">Çoklu Seçim</label>
                 <input id="multi-select-button" type="checkbox" v-model="multiSelect" @change="emitChange" class="w-10 my-[2%]">
             </div>
+            -->
         </div> 
         <div class="flex w-[5%]"></div>
         <div class="flex flex-col justify-center items-center requirements-wrapper-div">
@@ -33,7 +35,7 @@
         props: ['id', 'pretext',  'name', 'multiSelect'],
         setup(props, { emit }) {
             const name = ref(props.name);
-            const multiSelect = ref(props.multiSelect);
+            const multiSelect = false;//ref(props.multiSelect);
             const pretext = ref(props.pretext);
 
             const handleMoveUp = () => {
@@ -48,6 +50,7 @@
             const emitChange = () => {
                 emit('change', { id: props.id,pretext: pretext.value, name: name.value, multiSelect: multiSelect.value });
             };
+
 
             return { pretext,name, multiSelect, handleMoveUp, handleMoveDown, handleDeleteButton, emitChange };
         },
