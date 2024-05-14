@@ -103,7 +103,7 @@ export class StudentRequestHandler {
             // Show popup message
             alert("Talep gonderildi!");
             //TODO: Redirect to landing page          
-
+            window.location.reload();
         } catch (error) {
             throw new Error(`HTTP error! status: ${error}`);
         }

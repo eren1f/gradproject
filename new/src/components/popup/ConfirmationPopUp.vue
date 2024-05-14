@@ -57,7 +57,6 @@ export default {
         confirm() {
             console.log(this.confirmationType); 
             this.confirmationType! ?  this.$emit(`confirm-${this.confirmationType}`) : this.$emit('confirm-makeRequest'); 
-            window.location.reload();
         },
         cancel() { this.$emit('cancel'); }
     },
