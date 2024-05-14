@@ -3,53 +3,52 @@
     <div class="flex flex-col">
       <!-- SearchBar -->
       <AdvisorPopup :request="selectedRequest"></AdvisorPopup>
-      <div class="px-[1%] my-[1%] flex self-center sm:self-start">
+      <div class="px-[1%] my-[2%] flex self-center sm:self-start">
           <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
         </div>
       <!-- Table Content -->
-      <div class="p-[1%] md:overflow-x-auto lg:-mx-8">
-          <div class="md:align-middle md:inline-block w-full md:min-w-full lg:px-8 mx-auto">
-            <div class="shadow overflow-hidden rounded-lg">
-              <table class="w-full md:min-w-full">
-                <thead class="bg-gray-50 hidden md:table-header-group">
+      <div class="px-[1%]">
+        <div class="md:inline-block w-full md:min-w-full">
+          <div class="shadow overflow-hidden rounded-lg">
+            <table class="w-full md:min-w-full">
+              <thead class="bg-gray-100 text-black text-left text-sm  uppercase hidden md:table-header-group">
                 <tr>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('name')">
-                      Öğrencİ Adi
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('request_type_name')">
-                      Talep Türü
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('byTime')">
-                      Gönderilen Tarih
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"  @click="sortByColumn('byStatus')">
-                      Durum
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    </th>
-                  </tr>
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider" @click="sortByColumn('name')">
+                  ÖĞRENCİ ADI
+                  </th>
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider" @click="sortByColumn('request_type_name')">
+                    TALEP TÜRÜ
+                  </th>
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider" @click="sortByColumn('byTime')">
+                    TARİH
+                  </th>
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider"  @click="sortByColumn('byStatus')">
+                    Durum
+                  </th>
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider">
+                  </th>
+                </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
+              <tbody class="bg-white divide-y divide-blue-200">
                 <template v-if="paginatedStudents.length" v-for="(request) in paginatedStudents"  :key ="request.getWhenCreated()">
-                  <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <!-- Render staff name -->
-                      {{ request.studentName }}
+                  <tr class="border text-black hover:bg-gray-200">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left md:table-cell">
+                    <span class="table-cell font-bold md:hidden">Öğrenci Adı</span>{{ request.getStudentName() }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-wrap md:text-balance">
-                      <!-- Render staff Request -->
-                      {{ request.getRequestTypeName() }}
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Talep Türü</span>{{ request.getRequestTypeName() }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      {{ formatDate(request.getWhenCreated()) }}
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left md:table-cell">
+                      <span class="table-cell font-bold md:hidden">Durum</span>
                       <span :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
                     </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-center font-bold md:text-left md:table-cell">
                         <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button> 
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
                  <!-- Expandable row for each staff -->
                 </template>
                 <tr v-else>

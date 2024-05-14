@@ -3,7 +3,7 @@
     <!-- Request Type DP -->
     <div class="flex flex-col items-center md:items-start">
       <h2 class="text-lg font-semibold mt-4 mb-2">Talep Türü</h2>
-      <select v-model="selectedRequest" class="w-full p-2 border rounded bg-gray-600">
+      <select v-model="selectedRequest" class="w-full p-2 border rounded bg-gray-600" data-column="id">
         <option v-for="request in requestTypes" :value="request">
           {{ request.getRequestName() }}
         </option>
@@ -25,7 +25,8 @@
     <!-- Student Reason -->
     <div v-if="showRequirements()" class="flex flex-col items-center md:items-start">
       <h2 class="text-lg font-semibold mt-2 mb-2">Öğrenci Açıklaması</h2>
-      <textarea id="requestInfo" v-model="requestInfo" class="w-full h-28 p-2 border rounded bg-gray-600 resize-none scroll-ms-3" placeholder="Lütfen bilgilerinizi eksiksiz yazınız."></textarea>
+      <textarea id="requestInfo" v-model="requestInfo" class="w-full h-28 p-2 border rounded bg-gray-600 resize-none scroll-ms-3" maxlength="300" placeholder="Lütfen bilgilerinizi eksiksiz yazınız."></textarea>
+      <p class="py-[1%] text-right text-sm text-gray-400">{{ requestInfoLengthCheck }} / 300</p>
     </div>
     <!-- Submit Button -->
     <div v-if="showRequirements()" class="flex flex-col items-center text-left p-4 text-white">
@@ -36,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { RequestTypes } from '@/Models/RequestTypes';
 import { RequestRequirement } from '@/Models/RequestRequirements';
 import { StudentRequestHandler } from '@/Scripts/StudentRequestHandler';
@@ -60,6 +61,9 @@ export default {
     const toggleConfirmationPopup = ref(false);
     let change = ref<string>('');
 
+    const requestInfoLengthCheck = computed(() => {
+      return requestInfo.value.length;
+    });
     const showRequirements = () => {
       return selectedRequest.value?.getRequestTypeId() !== 0 && selectedRequest.value != null;
     };
@@ -184,7 +188,8 @@ export default {
       selectedRequest,
       showConfirmationPopUp,
       toggleConfirmationPopup,
-      change
+      change,
+      requestInfoLengthCheck,
     };
   },
 };

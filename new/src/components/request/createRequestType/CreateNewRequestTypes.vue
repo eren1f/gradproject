@@ -1,36 +1,45 @@
 <template>
         <div class="md:flex md:justify-between">
             <div class="md:w-1/2">
-                    <h1 class="flex text-2xl font-bold mb-[1%] text-white justify-center md:justify-between">
+                    <h1 class="flex text-2xl font-bold my-[1%] p-[1%] text-white justify-center md:justify-between">
                     Talep Türü Gereksinimleri</h1>
                     <RequestCredentials  @update:selectedDepartment="handleSelectedDepartment" @dataChanged="handleDataChange" />
                     <RequestName />
                     <CreateNewRequirement class="text-black" />
             </div>
             <div class="md:w-1/2">
-                <h1 class="flex text-2xl font-bold my-[1%] text-white justify-center md:justify-between">
+                <h1 class="flex text-2xl font-bold my-[1%] p-[1%] text-white justify-center md:justify-between">
                     Talep Türü Birimleri</h1>
                 <div class="px-[1%]">
                     <div class="md:inline-block w-full md:min-w-full">
                         <div class="shadow overflow-y-auto hide-scrollbar max-h-80 rounded-lg">
-                            <table class="w-full md:min-w-full">
-                                <thead class="bg-gray-50 hidden md:table-header-group">
+                            <table class="w-full md:min-w-full ">
+                                <thead class="bg-gray-50 border border-gray-300 hidden md:table-header-group">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Isim
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">
+                                            İSİM
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Bölüm
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">
+                                            BÖLÜM
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Rol
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">
+                                            ROL
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Aksiyonlar
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-black uppercase tracking-wider">
+                                            AKSİYONLAR
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody id="fillActors-wrapper">
+                                <tbody id="fillActors-wrapper" class="bg-gray-50 border border-gray-300">
+                                    <tr v-if="staffs.length === 0">
+                                        <td class="px-6 py-3 text-sm text-gray-500 text-center" colspan="4">
+                                            <div class="p-6 bg-yellow-100 border-4  border-yellow-500 text-yellow-700 rounded-md">
+                                                <h2 class="text-lg font-semibold">Kayıt Bulunamadı!</h2>
+                                                <p class="mt-[1%]">Henüz birim eklemediniz. Lütfen <strong>oluşturacağınız talep türü</strong> için aşağıda bulunan listeden birim ekleyin.</p>
+                                                <p class="mt-[1%]"> <strong>Not:</strong> Her talep danışman ile başlar. Bu yüzden danışman eklemeyiniz.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -39,12 +48,11 @@
             </div>
         </div>
         <div class="flex items-center justify-center">
-            <button class="text-white bg-green-500 hover:bg-green-700 py-2 px-4 my-[3%] rounded"
-                @click="addNewRequestType()">Talep Türünü Kaydet</button>
+            <button class="text-white bg-blue-500 hover:bg-blue-700 py-2 px-4 my-[3%] rounded"
+                @click="toggleConfirmationPopup">Talep Türünü Kaydet</button>
         </div>
-
-
-        
+        <AlertPopup ref="alertPopup" />
+        <ConfirmationPopUp v-if="toggleConfirmationPopup" :changes="change" @cancel="toggleConfirmationPopup = false" @confirm-save="addNewRequestType" />
 </template>
 
 
@@ -56,8 +64,9 @@
     import AddNewActor from './AddNewActor.vue';
     import { AdminRequestHandler } from '@/Scripts/AdminRequestHandler';
     import { RequestTypes } from '../../../Models/RequestTypes';
-    import StaffListingForCreatingNewRequestType from '@/components/tables/StaffListingForCreatingNewRequestType.vue';
+    import StaffListingForCreatingNewRequestType from '@/components/tables/Admin Tables/StaffListingForCreatingNewRequestType.vue';
     import ConfirmationPopUp from '@/components/popup/ConfirmationPopUp.vue';
+    import AlertPopup from '@/components/popup/AlertPopup.vue';
 
     export default defineComponent({
         name: 'CreateNewRequestTypes',
@@ -66,6 +75,7 @@
             RequestName,
             CreateNewRequirement,
             AddNewActor,
+            AlertPopup,
         },
         props: {
             selectedStaff: {
@@ -80,7 +90,7 @@
         data(){
             return{
                 selectedStaffs : Array<any>(),
-                confirmationPopup : false
+                confirmationPopup : false,
             }
         },
 /*         watch:{
@@ -98,7 +108,45 @@
             const selectedDepartment = ref(null);
 
             const staffs = ref<any[]>([]);
+            
+            function checkAlerts() {
+                const allRequirements = document.querySelectorAll('.requirements-wrapper-div');
+                const requestName = document.querySelector('#requestName') as HTMLInputElement;
+                // @ts-ignore
+                const departmentId = selectedDepartment.value?.departmentId;
+                if(departmentId === undefined) {
+                    this.$refs.alertPopup.open('Lütfen bir bölüm seçiniz');
+                    return;
+                }
+                else if(requestName.value === '') {
+                    this.$refs.alertPopup.open('Lütfen talep adını doldurunuz');
+                    return;
+                }
+                const tempRequirementsData = Array.from(allRequirements).map((requirementDiv) => {
+                    if(requirementDiv !== null){
+                        const pretextInput = requirementDiv.querySelector('#pretext-of-req') as HTMLInputElement;
+                        const nameInput = requirementDiv.querySelector('#name-of-req') as HTMLInputElement;
+                        const checkboxInput = requirementDiv.querySelector('input[type="checkbox"]') as HTMLInputElement;
+                        return {
+                            pretext: pretextInput ? pretextInput.value : '',
+                            name: nameInput ? nameInput.value : '',
+                            isMultiSelect: checkboxInput ? checkboxInput.checked : false
+                        };
+                    }
+                });
 
+                let requirementsData = [];
+                for(let i = 0; i < tempRequirementsData.length; i++) {
+                    if(tempRequirementsData[i]?.name !== ''){
+                        requirementsData.push(tempRequirementsData[i]);
+                    }
+                }
+                const isAnyNameEmpty = requirementsData.some(requirement => requirement!.name === '');
+                if (isAnyNameEmpty) {
+                    alert('Please fill in all the requirements');
+                    return;
+                }
+            }
             watch(() => props.selectedStaff, (newVal) => {
                 console.log('selectedStaffs changed:', newVal);
                 staffs.value.push(newVal);
@@ -201,6 +249,10 @@
             const handleDataChange = (data: any) => {
                 departmentId.value = data;
             }
+            const showConfirmationPopUp = (changes: string) => {
+
+            };
+     
             
 
             return {
@@ -209,7 +261,7 @@
                 handleDataChange,
                 handleSelectedDepartment,
                 selectedDepartment,
-                
+                staffs,
             }
         }
     });

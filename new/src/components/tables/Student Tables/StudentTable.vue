@@ -1,26 +1,35 @@
 <template>
     <!-- Request Details Modal -->
     <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75" @click="showModal = false">
-        <div class="bg-white p-[3%] m-[1%] rounded-lg shadow-lg" @click.stop>
-            <h2 class="text-2xl font-bold mb-4 text-gray-700">Talep Detayları</h2>
+        <div class="bg-white p-[3%] m-[7%] md:m-[10%] rounded-lg shadow-lg" @click.stop>
+            <h2 class="text-2xl font-bold mb-[2%] text-black">Talep Detayları</h2>
             <!-- Request Details -->
-            <div class="sm:flex sm:items-start">
-                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <div class="mt-2">
-                        <p class="text-sm text-left text-gray-500">
-                            <strong class="text-gray-700">Öğrenci Numarası:</strong> {{ selectedRequest.getStudentId() }}<br>
-                            <strong class="text-gray-700">Talep Türü:</strong>  {{ selectedRequest.getInformation() }}<br>
-                            <strong class="text-gray-700">Oluşturulan Tarih:</strong> {{ formatDate(selectedRequest.getWhenCreated()) }}<br>
-                            <strong class="text-gray-700">Talep Durumu:</strong> {{ translateStatus(selectedRequest.getStatus()) }}<br>
-                            <strong class="text-gray-700">Öğrenci Açıklaması:</strong> {{  selectedRequest.getAddition() }}<br>
-                        </p>
-                    </div>
+              <div class="space-y-[7%] md:space-y-[1%]">
+                <div class="flex items-center">
+                    <strong class="mr-[1%] text-black">Öğrenci Numarası:</strong>
+                    <span>{{ selectedRequest.getStudentId() }}</span>
                 </div>
-            </div>
+                <div class="flex items-center">
+                    <strong class="mr-[1%] text-black">Talep Türü:</strong>
+                    <span>{{ selectedRequest.getInformation() }}</span>
+                </div>
+                <div class="flex items-center">
+                    <strong class="mr-[1%] text-black">Oluşturulan Tarih:</strong>
+                    <span>{{ formatDate(selectedRequest.getWhenCreated()) }}</span>
+                </div>
+                <div class="flex items-center">
+                    <strong class="mr-[1%] text-black">Talep Durumu:</strong>
+                    <span :class="statusColored(selectedRequest.getStatus())">{{ translateStatus(selectedRequest.getStatus()) }}</span>
+                </div>
+                <div class="flex items-center">
+                    <strong class="mr-[1%] text-black">Öğrenci Açıklaması</strong>
+                </div>
+                <span>{{ selectedRequest.getAddition() }}</span>
+              </div>
             <div class="flex justify-end mt-4">
                 <button @click="showModal = false" class="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
                   title="Geri Dön">
-                  <span class="material-symbols-outlined ">
+                  <span class="material-symbols-outlined">
                   arrow_back_ios_new
                   </span>
                 </button>
@@ -44,35 +53,35 @@
         <div class="md:inline-block w-full md:min-w-full">
           <div class="shadow overflow-hidden rounded-lg">
             <table class="w-full md:min-w-full">
-              <thead class="bg-gray-50 hidden md:table-header-group">
+              <thead class="bg-gray-100 text-black text-left text-sm  uppercase hidden md:table-header-group">
                 <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byRequestName')">
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider" @click="sortByColumn('byRequestName')">
                     TALEP TÜRÜ
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byDate')">
+                  <th scope="col" class="px-[1%] py-[1%] font-medium tracking-wider" @click="sortByColumn('byDate')">
                     GÖNDERİLEN TARİH
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byStatus')">
+                  <th scope="col" class="px-[1%] py-[1%] font-medium tracking-wider" @click="sortByColumn('byStatus')">
                     TALEP DURUMU
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" class="px-[1%] py-[1%] font-medium tracking-wider">
                   </th>
                  </tr>
               </thead>
               <tbody class="bg-gray-50">
                 <template v-if="paginatedRequests.length" v-for="(request, index) in paginatedRequests">
                   <!-- Table Row -->
-                  <tr class="border border-gray-400">
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                  <tr class="border text-black border-blue-300 hover:bg-gray-200">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Talep Türü</span>{{ request.getInformation() }}
                     </td> 
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm text-gray-500 block text-left md:table-cell">
+                    <td class="px-[2%] md:px-[1%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left md:table-cell">
                       <span class="table-cell font-bold md:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
                     </td>
-                    <td class="px-6 py-3 md:whitespace-nowrap text-sm block text-left md:table-cell" :class="statusColored(request.getStatus())">
-                      <span class="table-cell font-bold text-gray-500 md:hidden">Talep Durumu</span>{{ translateStatus(request.getStatus()) }}
+                    <td class="px-[2%] md:px-[1%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left md:table-cell" :class="statusColored(request.getStatus())">
+                      <span class="table-cell font-bold text-black md:hidden">Talep Durumu</span>{{ translateStatus(request.getStatus()) }}
                     </td>
-                    <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
+                    <td class="px-[2%] md:px-[1%] py-[2%] md:py-[1%] md:whitespace-nowrap block text-center md:table-cell">
                       <!-- Toggle button to show additional information -->
                       <button @click="toggleDetails(index)" class="text-sm text-blue-600 hover:text-blue-900 font-bold">Detaylar</button>
                     </td>
@@ -83,6 +92,7 @@
                     <div class="p-6 mt-4 bg-yellow-100 border-4 border-yellow-500 text-yellow-700 rounded-md">
                       <h2 class="text-lg font-semibold">Kayıt Bulunamadı!</h2>
                       <p class="mt-1">Henüz hiçbir talep oluşturmadınız. Lütfen talep oluşturduktan sonra tekrar kontrol edin.</p>
+                      <!-- TODO: arama yapildiginda farkli uyari-->
                     </div>
                   </td>
                 </tr>
@@ -210,25 +220,30 @@ export default {
           this.currentPage = page;
         },
         sortByColumn(columnName: string) {
-          requests.value.sort((a, b) => {
+          paginatedRequests.value.sort((a, b) => {
               if (columnName === 'byRequestName') {
-                const fullNameA = a.getInformation ? a.getInformation().toLowerCase() : '';
-                const fullNameB = b.getInformation ? b.getInformation().toLowerCase() : '';                  
+                const fullNameA = a.getInformation() ? a.getInformation().toLowerCase() : '';
+                const fullNameB = b.getInformation() ? b.getInformation().toLowerCase() : '';    
+                console.log(fullNameA, fullNameB);              
                   if (fullNameA < fullNameB) return -1;
                   if (fullNameA > fullNameB) return 1;
                   return 0;
               } else if (columnName === 'byDate') {
                 const timeA = new Date(a.getWhenCreated()).getTime();
                 const timeB = new Date(b.getWhenCreated()).getTime();
+                console.log(timeA, timeB);
                 return timeB - timeA;
               } else { // byStatus
                 const statusA = a.getStatus ? a.getStatus().toLowerCase() : '';
                 const statusB = b.getStatus ? b.getStatus().toLowerCase() : '';
+                console.log(statusA, statusB);
                 if (statusA < statusB) return -1;
                 if (statusA > statusB) return 1;
                 return 0;
               }
+              
           });
+          paginatedRequests.value = [...paginatedRequests.value];
         },
         toggleDetails(index: number){
           // Fetch

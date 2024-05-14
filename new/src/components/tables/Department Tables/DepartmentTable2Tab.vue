@@ -3,63 +3,68 @@
     <div class="flex flex-col">
       <AdvisorPopup :request="selectedRequest" @clearRequest="selectedRequest = undefined"></AdvisorPopup>
       <!-- SearchBar-->
-      <div class="px-[1%] my-[1%] flex self-center sm:self-start">
-        <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
-        <div class="flex p-4 items-center me-4">
-        <input checked id="inline-checked-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" @click="toggleRadioButton('1')">
-        <label for="inline-checked-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Öğrenciye göre</label>
-    </div>
-        <div class="flex  items-center me-4">
-        <input id="inline-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" @click="toggleRadioButton('2')">
-        <label for="inline-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Danışmana göre</label>
-    </div>
+      <div class="flex flex-col md:flex-row">
+        <div class="px-[1%] my-[1%] flex self-center sm:self-start">
+          <input v-model="searchQuery" type="text" placeholder="Arama için metin girin..." class="p-2 border rounded">
+        </div>
+        <div class="flex justify-center">
+          <div class="flex px-[3%] my-[4%] items-center whitespace-nowrap">
+            <input checked id="inline-checked-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" @click="toggleRadioButton('1')">
+            <label for="inline-checked-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Öğrenciye göre</label>
+          </div>
+          <div class="flex px-[3%] my-[4%] items-center whitespace-nowrap">
+            <input id="inline-radio" type="radio" value="" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" @click="toggleRadioButton('2')">
+            <label for="inline-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Danışmana göre</label>
+          </div>
+        </div>
       </div>
       <!-- Table Content -->
-      <div class="p-[1%] xl:overflow-x-auto lg:-mx-8">
-        <div class="py-2 xl:align-middle xl:inline-block w-full xl:min-w-full lg:px-8 mx-auto">
+      <div class="px-[1%]">
+        <div class="md:inline-block w-full md:min-w-full">
           <div class="shadow overflow-hidden rounded-lg">
-            <table class="w-full xl:min-w-full">
-              <thead class="bg-gray-50 hidden xl:table-header-group">
+            <table class="w-full md:min-w-full">
+              <thead class="bg-gray-100 text-black text-left text-sm uppercase hidden xl:table-header-group">
                 <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byStudentName')">
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider" @click="sortByColumn('bySt')">
                     ÖĞRENCİ
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byAdvName')">
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider" @click="sortByColumn('byAdv')">
                     DANIŞMAN
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byRequestName')">
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider" @click="sortByColumn('request_type_name')">
                     TALEP TÜRÜ
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byTime')">
-                    TARİH
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider"  @click="sortByColumn('byDate')">
+                    GÖNDERİLEN TARİH
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" @click="sortByColumn('byTime')">
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider"  @click="sortByColumn('byStatus')">
                     DURUM
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" class="px-[2%] py-[1%] font-medium tracking-wider">
                   </th>
                  </tr>
               </thead>
-              <tbody class="bg-gray-50">
+              <tbody class="bg-white divide-y divide-blue-200">
                 <template v-if="paginatedRequests.length" v-for="(request) in paginatedRequests" :key ="request.getWhenCreated()">
                   <!-- Table Row -->
-                  <tr class="border border-gray-400">
-                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm text-gray-500 block text-left xl:table-cell">
+                  <tr class="border text-black hover:bg-gray-200">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left xl:table-cell">
                       <span class="table-cell font-bold xl:hidden">Öğrenci</span>{{ request.getStudentName() }}
                     </td> 
-                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm text-gray-500 block text-left xl:table-cell">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left xl:table-cell">
                       <span class="table-cell font-bold xl:hidden">Danışman</span>{{ request.getAdviserName() }}
                     </td> 
-                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm block text-left xl:table-cell">
-                      <span class="table-cell font-bold text-gray-500 xl:hidden">Talep Türü</span>{{ request.getInformation() }}
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left xl:table-cell">
+                      <span class="table-cell font-bold xl:hidden">Talep Türü</span>{{ request.getInformation() }}
                     </td>
-                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm text-gray-500 block text-left xl:table-cell">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left xl:table-cell">
                       <span class="table-cell font-bold xl:hidden">Gönderilen Tarih</span>{{ formatDate(request.getWhenCreated()) }}
                     </td>
-                    <td class="px-6 py-3 xl:whitespace-nowrap text-sm block text-left xl:table-cell" :class="statusColored(request.getStatus())">
-                      <span class="table-cell font-bold text-gray-500 xl:hidden">Talep Durumu</span>{{ translateStatus(request.getStatus()) }}
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-left xl:table-cell" :class="statusColored(request.getStatus())">
+                      <span class="table-cell font-bold xl:hidden">Durum</span>
+                      <span :class="statusColored(request.getStatus())"> {{ translateStatus(request.getStatus()) }}</span>
                     </td>
-                    <td class="px-6 py-4 xl:whitespace-nowrap block text-center xl:table-cell">
+                    <td class="px-[2%] py-[2%] md:py-[1%] md:whitespace-nowrap text-sm block text-center font-bold xl:text-left xl:table-cell">
                       <!-- Toggle button to show additional information -->
                       <button @click="toggleDetails(request as WaitingRequests)" class="text-blue-600 hover:text-blue-900">Detaylar</button>
                     </td>

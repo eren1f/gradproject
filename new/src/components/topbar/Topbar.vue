@@ -1,5 +1,5 @@
 <template>
-<div class="fixed top-0 left-0 w-full h-[10%] bg-gray-800 z-50 flex px-4">
+<div class="fixed top-0 left-0 w-full h-[10%] dark:bg-gray-800 z-50 flex px-4">
     <div class="flex self-center w-1/3">
     <span class="material-symbols-outlined ml-[1%] text-white" style="font-size: 200%">account_circle</span>
     <div class="flex flex-col ml-[1%]" style="font-size: 50%">
