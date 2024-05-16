@@ -192,29 +192,27 @@
             this.currentPage = page;
           },
           sortByColumn(columnName: string) {
-            students.value.sort((a, b) => {
-                if (columnName === 'name') {
-                   
-                  const fullNameA = a.getFullName ? a.getFullName().toLowerCase() : '';
-                  const fullNameB = b.getFullName ? b.getFullName().toLowerCase() : '';                  
-                    if (fullNameA < fullNameB) return -1;
-                    if (fullNameA > fullNameB) return 1;
-                    return 0;
-                } else if (columnName === 'id') {
-                    
-                    const idA = parseInt(a[columnName]);
-                    const idB = parseInt(b[columnName]);
-                    return idA - idB;
-                } else {
-                    
-                    const aValue = a[columnName]?.toLowerCase();
-                    const bValue = b[columnName]?.toLowerCase();
-                    if (aValue < bValue) return -1;
-                    if (aValue > bValue) return 1;
-                    return 0;
-                }
-            });
-          },
+  this.allRequests.sort((a, b) => {
+    if (columnName === 'name') {
+      const fullNameA = a.getStudentName().toLowerCase();
+      const fullNameB = b.getStudentName().toLowerCase();
+      return fullNameA.localeCompare(fullNameB);
+    } else if (columnName === 'request_type_name') {
+      const typeA = a.getRequestTypeName().toLowerCase();
+      const typeB = b.getRequestTypeName().toLowerCase();
+      return typeA.localeCompare(typeB);
+    } else if (columnName === 'byTime') {
+      const timeA = new Date(a.getWhenCreated()).getTime();
+      const timeB = new Date(b.getWhenCreated()).getTime();
+      return timeA - timeB;
+    } else if (columnName === 'byStatus'){
+      const statusA = a.getStatus().toLowerCase();
+      const statusB = a.getStatus().toLowerCase();
+      return statusA.localeCompare(statusB);
+    }
+    return 0;
+  });
+},
           toggleDetails(request: WaitingRequests){
   
             this.selectedRequest = request;
