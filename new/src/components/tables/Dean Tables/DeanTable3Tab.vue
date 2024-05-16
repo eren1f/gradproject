@@ -255,6 +255,12 @@ watch(radioButtonSelection, () => {
               const statB = b.getStudentDepartment().toLowerCase();
               return statB.localeCompare(statA);
             }
+            else if(columnName === 'byStatus')
+            {
+              const statA = a.getStatus().toLowerCase();
+              const statB = b.getStatus().toLowerCase();
+              return statB.localeCompare(statA);
+            }
 
             return 0;
           });
