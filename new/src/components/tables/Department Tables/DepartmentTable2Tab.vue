@@ -109,7 +109,7 @@
     </div>
   </template>
   <script lang="ts">
-    import { ref, computed, onMounted } from 'vue';
+    import { ref, computed, onMounted, watch } from 'vue';
     import { TeachingStaffRequestHandler } from '@/Scripts/TeachingStaffRequestHandler';
     import { StudentForTeachingStaffListing } from '@/Models/StudentForTeachingStaffListing';
     import { WaitingRequests } from '@/Models/WaitingRequests';
@@ -124,16 +124,30 @@
     const students = ref<StudentForTeachingStaffListing[]>([]);
     const totalEntries = ref(0);
     const selectedRequest = ref<WaitingRequests>();
+    const radioButtonSelection = ref('1');
     
     const filteredRequests = computed(() => {
-      const query = searchQuery.value.trim().toLowerCase();
-      if(!query) return allRequests.value;
-      // Search by name or surname (fixed)
-      return allRequests.value.filter(student =>
-        student.getAdviserName().toLowerCase().includes(query) ||
-        student.getAdviserName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-      )
-    })
+  const query = searchQuery.value.trim().toLowerCase();
+  if (!query) return allRequests.value;
+  // Conditional filtering based on radio button selection
+  if (radioButtonSelection.value === '1') {
+    return allRequests.value.filter(request =>
+      request.getStudentName().toLowerCase().includes(query) ||
+      request.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+    );
+  } else if (radioButtonSelection.value === '2') {
+    return allRequests.value.filter(request =>
+      request.getAdviserName().toLowerCase().includes(query) ||
+      request.getAdviserName().toLowerCase().split(' ').reverse().join(' ').includes(query)
+    );
+  }
+})
+
+watch(radioButtonSelection, () => {
+  searchQuery.value = ''; // Clear search query when radio button changes
+});
+
+
     const totalPages = computed(() => {
       totalEntries.value = filteredRequests.value.length;
         return Math.ceil(totalEntries.value / itemsPerPage);
@@ -184,7 +198,8 @@
           searchQuery,
           paginatedRequests,
           statusColored,
-          translateStatus
+          translateStatus,
+          filteredRequests
         };
       },
       methods: {
@@ -225,7 +240,7 @@
             {
               const statA = a.getStatus().toLowerCase();
               const statB = b.getStatus().toLowerCase();
-              return statA.localeCompare(statB);
+              return statB.localeCompare(statA);
             }
 
             return 0;
@@ -233,35 +248,8 @@
         },
         toggleDetails(request: WaitingRequests){
           this.selectedRequest = request; //console.log(request);
-        },
-        toggleRadioButton(str) {
-          console.log(allRequests.value[0].getWhenCreated());
-          if(str == '1')
-          {
-            filteredRequests = computed(() => {
-            const query = searchQuery.value.trim().toLowerCase();
-            if (!query) return allRequests.value;
-            // Search by name or surname (fixed)
-            return allRequests.value.filter(staff =>
-              staff.getStudentName().toLowerCase().includes(query) ||
-              staff.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-            )
-          })
-        }
-        else if(str == '2')
-          {
-            filteredRequests = computed(() => {
-            const query = searchQuery.value.trim().toLowerCase();
-            if (!query) return allRequests.value;
-            // Search by name or surname (fixed)
-            return allRequests.value.filter(staff =>
-              staff.getAdviserName().toLowerCase().includes(query) ||
-              staff.getAdviserName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-            )
-          })
         }
         
-       }
       },
       setup(){
         onMounted(async () => {
