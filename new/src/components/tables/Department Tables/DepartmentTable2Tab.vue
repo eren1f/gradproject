@@ -248,6 +248,9 @@ watch(radioButtonSelection, () => {
         },
         toggleDetails(request: WaitingRequests){
           this.selectedRequest = request; //console.log(request);
+        },
+        toggleRadioButton(str:string){
+          radioButtonSelection.value = str;
         }
         
       },
