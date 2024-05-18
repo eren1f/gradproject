@@ -99,17 +99,37 @@ const students = ref<StudentForTeachingStaffListing[]>([]);
 const totalEntries = ref(0);
 const staffId = ref(0);
 const selectedRequest = ref<WaitingRequests>();
-
+const currentSort = ref({ column: 'byTime', order: 'desc' });
 
 const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  if(!query) return allRequests.value;
-  // Search by name or surname (fixed)
-  return allRequests.value.filter(staff =>
-    staff.getStudentName().toLowerCase().includes(query) ||
-    staff.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-  )
-})
+
+  const sortedRequests = [...allRequests.value].sort((a, b) => {
+    if (currentSort.value.column === 'name') {
+      const fullNameA = a.getStudentName().toLowerCase();
+      const fullNameB = b.getStudentName().toLowerCase();
+      return currentSort.value.order === 'asc' ? fullNameA.localeCompare(fullNameB) : fullNameB.localeCompare(fullNameA);
+    } else if (currentSort.value.column === 'request_type_name') {
+      const typeA = a.getRequestTypeName().toLowerCase();
+      const typeB = b.getRequestTypeName().toLowerCase();
+      return currentSort.value.order === 'asc' ? typeA.localeCompare(typeB) : typeB.localeCompare(typeA);
+    } else if (currentSort.value.column === 'byTime') {
+      const timeA = new Date(a.getWhenCreated()).getTime();
+      const timeB = new Date(b.getWhenCreated()).getTime();
+      return currentSort.value.order === 'asc' ? timeA - timeB : timeB - timeA;
+    } else {
+      return 0;
+    }
+  });
+
+  if (!query) return sortedRequests;
+  return sortedRequests.filter(staff => {
+    const studentName = staff.getStudentName().toLowerCase();
+    return studentName.includes(query) ||
+      studentName.split(' ').reverse().join(' ').includes(query);
+  });
+});
+
 
 const totalPages = computed(() => {
   totalEntries.value = filteredStudents.value.length;
@@ -167,25 +187,15 @@ function formatDate(dateString: Date): string {
         setCurrentPage(page: number){
           this.currentPage = page;
         },
-        sortByColumn(columnName: string) {
-  this.allRequests.sort((a, b) => {
-    if (columnName === 'name') {
-      const fullNameA = a.getStudentName().toLowerCase();
-      const fullNameB = b.getStudentName().toLowerCase();
-      return fullNameA.localeCompare(fullNameB);
-    } else if (columnName === 'request_type_name') {
-      const typeA = a.getRequestTypeName().toLowerCase();
-      const typeB = b.getRequestTypeName().toLowerCase();
-      return typeA.localeCompare(typeB);
-    } else if (columnName === 'byTime') {
-      const timeA = new Date(a.getWhenCreated()).getTime();
-      const timeB = new Date(b.getWhenCreated()).getTime();
-      return timeA - timeB;
-    } else {
-      return 0;
-    }
-  });
-},
+        
+      sortByColumn(columnName:string) {
+      if (currentSort.value.column === columnName) {
+        currentSort.value.order = currentSort.value.order === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSort.value.column = columnName;
+        currentSort.value.order = 'asc';
+      }
+    },
         toggleDetails(request: WaitingRequests){
           this.selectedRequest = request;
           console.log(this.selectedRequest);
