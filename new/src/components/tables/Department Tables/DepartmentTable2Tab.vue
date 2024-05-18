@@ -125,23 +125,55 @@
     const totalEntries = ref(0);
     const selectedRequest = ref<WaitingRequests>();
     const radioButtonSelection = ref('1');
-    
-    const filteredRequests = computed(() => {
+const currentSort = ref({ column: 'byDate', order: 'desc' });
+
+const filteredAndSortedStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  if (!query) return allRequests.value;
-  // Conditional filtering based on radio button selection
-  if (radioButtonSelection.value === '1') {
-    return allRequests.value.filter(request =>
-      request.getStudentName().toLowerCase().includes(query) ||
-      request.getStudentName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-    );
-  } else if (radioButtonSelection.value === '2') {
-    return allRequests.value.filter(request =>
-      request.getAdviserName().toLowerCase().includes(query) ||
-      request.getAdviserName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-    );
+  
+ 
+  let filteredRequests = allRequests.value;
+  if (query) {
+    filteredRequests = filteredRequests.filter(request => {
+      if (radioButtonSelection.value === '1') {
+        const studentName = request.getStudentName().toLowerCase();
+        return studentName.includes(query) || 
+               studentName.split(' ').reverse().join(' ').includes(query);
+      } else if (radioButtonSelection.value === '2') {
+        const adviserName = request.getAdviserName().toLowerCase();
+        return adviserName.includes(query) || 
+               adviserName.split(' ').reverse().join(' ').includes(query);
+      }
+      return false;
+    });
   }
-})
+
+  const sortedRequests = filteredRequests.sort((a, b) => {
+    if (currentSort.value.column === 'bySt') {
+      const fullNameA = a.getStudentName().toLowerCase();
+      const fullNameB = b.getStudentName().toLowerCase();
+      return currentSort.value.order === 'asc' ? fullNameA.localeCompare(fullNameB) : fullNameB.localeCompare(fullNameA);
+    } else if (currentSort.value.column === 'byDate') {
+      const timeA = new Date(a.getWhenCreated()).getTime();
+      const timeB = new Date(b.getWhenCreated()).getTime();
+      return currentSort.value.order === 'asc' ? timeA - timeB : timeB - timeA;
+    } else if (currentSort.value.column === 'request_type_name') {
+      const typeA = a.getRequestTypeName().toLowerCase();
+      const typeB = b.getRequestTypeName().toLowerCase();
+      return currentSort.value.order === 'asc' ? typeA.localeCompare(typeB) : typeB.localeCompare(typeA);
+    } else if (currentSort.value.column === 'byAdv') {
+      const advA = a.getAdviserName().toLowerCase();
+      const advB = b.getAdviserName().toLowerCase();
+      return currentSort.value.order === 'asc' ? advA.localeCompare(advB) : advB.localeCompare(advA);
+    }else if (currentSort.value.column === 'byStatus'){
+      const statusA = a.getStatus().toLowerCase();
+      const statusB = a.getStatus().toLowerCase();
+      return statusA.localeCompare(statusB);
+    }
+    return 0;
+  });
+
+  return sortedRequests;
+});
 
 watch(radioButtonSelection, () => {
   searchQuery.value = ''; // Clear search query when radio button changes
@@ -149,13 +181,13 @@ watch(radioButtonSelection, () => {
 
 
     const totalPages = computed(() => {
-      totalEntries.value = filteredRequests.value.length;
+      totalEntries.value = filteredAndSortedStudents.value.length;
         return Math.ceil(totalEntries.value / itemsPerPage);
       })
     const paginatedRequests = computed(() => {
       const startIndex = (currentPage.value - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      return filteredRequests.value.slice(startIndex, endIndex);
+      return filteredAndSortedStudents.value.slice(startIndex, endIndex);
     })
     function statusColored(status: string){
       if (status === 'ACCEPTED') return 'text-green-600 font-bold';
@@ -198,8 +230,7 @@ watch(radioButtonSelection, () => {
           searchQuery,
           paginatedRequests,
           statusColored,
-          translateStatus,
-          filteredRequests
+          translateStatus
         };
       },
       methods: {
@@ -216,36 +247,14 @@ watch(radioButtonSelection, () => {
         setCurrentPage(page: number){
           this.currentPage = page;
         },
-        sortByColumn(columnName: string) {
-          this.allRequests.sort((a, b) => {
-            if (columnName === 'bySt') {
-              const fullNameA = a.getStudentName().toLowerCase();
-              const fullNameB = b.getStudentName().toLowerCase();
-              return fullNameA.localeCompare(fullNameB);
-            } else if (columnName === 'byDate') {
-              const timeA = new Date(a.getWhenCreated()).getTime();
-              const timeB = new Date(b.getWhenCreated()).getTime();
-              return timeA - timeB;
-            } else if (columnName === 'request_type_name') {
-              const typeA = a.getRequestTypeName().toLowerCase();
-              const typeB = b.getRequestTypeName().toLowerCase();
-              return typeA.localeCompare(typeB);
-            }else if(columnName === 'byAdv')
-            {
-              const advA = a.getAdviserName().toLowerCase();
-              const advB = b.getAdviserName().toLowerCase();
-              return advA.localeCompare(advB);
-            }
-            else if(columnName === 'byStatus')
-            {
-              const statA = a.getStatus().toLowerCase();
-              const statB = b.getStatus().toLowerCase();
-              return statB.localeCompare(statA);
-            }
-
-            return 0;
-          });
-        },
+        sortByColumn(columnName:string) {
+      if (currentSort.value.column === columnName) {
+        currentSort.value.order = currentSort.value.order === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSort.value.column = columnName;
+        currentSort.value.order = 'asc';
+      }
+    },
         toggleDetails(request: WaitingRequests){
           this.selectedRequest = request; //console.log(request);
         },

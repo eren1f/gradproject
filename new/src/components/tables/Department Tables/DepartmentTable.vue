@@ -118,7 +118,7 @@
   const totalEntries = ref(0);
   const selectedRequest = ref<WaitingRequests>();
     const radioButtonSelection = ref('1');
-const currentSort = ref({ column: 'byTime', order: 'desc' });
+const currentSort = ref({ column: 'byDate', order: 'desc' });
 
 const filteredAndSortedStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
@@ -164,6 +164,7 @@ const filteredAndSortedStudents = computed(() => {
 
   return sortedRequests;
 });
+  
 watch(radioButtonSelection, () => {
   searchQuery.value = ''; // Clear search query when radio button changes
 });
