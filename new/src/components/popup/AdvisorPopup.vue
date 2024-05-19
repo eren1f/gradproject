@@ -48,7 +48,7 @@
           <div class="border-b border-blue-300 mb-2"></div> <!-- Request Info Divider -->
           <div class="mb-2">
             <h2 class="text-lg font-bold">Öğrenci Açıklaması</h2>
-            <p>22097743 numaralı öğrencinizim. SOS204 kodlu dersin 1 nolu şubesi/şubelerinden sosyal seçimlik dersimi almak istiyorum. </p>
+            <p>{{ request.getAddition() }} </p>
           </div>
         </div>
         <div class="border-b border-blue-300 mb-2"></div> <!-- Other Divider -->
@@ -217,6 +217,9 @@ export default {
     };
   },
   methods: {
+/*     beforeDestroy() {
+    this.$refs.currentTab = null;
+    }, */
     togglePopup() {
       this.popupVisible = !this.popupVisible;
       this.$emit('clearRequest');

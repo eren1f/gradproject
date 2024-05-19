@@ -1,6 +1,7 @@
 import { Login } from "@/Models/Login";
 import { LoginResponse } from "@/Models/LoginResponse";
 import type { LogoutResponse } from "@/Models/LogoutResponse";
+import bcryptjs from 'bcryptjs';
 
 export class Auth {
 
