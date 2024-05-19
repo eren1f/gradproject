@@ -27,7 +27,7 @@ export default {
             this.show = true;
             setTimeout(() => {
                 this.close();
-            }, 3000); // Close after 3 seconds
+            }, 2000); // Close after 3 seconds
         },
         close() {
             this.show = false;
@@ -35,7 +35,3 @@ export default {
     }
 };
 </script>
-
-<style>
-/* Add Tailwind CSS classes here if needed */
-</style>

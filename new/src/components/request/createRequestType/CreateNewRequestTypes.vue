@@ -153,9 +153,7 @@
             });
 
             watch(() => props.removeStaff, (newVal) => {
-                
                 staffs.value = staffs.value.filter(staff => staff.id !== newVal.id);
-                
             });
              
 

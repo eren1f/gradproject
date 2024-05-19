@@ -48,7 +48,7 @@
           <div class="border-b border-blue-300 mb-2"></div> <!-- Request Info Divider -->
           <div class="mb-2">
             <h2 class="text-lg font-bold">Öğrenci Açıklaması</h2>
-            <p>{{ request.getAddition() }}</p>
+            <p>22097743 numaralı öğrencinizim. SOS204 kodlu dersin 1 nolu şubesi/şubelerinden sosyal seçimlik dersimi almak istiyorum. </p>
           </div>
         </div>
         <div class="border-b border-blue-300 mb-2"></div> <!-- Other Divider -->
@@ -108,13 +108,28 @@
             <textarea v-model="comment" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none" maxlength="300"></textarea>
             <p class="py-[1%] text-right text-sm text-gray-400">{{ requestInfoLengthCheck }} / 300</p>
           </div>
-          <div class="flex items-center justify-center mt-4">
-            <button :disabled="!comment" @click="showConfirmationPopUp('cancel')" class="bg-slate-500 hover:bg-grey-600 text-white font-bold py-2 px-4 rounded w-full sm:w-auto flex">Bu talebi iptal et</button>
+          <div class="flex items-center justify-center mt-[2%]">
+              <!-- Alert & Button -->
+              <div v-if="isCommentNull" class="flex items-center p-[2%] my-[2%] text-sm rounded-lg bg-gray-800 text-blue-400" role="alert">
+              <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+              </svg>
+              <span class="sr-only">Info</span>
+              <div>
+                <span class="font-medium">Uyarı!</span> Açıklamanızı yazmadan talebi gönderemezsiniz.
+              </div>
+            </div>
+            <div v-else class="flex flex-row items-center justify-center">
+              <button :disabled="!comment" v-if="request.getStatus() === 'NEED_AFFIRMATION'" @click="showConfirmationPopUp('reject')" class="bg-red-500 hover:bg-red-600 text-white font-bold p-[1%] rounded sm:w-auto flex">Talebi Reddet</button>
+              <button :disabled="!comment" @click="showConfirmationPopUp('cancel')" class="bg-slate-500 hover:bg-slate-600 text-white font-bold p-1 mx-[1%] rounded sm:w-auto flex">Bu talebi iptal et</button>
+              <button :disabled="!comment" v-if="request.getStatus() === 'NEED_AFFIRMATION'" @click="showConfirmationPopUp('accept')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold p-4 rounded sm:w-auto flex">Onayla</button>
+            </div>
           </div>
         </template>
         <!-- 3. Tab -->
         <template v-if="activeTab === 'TamamlanmisTalepler'">
-          <p class="text-gray-700 font-bold">request.getComment</p>
+          <p class="block text-lg font-bold text-black">Birim Açıklaması</p>
+          <p class="text-black">Talep uygundur. Onaylıyorum.</p>
           <div class="border-b border-blue-300 mb-2"></div> <!-- Comment Divider -->
           <div class="flex items-center justify-center mt-4">
             <p class="text-gray-700 font-bold">Talep tamamlanmıştır. Bu aşamadan sonra işlem yapılamaz!</p>
@@ -198,7 +213,8 @@ export default {
       comment : '',
       isCommentNull,
       geriBildirim:'',
-      degerlendirmeYorumu: '',    };
+      degerlendirmeYorumu: '',    
+    };
   },
   methods: {
     togglePopup() {

@@ -16,7 +16,7 @@
     <div class="flex justify-end w-1/3 relative">
         <button class="mr-[6%] xl:mr-[3%] lg:mr-[4%] md:mr-[4%]" @click="showNotifications = !showNotifications">
             <span class="material-symbols-outlined text-white" style="font-size: 200%;">
-            notifications
+                notifications
             </span>
             <div v-if="showNotifications" class="absolute right-0 top-[120%] w-[100%] h-[300%] dark:bg-gray-700 rounded-xl shadow-2xl">
                 <!-- Upper part -->
@@ -30,9 +30,9 @@
                         <button class="m-[1%] text-white break-words hover:bg-blue-800">{{ notification.whenCreated }}</button>
                     </div> -->
                     <div>
-                        <button v-if="newUnreadRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newUnreadRequest }} yeni talebiniz bulunmakta. Sayfayı yenilemek için tıklayın.</button>
-                        <button v-if="newWaitingRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ newWaitingRequest }} talebiniz onay beklemektedir. Sayfayı yenilemek için tıklayın.</button>
-                        <button v-if="concludedRequest > 0" class="m-[1%] text-white break-words hover:bg-blue-800" @click="refreshPage">{{ concludedRequest }} talebiniz sonuçlandı. Sayfayı yenilemek için tıklayın.</button>
+                        <button v-if="newUnreadRequest > 0" class="m-[1%] p-[3%] text-white break-words border-0 rounded-md hover:bg-blue-800" @click="refreshPage">{{ newUnreadRequest }} yeni talebiniz bulunmakta. Sayfayı yenilemek için tıklayın.</button>
+                        <button v-if="newWaitingRequest > 0" class="m-[1%] p-[3%] text-white break-words border-0 rounded-md hover:bg-blue-800" @click="refreshPage">{{ newWaitingRequest }} talebiniz onay beklemektedir. Sayfayı yenilemek için tıklayın.</button>
+                        <button v-if="concludedRequest > 0" class="m-[1%] p-[3%] text-white break-words border-0 rounded-md hover:bg-blue-800" @click="refreshPage">{{ concludedRequest }} talebiniz sonuçlandı. Sayfayı yenilemek için tıklayın.</button>
                     </div>
                 </div>
             </div>
@@ -71,6 +71,7 @@ export default{
         const newUnreadRequest = ref(0);
         const newWaitingRequest = ref(0);
         const concludedRequest = ref(0);
+        const totalReq = ref(0);
         const handleClick = async() => {
             const authHandler =  Auth.getInstance();
             const res = await authHandler.logoutTokenDeleter();
@@ -117,11 +118,14 @@ export default{
                     //TODO: whenever refresh message comes, increment counter at the bell icon
                     if(message.body==='new request'){
                         newUnreadRequest.value+=1;
+                        totalReq.value+=1;
                     }else if(message.body==='need approval'){
                         newWaitingRequest.value+=1;
+                        totalReq.value+=1;
                     }
                     else if(message.body==='concluded'){
                         concludedRequest.value+=1;
+                        totalReq.value+=1;
                     }
                 });
                 client.value!.onStompError = (frame) => {
@@ -140,8 +144,9 @@ export default{
             userInfo,
             socket,
             newWaitingRequest,
-            newUnreadRequest,
-            concludedRequest
+            newUnreadRequest ,
+            concludedRequest,
+            totalReq,
         };
     }
 };
