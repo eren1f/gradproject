@@ -61,9 +61,14 @@
             <button @click="showAddStaffModal = false; resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString(),addStaff2.web,addStaff2.phoneNumber); resetForm()" :disabled="!isAddFormValid"  class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
-              Kaydet
-            </button>
+            <button
+          @click="saveAddedStaff(addStaff2.name, addStaff2.surname, addStaff2.email, addStaff2.password, selectedRoleOption, selectedDepartmentId.toString(), addStaff2.web, addStaff2.phoneNumber); resetForm()"
+          :disabled="!isAddFormValid"
+          :class="isAddFormValid ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'"
+          class="text-white py-2 px-4 ml-4 rounded"
+        >
+          Kaydet
+        </button>
           </div>
         </div>
     </div>
@@ -119,9 +124,14 @@
             <button @click="toggleEditClose(); resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="editStaff(editedStaff.name,editedStaff.surname,editedStaff.email,editedStaff.password,selectedRoleOption,selectedDepartmentId.toString(),editedStaff.web,editedStaff.phoneNumber); resetForm()" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
-              Kaydet
-            </button>
+            <button
+            @click="editStaff(editedStaff.name,editedStaff.surname,editedStaff.email,editedStaff.password,selectedRoleOption,selectedDepartmentId.toString(),editedStaff.web,editedStaff.phoneNumber); resetForm()"
+          :disabled="!isEditFormValid"
+          :class="isEditFormValid ? 'bg-blue-500 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'"
+          class="text-white py-2 px-4 ml-4 rounded"
+        >
+          Kaydet
+        </button>
           </div>
         </div>
     </div>
