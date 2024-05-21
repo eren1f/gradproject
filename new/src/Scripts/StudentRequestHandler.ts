@@ -77,6 +77,7 @@ export class StudentRequestHandler {
                 request.status,
                 request.addition,
                 new Date(request.when),
+                request.reason
             ));
             console.log(res); 
             return res;

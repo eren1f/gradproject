@@ -24,7 +24,24 @@
                 <div class="flex items-center">
                     <strong class="mr-[1%] text-black">Öğrenci Açıklaması</strong>
                 </div>
-                <span>{{ selectedRequest.getAddition() }}</span>
+                <div>{{ selectedRequest.getAddition() }}</div>
+                <div class="flex items-center">
+                    <strong class="mr-[1%] text-black">Birim Açıklaması</strong>
+                </div>
+                <div class="flex items-center">
+                  <div v-if="selectedRequest.getReason() === null" class="flex items-center p-[2%] text-sm rounded-lg bg-gray-800 text-blue-400" role="alert">
+                      <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                      </svg>
+                      <span class="sr-only">Info</span>
+                      <div>
+                        <span class="font-medium">Uyarı!</span> Talebiniz incelenmektedir. Lütfen daha sonra tekrar kontrol ediniz.
+                      </div>
+                    </div>
+                  <div v-else>
+                      <span>{{ selectedRequest.getReason() }}</span>
+                  </div>
+                </div>
               </div>
             <div class="flex justify-end mt-4">
                 <button @click="showModal = false" class="flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
@@ -33,12 +50,13 @@
                   arrow_back_ios_new
                   </span>
                 </button>
-                <button @click:href="selectedRequest.getPDF()" class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded ml-2"
+                <!-- MIGHT BE WORK LATER (PDF) -->
+                <!-- <button @click:href="selectedRequest.getPDF()" class="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded ml-2"
                   title="PDF'i indir">
                   <span class="material-symbols-outlined">
                   picture_as_pdf
                   </span>
-                </button>
+                </button> -->
             </div>
         </div>
     </div>

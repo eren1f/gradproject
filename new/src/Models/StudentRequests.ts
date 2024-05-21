@@ -5,16 +5,16 @@ export class StudentRequests {
     private status: string;
     private addition: string;
     private whenCreated: Date;
-    //private reason: string;
+    private reason: string;
 
-    constructor(studentId: number, currentIndex: number, information: String, status: string, addition: string, whenCreated: Date) {
+    constructor(studentId: number, currentIndex: number, information: String, status: string, addition: string, whenCreated: Date, reason: string) {
         this.studentId = studentId;
         this.currentIndex = currentIndex;
         this.information = information;
         this.status = status;
         this.addition = addition;
         this.whenCreated = whenCreated;
-        //private reason: string;
+        this.reason = reason;
     }
 
     getStudentId(): number {
@@ -51,6 +51,10 @@ export class StudentRequests {
         });
     }
 
+    getReason(): string {
+        return this.reason;
+    }
+
     setStatus(status: string): void {
         this.status = status;
     }
@@ -70,4 +74,5 @@ export class StudentRequests {
     setStudentId(studentId: number): void {
         this.studentId = studentId;
     }
+
 }

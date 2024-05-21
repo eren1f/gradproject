@@ -103,6 +103,11 @@
         </template>
         <!-- 2. Tab -->
         <template v-if="activeTab === 'BekleyenTalepler'">
+          <div>
+            <p class="block text-lg font-bold text-black">Birim Açıklaması</p>
+            <p class="text-black">{{ request }}</p>
+            <div class="border-b border-blue-300 mb-[1%]"></div> <!-- Comment Divider -->
+          </div>
           <div class="w-full">
             <label class="block text-sm font-bold text-gray-700">Öğrenciye Geribildirim</label>
             <textarea v-model="comment" class="mt-1 p-2 block w-full border border-gray-300 rounded-md resize-none" maxlength="300"></textarea>
@@ -258,6 +263,7 @@ export default {
       console.log(this.comment)
       requestHandler.rejectRequest(this.request.getStudentId(), this.request.getWhenCreated().toISOString(),this.request.getRequestTypeIds(), this.comment);
       console.log(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
+      requestHandler.saveComment(this.comment, this.request.getStudentId(), this.request.getWhenCreated().toISOString(), this.request.getRequestTypeIds());
       alert("Talep reddedildi.");
       //reload page
       window.location.reload();
@@ -266,6 +272,7 @@ export default {
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
       requestHandler.cancelRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
+      requestHandler.saveComment(this.comment, this.request.getStudentId(), this.request.getWhenCreated().toISOString(), this.request.getRequestTypeIds());
       alert("Talep iptal edildi.");
       //reload page
       window.location.reload();
