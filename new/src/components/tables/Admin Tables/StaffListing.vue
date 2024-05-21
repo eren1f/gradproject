@@ -61,7 +61,7 @@
             <button @click="showAddStaffModal = false; resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString(),addStaff2.web,addStaff2.phoneNumber);" :disabled="!isAddFormValid"  class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString(),addStaff2.web,addStaff2.phoneNumber); resetForm()" :disabled="!isAddFormValid"  class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
@@ -348,9 +348,14 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         toggleModal() {
           
           this.departments.forEach(department => {
-            this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
+            const departmentExists = this.departmentDropdownOptions.some(option => option.value === department.getDepartmentId());
+            if (!departmentExists) {
+              this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
+            }
           });
-          this.departmentDropdownOptions.shift();
+          if (this.departmentDropdownOptions.length == 1) {
+            this.departmentDropdownOptions.shift();
+          }
           console.log(this.departmentDropdownOptions);
           console.log(this.roleDropdownOptions);
           
@@ -364,9 +369,14 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         },
         toggleEdit(currentStaff: StaffForAdminListing , staffIndex: number, staffId: number) {
           this.departments.forEach(department => {
-            this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
+            const departmentExists = this.departmentDropdownOptions.some(option => option.value === department.getDepartmentId());
+            if (!departmentExists) {
+              this.departmentDropdownOptions.push({ label: department.getDepartmentName(), value: department.getDepartmentId() });
+            }
           });
-          this.departmentDropdownOptions.shift();
+          if (this.departmentDropdownOptions.length == 1) {
+            this.departmentDropdownOptions.shift();
+          }
 
           this.idToEdit = staffId; // Toggle
           this.indexToEdit = staffIndex; // Toggle
@@ -479,7 +489,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
            await handler.addStaff(newStaff);
            //rol statik unutma
           }
-          this.resetForm();
+          
           this.sortByColumn('id');
         },
         setCurrentPage(page: number){
