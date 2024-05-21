@@ -20,6 +20,8 @@
               <input v-model="addStaff2.surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
               <input v-model="addStaff2.email" type="text" placeholder="Email" class="p-2 border rounded"><!--v-model="addStaff.surname"--><!--placeholder="Soyisim"-->
               <input v-model="addStaff2.password" type="email" placeholder="Şifre" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
+              <input v-model="addStaff2.web" type="text" placeholder="Web" class="p-2 border rounded"> 
+              <input v-model="addStaff2.phoneNumber" type="text" placeholder="Telefon Numarası" class="p-2 border rounded">
             </div>
            
             <div class="flex flex-col space-y-4">
@@ -59,7 +61,7 @@
             <button @click="showAddStaffModal = false; resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString()); resetForm()" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+            <button @click="saveAddedStaff(addStaff2.name,addStaff2.surname,addStaff2.email,addStaff2.password,selectedRoleOption,selectedDepartmentId.toString(),addStaff2.web,addStaff2.phoneNumber);" :disabled="!isAddFormValid"  class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
@@ -77,6 +79,8 @@
               <input v-model="editedStaff.surname" type="text" placeholder="Soyisim" class="p-2 border rounded">
               <input v-model="editedStaff.email" type="text" placeholder="Email" class="p-2 border rounded"><!--v-model="addStaff.surname"--><!--placeholder="Soyisim"-->
               <input v-model="editedStaff.password" type="email" placeholder="Şifre" class="p-2 border rounded"><!--v-model="addStaff.email"--><!--placeholder="E-Mail"-->
+              <input v-model="editedStaff.web" type="text" placeholder="Web" class="p-2 border rounded"> <!--v-model="addStaff.Name"--><!--placeholder="İsim"-->
+              <input v-model="editedStaff.phoneNumber" type="text" placeholder="Telefon Numarası" class="p-2 border rounded">
             </div>
            
             <div class="flex flex-col space-y-4">
@@ -115,7 +119,7 @@
             <button @click="toggleEditClose(); resetForm()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded">
               İptal
             </button>
-            <button @click="editStaff(editedStaff.name,editedStaff.surname,editedStaff.email,editedStaff.password,selectedRoleOption,selectedDepartmentId.toString()); resetForm()" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
+            <button @click="editStaff(editedStaff.name,editedStaff.surname,editedStaff.email,editedStaff.password,selectedRoleOption,selectedDepartmentId.toString(),editedStaff.web,editedStaff.phoneNumber); resetForm()" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 ml-4 rounded"><!--saveStaff-->
               Kaydet
             </button>
           </div>
@@ -174,7 +178,7 @@
                     {{ rolefixer(staff.getRole()) }}
                 </td>
                 <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
-                  <button @click="toggleEdit(staff, index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" data-column="edit">  ✏️</button>
+                  <button @click="toggleEdit(staff.value, index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" data-column="edit">  ✏️</button>
                 </td>
               </tr>
             </tbody>
@@ -244,7 +248,7 @@ const paginatedStaffs = computed(() => {
 
 const saveStaff = (name:string, surname:string, email:string, password:string, role:string, departmentId:number) => {
 
-  const newStaff = new TeachingStaff(name, surname, email, password, role, departmentId);
+  const newStaff = new TeachingStaff(name, surname, email, password, role, departmentId, "someweb", "somephone");
 
   const response = fetch(apiRoute + "addStaff", {
     method: 'POST',
@@ -299,6 +303,8 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             password: '',
             role: '',
             departmentId: '',
+            web: '',
+            phoneNumber: '',
           },
           editedStaff: {
             id: 0,
@@ -308,12 +314,36 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             password: '',
             role: '',
             departmentId: '',
+            web: '',
+            phoneNumber: '',
           },
           idToEdit: 0,
           indexToEdit: 0,
 
         };
       },
+      computed: {
+    isAddFormValid() {
+      return this.addStaff2.name.trim() !== '' &&
+             this.addStaff2.surname.trim() !== '' &&
+             this.addStaff2.email.trim() !== '' &&
+             this.addStaff2.password.trim() !== '' &&
+             this.addStaff2.web.trim() !== '' &&
+             this.addStaff2.phoneNumber.trim() !== '' &&
+             this.selectedRoleOption.trim() !== '' &&
+             this.selectedDepartmentOption.trim() !== '';
+    },
+    isEditFormValid() {
+      return this.editedStaff.name.trim() !== '' &&
+             this.editedStaff.surname.trim() !== '' &&
+             this.editedStaff.email.trim() !== '' &&
+             this.editedStaff.password.trim() !== '' &&
+             this.editedStaff.web.trim() !== '' &&
+             this.editedStaff.phoneNumber.trim() !== '' &&
+             this.selectedRoleOption.trim() !== '' &&
+             this.selectedDepartmentOption.trim() !== '';
+    }
+  },
       methods: {
         toggleModal() {
           
@@ -350,10 +380,10 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
                   name: currentStaff.getFullName().substring(0, currentStaff.getFullName().lastIndexOf(' ')),
                   surname: lastWord,
                   email: currentStaff.getEmail(),
-                  password: ''
+                  password: '',
               };
-              this.selectedRoleOption = currentStaff.getRole(); // Reset role selection
-              this.selectedDepartmentOption = currentStaff.getDepartment(); // Reset department selection
+              this.selectedRoleOption = '';//currentStaff.getRole(); // Reset role selection
+              this.selectedDepartmentOption = '';//currentStaff.getDepartment(); // Reset department selection
         },
         toggleEditClose() {
           this.resetForm();
@@ -383,20 +413,18 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           saveStaff(this.addStaff.Name, this.addStaff.surname, this.addStaff.email, this.addStaff.password, this.selectedRoleOption, this.selectedDepartmentId);
           this.showAddStaffModal = false;
         },
-        async editStaff(name: string, surname: string, email: string, password: string,  role: string,  departmentId: string)
-        {     const staffToEdit = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
+        async editStaff(name: string, surname: string, email: string, password: string,  role: string,  departmentId: string, web: string, phoneNumber: string)
+        {     const staffToEdit = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId), web, phoneNumber);
               staffToEdit.setId(this.idToEdit);
               const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
               const staffToAdd = new StaffForAdminListing(this.idToEdit ,name + ' ' + surname,email,departmentToPass,role);
               paginatedStaffs.value.splice(this.indexToEdit,1,staffToAdd);
               
-            
             await handler.updateStaff(staffToEdit);
-            //rol statik unutma
             this.toggleEditClose();
             
         },
-        async saveAddedStaff(  name: string, surname: string, email: string, password: string,  role: string,  departmentId: string){
+        async saveAddedStaff(  name: string, surname: string, email: string, password: string,  role: string,  departmentId: string, web: string, phoneNumber: string){
           const url = apiRoute + "getStaffInfoForAdmin";
           const response = await fetch(url, {
               method: 'GET',
@@ -406,7 +434,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
               credentials: 'include',
           })
           const data = await response.json();
-          
+          console.log(data);
           allStaffs.value = [];
 
           for (let i = 0; i < data.length; i++) {
@@ -423,7 +451,7 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
                 }
               });
           if (allStaffs.value.length === 0)
-          {const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
+          {const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId), web, phoneNumber);
             const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
             const staffToAdd = new StaffForAdminListing(1,name + ' ' + surname,email,departmentToPass,role);
             newStaff.setId(1);
@@ -431,14 +459,14 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
             this.showAddStaffModal = false;
 
             
-            console.log(allStaffs.value);
+            console.log(newStaff);
            await handler.addStaff(newStaff);
            //rol statik unutma
           }
           else
           {     
 
-            const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId));
+            const newStaff = new TeachingStaff(name, surname, email, password, role, parseInt(departmentId), web, phoneNumber);
             const departmentToPass = this.searchLabelByValue(parseInt(departmentId),this.departmentDropdownOptions);
             //get biggest id
             const staffToAdd = new StaffForAdminListing(maxid + 1,name + ' ' + surname,email,departmentToPass,role);
@@ -451,7 +479,8 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
            await handler.addStaff(newStaff);
            //rol statik unutma
           }
-          sortByColumn('id');
+          this.resetForm();
+          this.sortByColumn('id');
         },
         setCurrentPage(page: number){
           this.currentPage = page;
@@ -499,16 +528,20 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
                   name: '',
                   surname: '',
                   email: '',
-                  password: ''
+                  password: '',
+                  web: '',
+                  phoneNumber: '',
               };
               this.editedStaff = {
                   name: '',
                   surname: '',
                   email: '',
-                  password: ''
+                  password: '',
+                  web: '',
+                  phoneNumber: '',
               };
-              this.selectedRoleOption = ''; // Reset role selection
-              this.selectedDepartmentOption = ''; // Reset department selection
+              this.selectedRoleOption = ''; 
+              this.selectedDepartmentOption = ''; 
           }
 
 

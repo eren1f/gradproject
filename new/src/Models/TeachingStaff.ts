@@ -6,14 +6,18 @@ export class TeachingStaff{
     private password: string;
     private role: string;
     private departmentId: number;
+    private web: string;
+    private phoneNumber: string;
 
-    constructor(name: string, surName: string, email:string, password:string, role:string, departmentId:number){
+    constructor(name: string, surName: string, email:string, password:string, role:string, departmentId:number, web:string, phoneNumber:string){
         this.name = name;
         this.surname = surName;
         this.email = email;
         this.password = password;
         this.role = role;
         this.departmentId = departmentId;
+        this.web = web;
+        this.phoneNumber = phoneNumber;
     }
     // Getters and Setters
 
@@ -72,6 +76,20 @@ export class TeachingStaff{
 
     setDepartmentId(departmentId: number){
         this.departmentId = departmentId;
+    }
+
+    getWeb(){
+        return this.web;
+    }
+    setWeb(web: string){
+        this.web = web;
+    }
+
+    getPhoneNumber(){
+        return this.phoneNumber;
+    }
+    setPhoneNumber(phoneNumber: string){
+        this.phoneNumber = phoneNumber;
     }
 
 }
