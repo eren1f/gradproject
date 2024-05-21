@@ -150,7 +150,7 @@ export class TeachingStaffRequestHandler {
         }
     }
 
-    async rejectRequest(studentId:number, when:string, requestTypeId:number, reason:string): Promise<any>{
+    async rejectRequest(studentId:number, requestTypeId:number, when:string, reason:string): Promise<any>{
         const url= apiRoute + "rejectRequest";
         try {
             const response = await fetch(url, {
@@ -161,9 +161,9 @@ export class TeachingStaffRequestHandler {
                 credentials: 'include',
                 body: JSON.stringify({
                     requestStudentId: studentId,
-                    requestWhenCreated: when,
                     requestTypeId: requestTypeId,
-                    cancellationReason: reason //allah belanizi versin
+                    requestWhenCreated: when,
+                    cancellationReason: reason
                 })
             });
             if (!response.ok) {
@@ -232,6 +232,32 @@ export class TeachingStaffRequestHandler {
             throw new Error(`HTTP error! status: ${error}`);
         }
 
+    }
+    async getComments(requestStudentId:number, requestWhenCreated:string, requestTypeId:number): Promise<any>{
+        const url= apiRoute + "getAllCommentsForRequest";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    requestStudentId: requestStudentId,
+                    requestWhenCreated: requestWhenCreated,
+                    requestTypeId: requestTypeId
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log(data);
+            return data;
+        }
+        catch (error) {
+            throw new Error(`HTTP error! status: ${error}`);
+        }
     }
     
 }

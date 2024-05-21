@@ -54,6 +54,11 @@
         <div class="border-b border-blue-300 mb-2"></div> <!-- Other Divider -->
         <!-- 1. Tab -->
         <template v-if="activeTab === 'YeniTalepler'">
+          <div v-if=" birimYorumu.length > 0">
+            <p class="block text-lg font-bold text-black">Birim Açıklaması</p>
+            <p v-for="(text, index) in birimYorumu" :key="index">{{ text }}</p>
+            <div class="border-b border-blue-300 my-[1%]"></div> <!-- Comment Divider -->
+          </div>
           <!-- Toggle & Comment -->
           <div class="flex flex-col justify-center items-center w-full ">
             <div class="flex justify-center items-center w-full m-[2%]">
@@ -105,8 +110,8 @@
         <template v-if="activeTab === 'BekleyenTalepler'">
           <div>
             <p class="block text-lg font-bold text-black">Birim Açıklaması</p>
-            <p class="text-black">{{ request }}</p>
-            <div class="border-b border-blue-300 mb-[1%]"></div> <!-- Comment Divider -->
+            <p v-for="(text, index) in birimYorumu" :key="index">{{ text }}</p>
+            <div class="border-b border-blue-300 my-[1%]"></div> <!-- Comment Divider -->
           </div>
           <div class="w-full">
             <label class="block text-sm font-bold text-gray-700">Öğrenciye Geribildirim</label>
@@ -134,8 +139,8 @@
         <!-- 3. Tab -->
         <template v-if="activeTab === 'TamamlanmisTalepler'">
           <p class="block text-lg font-bold text-black">Birim Açıklaması</p>
-          <p class="text-black">Talep uygundur. Onaylıyorum.</p>
-          <div class="border-b border-blue-300 mb-2"></div> <!-- Comment Divider -->
+          <p v-for="(text, index) in birimYorumu" :key="index">{{ text }}</p>
+          <div class="border-b border-blue-300 my-[1%]"></div> <!-- Comment Divider -->
           <div class="flex items-center justify-center mt-4">
             <p class="text-gray-700 font-bold">Talep tamamlanmıştır. Bu aşamadan sonra işlem yapılamaz!</p>
           </div>
@@ -218,9 +223,11 @@ export default {
       comment : '',
       isCommentNull,
       geriBildirim:'',
-      degerlendirmeYorumu: '',    
+      degerlendirmeYorumu: '',  
+      birimYorumu: [],
     };
   },
+
   methods: {
 /*     beforeDestroy() {
     this.$refs.currentTab = null;
@@ -245,6 +252,7 @@ export default {
         isCommentNull.value = false;
       }
     },
+    // comment?
     acceptRequest() {
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
@@ -261,7 +269,7 @@ export default {
       this.popupVisible = false;
       let requestHandler = TeachingStaffRequestHandler.getInstance();
       console.log(this.comment)
-      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getWhenCreated().toISOString(),this.request.getRequestTypeIds(), this.comment);
+      requestHandler.rejectRequest(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
       console.log(this.request.getStudentId(), this.request.getRequestTypeIds(), this.request.getWhenCreated().toISOString(), this.comment);
       requestHandler.saveComment(this.comment, this.request.getStudentId(), this.request.getWhenCreated().toISOString(), this.request.getRequestTypeIds());
       alert("Talep reddedildi.");
@@ -276,13 +284,31 @@ export default {
       alert("Talep iptal edildi.");
       //reload page
       window.location.reload();
-    }
+    },
+    async getComment(){
+      let requestHandler = TeachingStaffRequestHandler.getInstance();
+      let staffComment = await requestHandler.getComments(this.request.getStudentId(), this.request.getWhenCreated().toISOString(), this.request.getRequestTypeIds());
+      let comment = '';
+      if (staffComment.comments.length > 0) {
+        comment = staffComment.comments[0].staffComment;
+      }
+      let texts = [];
+      for (let comment of staffComment.comments) {
+        if (comment.staffComment.length > 0) {
+          let text = comment.staffName + ' tarafından ' + formatDate(comment.staffCommentTimePosted) + ' tarihinde yapılan açıklama: ' + comment.staffComment;
+          texts.push(text);
+        }
+      }
+      this.birimYorumu = texts as string[];
+      console.log(this.birimYorumu);
+    },
   },
   watch: {
     request(newVal) {
       if (newVal != undefined) {
         this.popupVisible = true;
         console.log(this.request);
+        this.getComment();
       }
     },
     selectedTab(newVal, oldVal) {
@@ -310,7 +336,7 @@ export default {
     requestInfoLengthCheck() {
       return this.comment.length;
     }
-  }
+  },
   
 };
 </script>
