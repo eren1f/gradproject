@@ -49,10 +49,11 @@
         </div>
         <div class="flex items-center justify-center">
             <button class="text-white bg-blue-500 hover:bg-blue-700 py-2 px-4 my-[3%] rounded"
-                @click="toggleConfirmationPopup">Talep Türünü Kaydet</button>
+                @click="addNewRequestType()">Talep Türünü Kaydet</button>
         </div>
+        <!-- Working on confirmation popup-->
         <AlertPopup ref="alertPopup" />
-        <ConfirmationPopUp v-if="toggleConfirmationPopup" :changes="change" @cancel="toggleConfirmationPopup = false" @confirm-save="addNewRequestType" />
+        <ConfirmationPopUp v-if="toggleConfirmationPopup" :changes="changes" @cancel="toggleConfirmationPopup = false" @confirm-save="addNewRequestType" />
 </template>
 
 
@@ -91,6 +92,7 @@
             return{
                 selectedStaffs : Array<any>(),
                 confirmationPopup : false,
+                changes: 'Talep türü oluşturulacak',
             }
         },
 /*         watch:{
@@ -248,18 +250,18 @@
                 departmentId.value = data;
             }
             const showConfirmationPopUp = (changes: string) => {
-
+                this.toggleConfirmationPopup = true;
             };
-     
-            
 
             return {
                 departmentId,
                 addNewRequestType,
                 handleDataChange,
                 handleSelectedDepartment,
+                showConfirmationPopUp,
                 selectedDepartment,
                 staffs,
+                toggleConfirmationPopup: false,
             }
         }
     });

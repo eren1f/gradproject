@@ -2,7 +2,7 @@
     <div>
         <div class="flex flex-col md:flex-row items-center justify-center dark:bg-gray-100 shadow-lg rounded-lg overflow-hidden mt-[2%]">
             <div class="p-[1%] flex flex-col items-center">
-                <img src="../assets/user.png" alt="" class="w-32 h-32 object-cover rounded-md">
+                <img src="../assets/image.png" alt="" class="w-32 h-32 object-cover rounded-md">
                 <p class="text-lg md:text-xl font-bold">{{ advisorFirstname }} {{ advisorLastname }}</p>
             </div>
             <div class="md:p-[2%] flex flex-col items-center md:items-start">
