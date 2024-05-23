@@ -155,28 +155,45 @@ const itemsPerPage = 10; // default for student
 const currentPage = ref(1);
 const requests = ref<StudentRequests[]>([]);
 const totalEntries = ref(0);
-const filteredRequests = computed(() => {
+const currentSort = ref({ column: 'byTime', order: 'desc' });
+
+const filteredStudents = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  let result = requests.value;
-  if(query) {
-    // Search by request name
-    result = result.filter(request =>
-      request.getInformation().toLowerCase().includes(query) ||
-      request.getInformation().toLowerCase().split(' ').reverse().join(' ').includes(query)
-    )
-  }
-  // Sort by date
-  result.sort((a, b) => new Date(b.getWhenCreated()).getTime() - new Date(a.getWhenCreated()).getTime());
-  return result;
-})
+
+  const sortedRequests = [...requests.value].sort((a, b) => {
+     if (currentSort.value.column === 'byRequestName') {
+      const typeA = a.getInformation().toLowerCase();
+      const typeB = b.getInformation().toLowerCase();
+      return currentSort.value.order === 'asc' ? typeA.localeCompare(typeB) : typeB.localeCompare(typeA);
+    } else if (currentSort.value.column === 'byDate') {
+      const timeA = new Date(a.getWhenCreated()).getTime();
+      const timeB = new Date(b.getWhenCreated()).getTime();
+      return currentSort.value.order === 'asc' ? timeA - timeB : timeB - timeA;
+    } else if (currentSort.value.column === 'byStatus'){
+      const statusA = a.getStatus().toLowerCase();
+      const statusB = a.getStatus().toLowerCase();
+      return statusA.localeCompare(statusB);
+    } else {
+      return 0;
+    }
+  });
+
+  if (!query) return sortedRequests;
+  return sortedRequests.filter(staff => {
+    const studentName = staff.getInformation().toLowerCase();
+    return studentName.includes(query) ||
+      studentName.split(' ').reverse().join(' ').includes(query);
+  });
+});
+
 const totalPages = computed(() => {
-  totalEntries.value = filteredRequests.value.length;
+  totalEntries.value = filteredStudents.value.length;
     return Math.ceil(totalEntries.value / itemsPerPage);
   })
 const paginatedRequests = computed(() => {
   const startIndex = (currentPage.value - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  return filteredRequests.value.slice(startIndex, endIndex);
+  return filteredStudents.value.slice(startIndex, endIndex);
 })
 
 function statusColored(status: string){
@@ -237,32 +254,14 @@ export default {
         setCurrentPage(page: number){
           this.currentPage = page;
         },
-        sortByColumn(columnName: string) {
-          paginatedRequests.value.sort((a, b) => {
-              if (columnName === 'byRequestName') {
-                const fullNameA = a.getInformation() ? a.getInformation().toLowerCase() : '';
-                const fullNameB = b.getInformation() ? b.getInformation().toLowerCase() : '';    
-                console.log(fullNameA, fullNameB);              
-                  if (fullNameA < fullNameB) return -1;
-                  if (fullNameA > fullNameB) return 1;
-                  return 0;
-              } else if (columnName === 'byDate') {
-                const timeA = new Date(a.getWhenCreated()).getTime();
-                const timeB = new Date(b.getWhenCreated()).getTime();
-                console.log(timeA, timeB);
-                return timeB - timeA;
-              } else { // byStatus
-                const statusA = a.getStatus ? a.getStatus().toLowerCase() : '';
-                const statusB = b.getStatus ? b.getStatus().toLowerCase() : '';
-                console.log(statusA, statusB);
-                if (statusA < statusB) return -1;
-                if (statusA > statusB) return 1;
-                return 0;
-              }
-              
-          });
-          paginatedRequests.value = [...paginatedRequests.value];
-        },
+        sortByColumn(columnName:string) {
+      if (currentSort.value.column === columnName) {
+        currentSort.value.order = currentSort.value.order === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSort.value.column = columnName;
+        currentSort.value.order = 'asc';
+      }
+    },
         toggleDetails(index: number){
           // Fetch
           this.selectedRequest = this.paginatedRequests[index];

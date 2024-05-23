@@ -188,7 +188,7 @@
                     {{ rolefixer(staff.getRole()) }}
                 </td>
                 <td class="px-6 py-4 md:whitespace-nowrap block text-center md:table-cell">
-                  <button @click="toggleEdit(staff.value, index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" data-column="edit">  ✏️</button>
+                  <button @click="toggleEdit(staff as StaffForAdminListing, index, staff.getId())" class="px-4 py-1 mt-2 mb-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-700" data-column="edit">  ✏️</button>
                 </td>
               </tr>
             </tbody>
@@ -235,14 +235,43 @@ const allDepartments = ref<ListDepartments[]>([]);
 const departments = ref<ListDepartments[]>([]);
 const totalEntries = ref(0);
 const handler = new AdminRequestHandler();
+const currentSort = ref({ column: 'id', order: 'desc' });
+
 const filteredStaffs = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
-  if(!query) return staffs.value;
-  // Search by name or surname (fixed)
-  return staffs.value.filter(staff =>
-    staff.getFullName().toLowerCase().includes(query) ||
-    staff.getFullName().toLowerCase().split(' ').reverse().join(' ').includes(query)
-  )
+
+  const sortedRequests = [...staffs.value].sort((a, b) => {
+    if (currentSort.value.column === 'id') {
+      const idA = a.getId();
+      const idB = b.getId();
+      return currentSort.value.order === 'asc' ? idA - idB : idB - idA;
+    } else if (currentSort.value.column === 'name') {
+      const typeA = a.getFullName().toLowerCase();
+      const typeB = b.getFullName().toLowerCase();
+      return currentSort.value.order === 'asc' ? typeA.localeCompare(typeB) : typeB.localeCompare(typeA);
+    } else if (currentSort.value.column === 'department') {
+      const typeA = a.getDepartment().toLowerCase();
+      const typeB = b.getDepartment().toLowerCase();
+      return currentSort.value.order === 'asc' ? typeA.localeCompare(typeB) : typeB.localeCompare(typeA);
+    } else if (currentSort.value.column === 'email') {
+      const typeA = a.getEmail().toLowerCase();
+      const typeB = b.getEmail().toLowerCase();
+      return currentSort.value.order === 'asc' ? typeA.localeCompare(typeB) : typeB.localeCompare(typeA);
+    } else if (currentSort.value.column === 'role') {
+      const typeA = a.getRole().toLowerCase();
+      const typeB = b.getRole().toLowerCase();
+      return currentSort.value.order === 'asc' ? typeA.localeCompare(typeB) : typeB.localeCompare(typeA);
+    } else {
+      return 0;
+    }
+  });
+
+  if (!query) return sortedRequests;
+  return sortedRequests.filter(staff => {
+    const studentName = staff.getStudentName().toLowerCase();
+    return studentName.includes(query) ||
+      studentName.split(' ').reverse().join(' ').includes(query);
+  });
 })
 
 const totalPages = computed(() => {
@@ -397,10 +426,15 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
           const lastWord = words[words.length - 1];
 
               this.editedStaff = {
+                  id: 0,
                   name: currentStaff.getFullName().substring(0, currentStaff.getFullName().lastIndexOf(' ')),
                   surname: lastWord,
                   email: currentStaff.getEmail(),
                   password: '',
+                  role: '',
+                  departmentId: '',
+                  web: '',
+                  phoneNumber: '',
               };
               this.selectedRoleOption = '';//currentStaff.getRole(); // Reset role selection
               this.selectedDepartmentOption = '';//currentStaff.getDepartment(); // Reset department selection
@@ -505,30 +539,14 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
         setCurrentPage(page: number){
           this.currentPage = page;
         },
-        sortByColumn(columnName: string) {
-          staffs.value.sort((a, b) => {
-              if (columnName === 'name') {
-                 
-                const fullNameA = a.getFullName ? a.getFullName().toLowerCase() : '';
-                const fullNameB = b.getFullName ? b.getFullName().toLowerCase() : '';                  
-                  if (fullNameA < fullNameB) return -1;
-                  if (fullNameA > fullNameB) return 1;
-                  return 0;
-              } else if (columnName === 'id') {
-                  
-                  const idA = parseInt(a[columnName]);
-                  const idB = parseInt(b[columnName]);
-                  return idA - idB;
-              } else {
-                  
-                  const aValue = a[columnName]?.toLowerCase();
-                  const bValue = b[columnName]?.toLowerCase();
-                  if (aValue < bValue) return -1;
-                  if (aValue > bValue) return 1;
-                  return 0;
-              }
-          });
-        },
+        sortByColumn(columnName:string) {
+      if (currentSort.value.column === columnName) {
+        currentSort.value.order = currentSort.value.order === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSort.value.column = columnName;
+        currentSort.value.order = 'asc';
+      }
+    },
 
          rolefixer(role: string) {
             if (role === 'Dekanlik') {
@@ -545,18 +563,24 @@ const saveStaff = (name:string, surname:string, email:string, password:string, r
 
           resetForm() {
               this.addStaff2 = {
+                  id: 0,
                   name: '',
                   surname: '',
                   email: '',
                   password: '',
+                  role: '',
+                  departmentId: '',
                   web: '',
                   phoneNumber: '',
               };
               this.editedStaff = {
+                  id: 0,
                   name: '',
                   surname: '',
                   email: '',
                   password: '',
+                  role: '',
+                  departmentId: '',
                   web: '',
                   phoneNumber: '',
               };

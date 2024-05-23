@@ -258,7 +258,7 @@ export default defineComponent({
                 const emailMatch = emailFilter.value.trim().length === 0 ||
                                     staff.getEmail().toLowerCase().includes(emailFilter.value.trim().toLowerCase());
                 const roleMatch = roleFilter.value.trim().length === 0 ||
-                                    staff.getRole().toLowerCase().includes(roleFilter.value.trim().toLowerCase());
+                                    rolefixer(staff.getRole()).toLowerCase().includes(roleFilter.value.trim().toLowerCase());
 
                 return idMatch && nameMatch && departmentMatch && emailMatch && roleMatch;
             });
@@ -298,7 +298,6 @@ export default defineComponent({
             } else if (role === 'Danisman') {
                 return 'Danışman';
             } else {
-                // Handle other cases or return the original role if no conversion is needed
                 return role;
             }
           };
