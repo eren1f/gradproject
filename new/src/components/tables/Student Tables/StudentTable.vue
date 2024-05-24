@@ -29,7 +29,7 @@
                     <strong class="mr-[1%] text-black">Birim Açıklaması</strong>
                 </div>
                 <div class="flex items-center ">
-                  <div v-if="selectedRequest.getReason() === null" class="flex items-center w-full p-[2%] text-sm rounded-lg bg-gray-800 text-blue-400" role="alert">
+                  <div v-if="selectedRequest.getReason() === null && selectedRequest.getStatus() != 'ACCEPTED'" class="flex items-center w-full p-[2%] text-sm rounded-lg bg-gray-800 text-blue-400" role="alert">
                       <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                       </svg>
@@ -38,6 +38,15 @@
                         <span class="font-medium">Uyarı!</span> Talebiniz incelenmektedir. Lütfen daha sonra tekrar kontrol ediniz.
                       </div>
                     </div>
+                  <div v-if="selectedRequest.getStatus() === 'ACCEPTED'" class="flex items center w-full p-[2%] text-sm rounded-lg bg-green-800 text-green-400" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 1a9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-9-9 9 9 0 0 1 9-9ZM9 13a1 1 0 0 0 2 0V7a1 1 0 0 0-2 0v6Zm1-5a1 1 0 0 0-2 0v2a1 1 0 0 0 2 0V8Z"/>
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div>
+                      <span class="font-medium">Başarılı!</span> Talebiniz kabul edilmiştir.
+                    </div>
+                  </div>
                   <div v-else>
                       <span>{{ selectedRequest.getReason() }}</span>
                   </div>
