@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="popupVisible" class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-      <div class="relative bg-white rounded-lg shadow-xl p-[2%] w-[90%]  text-black">
+      <div class="relative bg-white rounded-lg shadow-xl p-[2%] w-[90%] text-black max-h-screen overflow-auto">
         <h2 class="text-2xl font-bold mb-2 flex flex-col md:flex-row md:justify-between md:items-center">Talep Detayları
           <div class="md:flex md:items-start">
             <div class="md:mt-3 text-center">
@@ -224,7 +224,7 @@ export default {
       isCommentNull,
       geriBildirim:'',
       degerlendirmeYorumu: '',  
-      birimYorumu: [],
+      birimYorumu: [] as string[]
     };
   },
 
@@ -299,7 +299,7 @@ export default {
           texts.push(text);
         }
       }
-      this.birimYorumu = texts as string[];
+      this.birimYorumu = texts;
       console.log(this.birimYorumu);
     },
   },
