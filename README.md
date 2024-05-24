@@ -35,7 +35,4 @@ To run frontend
     npm run dev
 ```
 
-# EduFlow
-
-EduFlow is a workflow management system for course registrations designed specifically for Engineering students at Baskent University.
 
