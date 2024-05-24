@@ -4,7 +4,7 @@
 
 # EduFlow
 
-![EduFlow Banner](new/src/components/assets/EDUFLOW.png)
+![EduFlow Banner](new/src/components/assets/banner.png)
 
 EduFlow - Workflow management system for course registrations of Engineering students of Baskent University
 
